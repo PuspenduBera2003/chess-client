@@ -1,0 +1,43 @@
+.chessboard-layout {
+    width: 100%;
+    min-height: calc(100vh - 3.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.passplay-menu {
+    width: -moz-fit-content;
+    width: fit-content;
+    border-radius: 5px;
+    font-family: monospace;
+    margin-top: 10px;
+    animation: openMenu .5s ease-in-out forwards;
+    transform-origin: top center;
+    display: none;
+    position: absolute;
+    bottom: 3.5rem;
+    right: 0.5rem;
+}
+
+.dark-mode-passplay-nav{
+    background-color: rgb(28 25 23);
+    border: 1px solid gray;
+}
+
+.light-mode-passplay-nav {
+    border: 1px solid rgb(75, 74, 74);
+}
+
+.dark-menu-border {
+    border: 1.5px solid rgb(75 85 99);
+}
+
+.light-menu-border {
+    border: 1.5px solid rgb(107 114 128);
+}
+
+.light-mode-game-menu {
+    background-color: rgb(244 244 245);
+}

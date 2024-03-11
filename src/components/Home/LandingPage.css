@@ -1,0 +1,19 @@
+.dark-mode-landing-page {
+    background: linear-gradient(to right, rgb(15 23 42), rgb(24 24 27), rgb(23 23 23));
+}
+
+.dark-mode-feature-card {
+    background: linear-gradient(to right, rgb(23 23 23), rgb(24 24 27), rgb(15 23 42));
+}
+
+.light-mode-landing-page {
+    background-color: white;
+}
+
+.light-mode-feature-card {
+    background-color: rgb(241 245 249);
+}
+
+.light-mode-bouncing-div {
+    background-color: rgb(254 242 242)
+}

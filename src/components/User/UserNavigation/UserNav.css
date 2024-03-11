@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap");
+
+.dark-user-nav {
+  background: linear-gradient(to right, rgb(30 41 59), rgb(38 38 38), rgb(39 39 42));
+}
+
+.light-user-nav {
+  background-color: white;
+}
+
+.user-navigation {
+  position: fixed;
+  top: 3.75rem;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  box-sizing: initial;
+  transition: width 0.7s;
+}
+
+.user-navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 5px;
+  padding-top: 40px;
+}
+
+.user-navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 268px;
+  border-radius: 20px;
+}
+
+.user-navigation ul li.active {
+  background-color: #11052c;
+  border: 0.1px solid rgb(93, 93, 93);
+}
+
+.user-navigation ul li b:nth-child(1) {
+  position: absolute;
+  top: -20px;
+  height: 20px;
+  width: 100%;
+  background: #11052c;
+  display: none;
+}
+
+.user-navigation ul li b:nth-child(1)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 98.25%;
+  height: 100%;
+  background: #ffe459;
+  border-bottom-right-radius: 20px;
+}
+
+.user-navigation ul li b:nth-child(2) {
+  position: absolute;
+  bottom: -20px;
+  height: 20px;
+  width: 100%;
+  background: #ffe459;
+  display: none;
+}
+
+.user-navigation ul li b:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 98.25%;
+  height: 100%;
+  background: #ffe459;
+  border-top-right-radius: 20px;
+}
+
+.user-navigation ul li.active b:nth-child(1),
+.user-navigation ul li b:nth-child(2) {
+  display: block;
+}
+
+.user-navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: #3d087b;
+}
+
+.user-navigation ul li.active a {
+  color: #ffe459;
+}
+
+.user-navigation ul li a .icons {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.user-navigation ul li a .icons ion-icon {
+  font-size: 1.5em;
+  padding-top: 13.5px;
+}
+
+.user-navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding-left: 10px;
+  height: 50px;
+  line-height: 22px;
+  white-space: normal;
+  padding-top: 15px;
+}

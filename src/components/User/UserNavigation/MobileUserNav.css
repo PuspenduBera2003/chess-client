@@ -1,0 +1,257 @@
+  :root {
+      --fg: #17181c;
+      --primary: #255ff4;
+      --primary-hover: #255ff4;
+      --secondary: #8525f4;
+      --trans-dur: 0.3s;
+      --trans-timing: cubic-bezier(0.7, 0, 0.3, 1);
+  }
+
+  .card,
+  .nav {
+      padding: 0.25em;
+      transition: background-color var(--trans-dur), box-shadow var(--trans-dur);
+      width: 100%;
+  }
+
+  .dark-user-nav-mobile {
+      background: linear-gradient(to right, rgb(30 41 59), rgb(38 38 38), rgb(39 39 42));
+  }
+
+  .icon1 {
+      transform-origin: 12px 6px;
+  }
+
+  .icon3 {
+      transform-origin: 12px 1px;
+  }
+
+  .icon4-3 {
+      transform-origin: 12px 10px;
+  }
+
+  .icon5 {
+      transform-origin: 12px 20px;
+  }
+
+  .nav {
+      box-shadow: 0 -0.10em 0.5em rgba(0, 0, 0, 0.3);
+      transform-origin: 50% 133%;
+  }
+
+  .nav__items {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+  }
+
+  .nav__item-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+      width: 3em;
+      height: 3em;
+      text-decoration: none;
+  }
+
+  .nav__item-btn:focus,
+  .nav__item-btn:hover,
+  .nav__item-btn[aria-describedby=current] {
+      color: var(--primary-hover);
+  }
+
+  .nav__item-btn:focus {
+      outline: transparent;
+  }
+
+  .nav__item-icon {
+      display: block;
+      margin: 0 auto;
+      overflow: visible;
+      width: 1.5em;
+      height: 1.5em;
+      transition: transform var(--trans-dur) var(--trans-timing);
+  }
+
+  .nav__item-icon g,
+  .nav__item-icon path,
+  .nav__item-icon rect {
+      animation-duration: calc(var(--trans-dur) * 3);
+      animation-timing-function: var(--trans-timing);
+  }
+
+  .nav__item-text {
+      display: block;
+      font-size: 0.8em;
+      line-height: 1.25;
+      opacity: 0;
+      text-align: center;
+      transition: opacity var(--trans-dur) var(--trans-timing);
+  }
+
+  .nav__item-btn:focus .nav__item-icon,
+  .nav__item-btn:hover .nav__item-icon {
+      transform: translateY(-0.5em);
+  }
+
+  .nav__item-btn:focus .nav__item-text,
+  .nav__item-btn:hover .nav__item-text {
+      animation: fadeFlyIn calc(var(--trans-dur) * 1.5) var(--trans-timing);
+      opacity: 1;
+  }
+
+  .nav__item-btn:focus .icon1,
+  .nav__item-btn:hover .icon1 {
+      animation-name: icon1;
+  }
+
+  .nav__item-btn:focus .icon3,
+  .nav__item-btn:hover .icon3 {
+      animation-name: icon3;
+  }
+
+  .nav__item-btn:focus .icon5,
+  .nav__item-btn:hover .icon5 {
+      animation-name: icon5;
+  }
+
+  .nav__item-btn:focus .icon6,
+  .nav__item-btn:hover .icon6 {
+      animation-name: icon6;
+  }
+
+  .nav__item-btn:focus .icon7,
+  .nav__item-btn:hover .icon7 {
+      animation-name: icon7;
+  }
+
+  /* `:focus-visible` support */
+  @supports selector(:focus-visible) {
+      .nav__item-btn:focus {
+          color: currentColor;
+      }
+
+      .nav__item-btn:focus-visible,
+      .nav__item-btn:hover,
+      .nav__item-btn[aria-describedby=current] {
+          color: var(--primary-hover);
+      }
+
+      .nav__item-btn:focus .nav__item-icon {
+          transform: translateY(0);
+      }
+
+      .nav__item-btn:focus .nav__item-text {
+          opacity: 0;
+      }
+
+      .nav__item-btn:focus-visible .nav__item-icon,
+      .nav__item-btn:hover .nav__item-icon {
+          transform: translateY(-0.5em);
+      }
+
+      .nav__item-btn:focus-visible .nav__item-text,
+      .nav__item-btn:hover .nav__item-text {
+          opacity: 1;
+      }
+  }
+
+  /* Animations */
+  @keyframes fadeFlyIn {
+
+      from,
+      33.3% {
+          opacity: 0;
+          transform: translateY(0.5em);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  @keyframes fadeInFlyOut {
+      from {
+          opacity: 0;
+          transform: translateY(0) scale(0.9);
+      }
+
+      35% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(-250%) scale(1);
+      }
+  }
+
+  @keyframes icon1 {
+
+      from,
+      to {
+          transform: rotate(0);
+      }
+
+      33% {
+          transform: rotate(30deg);
+      }
+
+      67% {
+          transform: rotate(-30deg);
+      }
+  }
+
+  @keyframes icon3 {
+
+      from,
+      to {
+          transform: rotateX(0);
+      }
+
+      50% {
+          transform: rotateX(-135deg);
+      }
+  }
+
+  @keyframes icon5 {
+
+      from,
+      to {
+          transform: rotate(0);
+      }
+
+      50% {
+          transform: rotate(-30deg);
+      }
+  }
+
+  @keyframes icon6 {
+      from {
+          transform: rotateX(0);
+      }
+
+      50% {
+          transform: rotateX(30deg);
+      }
+
+      to {
+          transform: rotateX(0);
+      }
+  }
+
+  @keyframes icon7 {
+
+      from,
+      to {
+          transform: rotate(0);
+      }
+
+      50% {
+          transform: rotate(-90deg);
+      }
+  }

@@ -1,0 +1,277 @@
+.user-right-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: calc(100vh - 3.75rem);
+    position: relative;
+    left: 17.5rem;
+    width: calc(100vw - 17rem);
+}
+
+.dark-user-right-panel {
+    background: linear-gradient(to right, rgb(15 23 42), rgb(24 24 27), rgb(23 23 23));
+}
+
+.profile-card-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-card-container .profile-card {
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 10px 0px;
+    margin: 10px 0px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.profile-card::before {
+    content: 'USER';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(202, 228, 228);
+    padding: 10px;
+}
+
+.dark-profile-card.profile-card::before {
+    background-color: rgb(39 39 42);
+    color: rgb(206, 206, 206);
+}
+
+.profile-card-container .profile-card:hover::before {
+    background-color: black;
+    color: white;
+}
+
+.profile-card-container .profile-card:hover>.img-box {
+    background-color: rgba(247, 172, 215, 0.815);
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 30%;
+    transition: 0.5s;
+    transition-delay: 0.2s;
+}
+
+.dark-profile-card.profile-card:hover>.img-box {
+    background-color: rgba(74, 4, 78, 0.7);
+}
+
+.light-profile-card.profile-card:hover>.img-box {
+    background-color: rgba(247, 172, 215, 0.815);
+}
+
+.profile-card-container .profile-card:hover>.img-box img {
+    animation: animate 5s linear infinite;
+}
+
+.profile-card-container .light-profile-card.profile-card:hover {
+    background: linear-gradient(rgba(247, 172, 215, 0.815), rgba(255, 255, 255, 0.2));
+}
+
+.profile-card-container .dark-profile-card.profile-card:hover {
+    background: linear-gradient(rgba(112, 26, 117, 0.415), rgba(255, 255, 255, 0.2));
+}
+
+.profile-card-container .profile-card:hover>.content-box {
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+    background-color: transparent;
+}
+
+.profile-card-container .profile-card:hover .vp {
+    margin-left: 0px;
+}
+
+.profile-card-container .profile-card:hover .pm {
+    margin-right: 0px;
+}
+
+.profile-card-container .profile-card .img-box {
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-card-container .profile-card .img-box img {
+    max-height: 250px;
+}
+
+@keyframes animate {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    25% {
+        transform: translateY(-12px);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+
+    75% {
+        transform: translateY(10px);
+    }
+
+
+}
+
+.profile-card-container .profile-card .content-box {
+    border-top-left-radius: 30%;
+    border-top-right-radius: 30%;
+    transition: 0.5s;
+}
+
+.dark-content-box {
+    background-color: rgb(39 39 42);
+}
+
+.light-content-box {
+    background-color: rgb(202, 228, 228);
+}
+
+.profile-card-container .profile-card .content-box h2 {
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+}
+
+.profile-card-container .profile-card .content-box p {
+    text-align: center;
+    margin: 5px 0px;
+    padding: 0px 5px;
+    font-size: 15px;
+
+}
+
+.profile-card-container .profile-card .content-box .product-price {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 10px;
+    font-weight: 800;
+}
+
+.profile-card-container .profile-card .content-box .product-price span:nth-child(2) {
+    font-size: 20px;
+    text-decoration: line-through;
+}
+
+.profile-card-container .profile-card .content-box .color-size {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0px;
+}
+
+.profile-card-container .profile-card .content-box .color-size .color-list {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    width: 50%;
+    align-items: center;
+}
+
+.profile-card-container .profile-card .content-box .color-size .color-list span {
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+
+.profile-card-container .profile-card .content-box .color-size .color-list span:hover {
+
+    border: 2px solid rgb(202, 228, 228);
+
+}
+
+.profile-card-container .profile-card .content-box .color-size .color-list span:nth-child(2) {
+
+    background-color: black;
+
+}
+
+.profile-card-container .profile-card .content-box .color-size .color-list span:nth-child(3) {
+
+    background-color: grey;
+
+}
+
+.color-active {
+    border: 2px solid rgba(247, 172, 215, 0.815);
+}
+
+.profile-card-container .profile-card .content-box .color-size .size-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.profile-card-container .profile-card .content-box .color-size .size-list span {
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    margin: 0px 5px 0px 5px;
+    cursor: pointer;
+
+}
+
+.profile-card-container .profile-card .content-box .color-size .size-list span:hover {
+
+    background-color: rgba(247, 172, 215, 0.815);
+}
+
+.size-active {
+    border: 2px solid black;
+}
+
+.profile-card-container .profile-card .content-box .action-buttons {
+    margin: 20px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.profile-card-container .profile-card .content-box .action-buttons .btn {
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    background-color: rgb(29, 27, 27);
+    transition: 0.5s;
+}
+
+.vp {
+    margin-left: -300px;
+    transition: 0.5s;
+}
+
+.pm {
+    margin-right: -300px;
+    transition: 0.5s;
+}
+
+@media only screen and (max-width: 768px) {
+    .user-right-panel {
+        position: static;
+        width: 100%;
+    }
+    .profile-card-container {
+        cursor: default;
+    }
+}

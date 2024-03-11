@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+.welcome-text {
+    font-family: "Protest Revolution", sans-serif;
+}
+
+.tagline {
+    color: rgb(38, 15, 15);
+    font-family: "Fredoka", sans-serif;
+    background-color: rgb(224 231 255);
+    padding: 10px !important;
+    cursor: pointer;
+}
+
+.app-name {
+    font-family: "Protest Revolution", sans-serif;
+}
+
+@media only screen and (min-width: 1024px) {
+
+    .landing-page-top {
+        height: 90vh;
+    }
+
+    .typing-text-lg-device {
+        color: black !important;
+    }
+
+    .welcome-heading-lg-device {
+        color: rgb(30 58 138) !important;
+    }
+}
