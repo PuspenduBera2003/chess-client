@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
+
+.selected-image {
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.play-heading {
+    font-family: "Kalam", cursive;
+}
+
+.bg-zinc-700 {
+    background-color: rgb(63 63 70);
+}
+
+.selected-text {
+    transition: color 0.2s ease-in-out;
+}

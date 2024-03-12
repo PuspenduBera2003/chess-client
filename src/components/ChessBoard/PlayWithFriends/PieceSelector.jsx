@@ -1,82 +1,73 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import updatePieceSelection from '../../../redux/MultiPlayer/Actions/updatePieceSelection';
 import selection from './userSelection';
+import whiteKing from '../../../static/images/white_king.png'
+import blackKing from '../../../static/images/black_king.png'
+import randomKing from '../../../static/images/random.png'
+import './PieceSelector.css'
 
 const PieceSelector = () => {
 
-    const [open, setOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState("Random");
     const dispatch = useDispatch();
-
-    const onToggleDropdown = () => {
-        setOpen(!open);
-    }
 
     const onItemSelected = (item) => {
         setSelectedItem(item);
-        setOpen(false);
         const userSelection = selection(item);
         dispatch(updatePieceSelection(userSelection));
     }
 
+    const theme = useSelector(state => state.Theme.currentTheme);
+
+    const selectedItemDesign = (theme === "dark") ? 'bg-blue-800' : 'bg-blue-400'
+
     return (
-        <div>
-            <button 
-            onClick={onToggleDropdown}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
-            type="button">
-                {selectedItem || 'Select Piece'}
-                <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-            </svg>
-            </button>
-            <div 
-            className={`z-10 ${open ? 'visible' : 'hidden'} bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600`} 
-            style={{ position: 'absolute', margin: '0px', top: '15rem', left: '4.3rem' }}>
-                <ul className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHelperRadioButton">
-                    <li>
-                        <div className="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <div className="flex items-center h-5">
-                                <input id="helper-radio-4" 
-                                name="helper-radio" type="radio" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                onClick={() => onItemSelected('Random')} />
-                            </div>
-                            <div className="ms-2 text-sm">
-                                <label htmlFor="helper-radio-4" className="font-medium text-gray-900 dark:text-gray-300">
-                                    <div>Random</div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div className="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <div className="flex items-center h-5">
-                                <input id="helper-radio-5" name="helper-radio" type="radio" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                                onClick={() => onItemSelected('White')}/>
-                            </div>
-                            <div className="ms-2 text-sm">
-                                <label htmlFor="helper-radio-5" className="font-medium text-gray-900 dark:text-gray-300">
-                                    <div>White</div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div className="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <div className="flex items-center h-5">
-                                <input id="helper-radio-6" name="helper-radio" type="radio" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" 
-                                onClick={() => onItemSelected('Black')}/>
-                            </div>
-                            <div className="ms-2 text-sm">
-                                <label htmlFor="helper-radio-6" className="font-medium text-gray-900 dark:text-gray-300">
-                                    <div>Black</div>
-                                </label>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+        <div className='flex flex-col items-center justify-center gap-3 mb-2'>
+            <span className={`text-black text-xl text-bold me-2 px-2.5 py-0.5 rounded dark:text-gray-300 ms-2 text-center play-heading`}>
+                I want to play as
+            </span>
+            <div className="flex flex-wrap gap-2">
+                <div
+                    onClick={() => onItemSelected("White")}
+                    className={`border border-gray-950 p-1 rounded-lg ${selectedItem === "White" && selectedItemDesign}`}
+                >
+                    <figure className={`max-w-sm transition-all duration-300 cursor-pointer filter hover:grayscale-0 flex flex-col items-center justify-center gap-1 ${selectedItem === 'White' ? 'grayscale-0' : 'grayscale'}`}>
+                        <img className={`rounded-lg w-16 h-16 ${selectedItem === "White" && 'selected-image'}`} src={whiteKing} alt="White" />
+                        <figcaption className="text-sm px-2.5 rounded-lg font-semibold text-black dark:text-gray-300">
+                            <p className={`${selectedItem === 'White' && 'text-white selected-text'}`}>
+                                White
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+                <div
+                    onClick={() => onItemSelected("Black")}
+                    className={`border border-gray-950 p-1 rounded-lg ${selectedItem === "Black" && selectedItemDesign}`}
+                >
+                    <figure className={`max-w-sm transition-all duration-300 cursor-pointer filter hover:grayscale-0 flex flex-col items-center justify-center gap-1 ${selectedItem === 'Black' ? 'grayscale-0' : 'grayscale'}`}>
+                        <img className={`rounded-lg w-16 h-16 ${selectedItem === "Black" && "selected-image"}`} src={blackKing} alt="Black" />
+                        <figcaption className="text-sm px-2.5 rounded-lg font-semibold text-black dark:text-gray-300">
+                            <p className={`${selectedItem === 'Black' && 'text-white selected-text'}`}>
+                                Black
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+                <div
+                    onClick={() => onItemSelected("Random")}
+                    className={`border border-gray-950 p-1 rounded-lg ${selectedItem === "Random" && selectedItemDesign}`}>
+                    <figure className={`max-w-sm transition-all duration-300 cursor-pointer filter hover:grayscale-0 flex flex-col items-center justify-center gap-1 ${selectedItem === 'Random' ? 'grayscale-0' : 'grayscale'}`}>
+                        <img className={`rounded-lg w-16 h-16 ${selectedItem === "Random" && 'selected-image'}`} src={randomKing} alt="Random" />
+                        <figcaption className="text-sm px-0 rounded-lg caption font-semibold text-black dark:text-gray-300">
+                            <p className={`${selectedItem === 'Random' && 'text-white selected-text'}`}>
+                                Random
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
             </div>
+
         </div>
     )
 }
