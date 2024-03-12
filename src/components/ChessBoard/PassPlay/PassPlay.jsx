@@ -93,12 +93,13 @@ export default function PassPlay() {
 
   return (
     <div className={`chessboard-layout text-gray-900 bg-gradient-to-r ${gradientClasses} py-2`} ref={fullscreenDivRef} >
-      <div style={{
-        width: '400px',
-        display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
-      }}>
+      <div
+        style={{
+          width: '400px',
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}>
         <Board isFullscreen={isFullscreen} isRotationEnabled={isRotationEnabled} opacity={boardOpacity} />
         <div
           className="navbar"

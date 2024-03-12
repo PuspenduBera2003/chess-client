@@ -27,7 +27,7 @@ const TimerCard = () => {
         <div className="flex items-center justify-center gap-3 flex-col">
             <CountdownCircleTimer
                 isPlaying
-                duration={121}
+                duration={120}
                 colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                 colorsTime={[120, 60, 30, 0]}
                 onComplete={() => ({ shouldRepeat: false, delay: 1 })}

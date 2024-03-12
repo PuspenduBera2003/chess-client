@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useInterval } from 'react-use';
 import { useDispatch, useSelector } from 'react-redux'
 import handleGenerateLink from './createLink'
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
@@ -9,6 +10,7 @@ import { useSpring, animated } from 'react-spring';
 import updateRemainingTime from '../../../redux/MultiPlayer/Actions/updateRemainingTime';
 import socket from '../../../socket/socket';
 import updateGameLink from '../../../redux/MultiPlayer/Actions/updateGameLink';
+import PieceSelector from './PieceSelector';
 
 const SendLinkCard = () => {
 
@@ -18,11 +20,14 @@ const SendLinkCard = () => {
 
     const remainingTime = useSelector(state => state.MultiPlayer.remainingTime);
 
+    const selectedPiece = useSelector(state => state.MultiPlayer.pieceSelection);
+
     const socketId = useSelector(state => state.MultiPlayer.socketId);
 
     const [linkGenerated, setLinkGenerated] = useState(false);
     const [loading, setLoading] = useState(false);
     const [gameURL, setGameURL] = useState("");
+    const isTabActive = useRef(true);
 
     const animationProps = useSpring({
         from: { transform: 'translateY(50px)', opacity: 0 },
@@ -31,6 +36,11 @@ const SendLinkCard = () => {
     });
 
     const linkGenerator = async () => {
+        console.log(selectedPiece)
+        if(!selectedPiece) {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Please select your piece'}));
+            return;
+        }
         setLoading(true);
         dispatch(updateShowBotomToast({ show: true, type: 'loading', message: 'Generating URL' }));
         const response = await handleGenerateLink();
@@ -44,19 +54,26 @@ const SendLinkCard = () => {
         dispatch(updateGameLink(`/game/play-with-friends/${response.id}`));
         setLinkGenerated(true);
         setGameURL(gameLink);
-        socket.emit("game-created", { room: response.uniqueId, socketId });
+        socket.emit("game-created", { room: response.uniqueId, socketId, userSelection: selectedPiece });
     }
 
-    useEffect(() => {
-        if (linkGenerated && remainingTime !== 0) {
-            // Update the state every second
-            const intervalId = setInterval(() => {
-                dispatch(updateRemainingTime(remainingTime - 1));
-            }, 1000);
-            // Clear the interval when the component unmounts
-            return () => clearInterval(intervalId);
+    useInterval(() => {
+        if (remainingTime > 0) {
+            dispatch(updateRemainingTime(remainingTime - 1));
         }
-    }, [linkGenerated, dispatch, remainingTime]);
+    }, 1000);
+
+    const handleVisibilityChange = () => {
+        isTabActive.current = document.visibilityState === 'visible';
+    };
+
+    useEffect(() => {
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
 
     return (
         <animated.div
@@ -72,15 +89,18 @@ const SendLinkCard = () => {
                 <div className="flex mt-4 md:mt-6">
                     {
                         !linkGenerated ?
-                            <div className='flex'>
-                                <button
-                                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    onClick={linkGenerator}>
-                                    Create Link
-                                </button>
-                                <button className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                    Play With Friend
-                                </button>
+                            <div className='flex flex-col justify-center items-center gap-3'>
+                                <PieceSelector />
+                                <div className='flex'>
+                                    <button
+                                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        onClick={linkGenerator}>
+                                        Create Link
+                                    </button>
+                                    <button className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        Play With Friend
+                                    </button>
+                                </div>
                             </div>
                             :
                             <LinkSharer url={gameURL} />
