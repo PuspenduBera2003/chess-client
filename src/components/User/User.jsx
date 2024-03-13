@@ -4,6 +4,7 @@ import MobileUserNav from './UserNavigation/MobileUserNav'
 import UserHome from './UserHome/UserHome'
 import { useParams } from 'react-router-dom'
 import UserProfile from './UserProfile/UserProfile'
+import UserFriend from './UserFriend/UserFriend'
 
 const User = () => {
 
@@ -23,6 +24,9 @@ const User = () => {
             }
             {
                 tab === "profile" && <UserProfile />
+            }
+            {
+                tab === "messages" && <UserFriend />
             }
         </div>
     )

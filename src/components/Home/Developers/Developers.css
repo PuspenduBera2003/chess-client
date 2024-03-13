@@ -9,11 +9,11 @@
 }
 
 .light-dev-container {
-    background-color: rgb(243 232 255);
+    background-color: rgb(237 233 254);
 }
 
 .dev-box {
-    width: 250px;
+    width: 320px;
     height: 250px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.288);
     border-radius: 20px;

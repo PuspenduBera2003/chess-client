@@ -51,12 +51,10 @@ const SocketProvider = ({ children }) => {
         });
 
         socket.on("board", (data) => {
-            // dispatch(updateBoardPosition(data.position));
             dispatch(updateGame(new Chess(data.position)))
         });
 
         socket.on("board-orientation", (data) => {
-            console.log(data)
             dispatch(updateBoardOrientaion(data.orientation));
         })
     })
