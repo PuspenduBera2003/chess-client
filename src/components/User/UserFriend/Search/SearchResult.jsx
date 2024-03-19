@@ -3,6 +3,7 @@ import './SearchResult.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import updateShowBotomToast from '../../../../redux/Auth/Actions/showBottomToast';
+import { useSpring, animated } from 'react-spring';
 
 const SearchResult = (props) => {
 
@@ -16,6 +17,18 @@ const SearchResult = (props) => {
 
     const userDetails = useSelector(state => state.Auth.userDetails)
 
+    const theme = useSelector(state => state.Theme.currentTheme)
+
+    const cardStyle = (theme === 'dark')
+        ? 'bg-gray-800'
+        : 'bg-violet-50'
+
+    const animationProps = useSpring({
+        from: { transform: 'translateY(30px)', opacity: 0 },
+        to: { transform: 'translateY(0)', opacity: 1 },
+        config: { tension: 300, friction: 10 },
+    });
+
     const onAddingFriend = () => {
         dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'Friend Request Sent' }))
     }
@@ -25,14 +38,16 @@ const SearchResult = (props) => {
     }
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 friend-card px-2">
+        <animated.div
+            style={animationProps}
+            className={`${cardStyle} border border-gray-200 rounded-lg shadow dark:border-gray-600 friend-card px-2`}>
             <div className="flex flex-col sm:flex-row items-center justify-between gap-5 py-5">
                 {
                     !imageError &&
                     <img
                         className="w-24 h-24 mb-3 rounded-full shadow-lg"
                         src={searchResult.profile_photo}
-                        alt="User"
+                        alt={searchResult.username}
                         onError={() => setImageError(true)}
                     />
                 }
@@ -49,9 +64,9 @@ const SearchResult = (props) => {
                 </h5>
                 {
                     (userDetails.id === searchResult.id) ?
-                        <button 
-                        onClick={handleViewProfile}
-                        type="button" className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <button
+                            onClick={handleViewProfile}
+                            type="button" className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                             View Profile
                         </button>
                         :
@@ -67,7 +82,7 @@ const SearchResult = (props) => {
                         </div>
                 }
             </div>
-        </div>
+        </animated.div>
 
     );
 }

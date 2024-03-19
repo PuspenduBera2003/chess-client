@@ -29,13 +29,16 @@
 .user-navigation ul li {
   position: relative;
   list-style: none;
-  width: 268px;
+  width: 270px;
   border-radius: 20px;
 }
 
-.user-navigation ul li.active {
-  background-color: #11052c;
-  border: 0.1px solid rgb(93, 93, 93);
+.user-navigation ul li.dark-active {
+  background-color: rgb(63 63 70);
+}
+
+.user-navigation ul li.light-active {
+  background-color: rgb(231 229 228);
 }
 
 .user-navigation ul li b:nth-child(1) {
@@ -90,10 +93,6 @@
   display: flex;
   text-decoration: none;
   color: #3d087b;
-}
-
-.user-navigation ul li.active a {
-  color: #ffe459;
 }
 
 .user-navigation ul li a .icons {

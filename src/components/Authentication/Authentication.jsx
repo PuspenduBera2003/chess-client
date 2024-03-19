@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import './Authentication.css';
 import SignUp from './SignUp/SignUp';
 import SignIn from './SignIn/SignIn';
 import OtpPage from './SignUp/OtpPage';
 import SignUpToaster from './SignUp/SignUpToaster';
+import updateSignUpInitialized from '../../redux/Auth/Actions/signUpInitialized';
 
 const Authentication = () => {
     const [isSignIn, setIsSignIn] = useState(false);
+
+    const dispatch = useDispatch();
 
     const { path } = useParams();
     const navigate = useNavigate();
@@ -49,7 +52,18 @@ const Authentication = () => {
     useEffect(() => {
         if (isAuthenticated)
             navigate('/user/dashboard');
-    })
+    });
+
+    useEffect(() => {
+        return () => {
+            dispatch(updateSignUpInitialized({
+                start: false, response: {
+                    success: false,
+                    serverReplied: false
+                }, email: '', password: '', username: '', token: ''
+            }));
+        }
+    }, [])
 
     return (
         <div className={`auth ${authClasses}`}>

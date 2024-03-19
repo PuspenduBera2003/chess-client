@@ -270,6 +270,7 @@
     .user-right-panel {
         position: static;
         width: 100%;
+        margin-bottom: 2.5rem;
     }
     .profile-card-container {
         cursor: default;

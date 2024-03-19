@@ -9,7 +9,7 @@ const UserHome = () => {
 
     const userHomeClasses = (currentTheme === 'dark') ?
         'dark-user-right-panel' :
-        'light-mode-feature-card'
+        'bg-white'
 
     return (
         <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>

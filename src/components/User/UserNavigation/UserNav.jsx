@@ -28,7 +28,7 @@ const UserNav = (props) => {
         <div>
             <div className={`user-navigation bg-gradient-to-r h-full ${usernavClasses}`}>
                 <ul>
-                    <li className={`item-list ${(active==="home" || !active) && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list ${(active === "home" || !active) && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/home' className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="home-outline"></ion-icon>
@@ -37,7 +37,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="profile") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "profile") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/profile' className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="person-outline"></ion-icon>
@@ -46,7 +46,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="messages") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "messages") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/messages' className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="chatbubble-outline"></ion-icon>
@@ -55,8 +55,8 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="profile") && "settings"}`} onClick={handleUserNavClick}>
-                        <Link href='/user/dashboard/settings' className='dark:text-white'>
+                    <li className={`item-list  ${(active === "settings") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to='/user/dashboard/settings' className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="settings-outline"></ion-icon>
                             </span>
@@ -64,7 +64,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="password-reset") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "password-reset") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to="/user/dashboard/password-reset" className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="key-outline"></ion-icon>
@@ -73,7 +73,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="frequently-asked-questions") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "frequently-asked-questions") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to="/user/dashboard/frequently-asked-questions" className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="help-outline"></ion-icon>
@@ -82,7 +82,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="get-help") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "get-help") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to="/user/dashboard/get-help" className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="information-circle-outline"></ion-icon>
@@ -91,7 +91,7 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list ${(active==="sign-out") && "active"}`} onClick={handleUserNavClick}>
+                    <li className={`item-list  ${(active === "sign-out") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to="/user/dashboard/sign-out" className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="arrow-back-circle-outline"></ion-icon>

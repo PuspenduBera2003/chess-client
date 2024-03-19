@@ -1,3 +1,7 @@
 .friend-card {
     max-width: 700px;
 }
+
+.bg-violet-50 {
+    background-color: rgb(245 243 255);
+}

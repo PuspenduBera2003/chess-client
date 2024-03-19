@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SearchResult from './SearchResult'
 import socket from '../../../../socket/socket';
-import noDataFound from '../../../../static/images/no_data_found.png'
 
 const Search = () => {
 
@@ -51,7 +50,7 @@ const Search = () => {
                     </div>
                     <input
                         onChange={fetchResult}
-                        type="search" id="search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search user by username" required />
+                        type="search" id="search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search user by username" />
                     <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Search
                     </button>
@@ -62,7 +61,20 @@ const Search = () => {
                     searchResultLength.response && (
                         !searchResultLength.length ? (
                             <div className="flex flex-wrap items-center justify-center p-4 mb-4 text-sm text-red-800 border shadow-md dark:shadow-gray-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-300 dark:border-gray-300" role="alert">
-                                <img className='w-32' src={noDataFound} alt="No Result Found" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+
                                 <div>
                                     <span className="text-lg font-semibold">
                                         No Result Found!!!

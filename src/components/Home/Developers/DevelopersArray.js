@@ -2,7 +2,12 @@ export const devArray = [
     {
         name: "Puspendu Bera",
         role: "Frontend Developer",
-        skills: ['UI/UX', 'ReactJS', 'ReduxJS', 'Vanilla JS'],
+        skills: [
+            { skillName: 'UI/UX', website: 'https://grow.google/intl/en_ca/certificates/ux-design/' }, 
+            { skillName: 'ReactJS', website: 'https://react.dev' },
+            { skillName: 'ReduxJS', website: 'https://redux.js.org' },
+            { skillName: 'Vanilla JS', website: 'http://vanilla-js.com' }
+        ],
         profiles: {
             github: 'https://github.com/PuspenduBera2003',
             facebook: 'https://www.facebook.com/itspuspendu9584/',
@@ -13,7 +18,11 @@ export const devArray = [
     {
         name: "Santanu Kapas",
         role: "Backend Developer",
-        skills: ['NodeJS', 'PostgreSQL', 'WebSocket'],
+        skills: [
+            { skillName: 'NodeJS', website: 'https://nodejs.org/en' },
+            { skillName: 'PostgreSQL', website: 'https://www.postgresql.org/' },
+            { skillName: 'WebSocket', website: 'https://socket.io/' }
+        ],
         profiles: {
             github: '',
             facebook: '',

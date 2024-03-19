@@ -3,12 +3,24 @@ import './Developers.css';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import SouthEastIcon from '@mui/icons-material/SouthEast';
 import { useSelector } from 'react-redux'
+import { useSpring, animated } from 'react-spring';
+import { useInView } from 'react-intersection-observer';
 
 const DevIndividual = (props) => {
 
     const { developer } = props;
 
     const [leftContainerActive, setLeftContainerActive] = useState(false);
+
+    const [ref, inView] = useInView({
+        triggerOnce: true,
+    });
+
+    const cardSpring = useSpring({
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(-100px)',
+        config: { mass: 1, tension: 500, friction: 25 },
+    });
 
     const handleArrClick = () => {
         setLeftContainerActive(true);
@@ -30,8 +42,12 @@ const DevIndividual = (props) => {
 
     return (
         <div>
-            <div className={`main dev-center py-5 ${leftContainerActive ? 'left-container-active' : ''}`}>
-                <div className={`dev-box dev-center ${devContainer} ${currentTheme === "dark" ? 'dark-mode-shadow' : ''} border`}>
+            <animated.div
+                style={cardSpring}
+                ref={ref}
+                className={`main dev-center py-5 ${leftContainerActive ? 'left-container-active' : ''}`}>
+                <div
+                    className={`dev-box dev-center ${devContainer} ${currentTheme === "dark" ? 'dark-mode-shadow' : ''} border`}>
                     <img
                         src={developer.image}
                         alt={developer.name}
@@ -54,14 +70,16 @@ const DevIndividual = (props) => {
                         </p>
                         <div className="skills flex items-center justify-center flex-wrap">
                             {developer.skills.map((skill, index) => (
-                                <button
+                                <a href={skill.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     key={index}
                                     className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
                                 >
                                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        {skill}
+                                        {skill.skillName}
                                     </span>
-                                </button>
+                                </a>
                             ))}
                         </div>
                         <div className="icons dark:text-white">
@@ -81,7 +99,7 @@ const DevIndividual = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </animated.div>
         </div>
     )
 }

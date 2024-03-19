@@ -52,7 +52,7 @@
   font-weight: bold!important;
   font-family: monospace;
   letter-spacing: 7px!important;
-  cursor: pointer;
+  cursor: default;
   text-transform: uppercase;
 }
 
