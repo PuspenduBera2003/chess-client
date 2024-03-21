@@ -6,6 +6,7 @@ import Developers from './Developers/Developers';
 import Carousels from './Carousels/Carousels';
 import AuthenticationWarning from './AuthenticationWarning/AuthenticationWarning';
 import './LandingPage.css'
+import Authenticated from './AuthenticationWarning/Authenticated';
 
 const LandingPage = () => {
 
@@ -19,7 +20,7 @@ const LandingPage = () => {
     return (
         <div className={`bg-gradient-to-r ${gradientClasses}`}>
             <LandingPageTop />
-            {!isAuthenticated && <AuthenticationWarning />}
+            {isAuthenticated ? <Authenticated /> : <AuthenticationWarning />}
             <Carousels />
             <Features />
             <Developers />

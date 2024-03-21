@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ProfileSection from './ProfileSection';
+import { useSelector } from 'react-redux'
 
 const MobileMenu = (props) => {
 
     const { theme } = props;
 
     const [isMenuOpen, setMenuOpen] = useState(false);
+
+    const isAuthenticated = useSelector(state => state.Auth.isAuthenticated);
 
     const openMenu = () => {
         setMenuOpen(!isMenuOpen);
@@ -27,20 +31,28 @@ const MobileMenu = (props) => {
     return (
         <div
             className="navbar block md:hidden">
-            <div
-                className={`icon border border-gray-700 dark:border-white ${isMenuOpen ? 'change' : ''}`}
-                onClick={openMenu}>
+            <div className='flex gap-2'>
+                {
+                    isAuthenticated &&
+                    <div className='block md:hidden'>
+                        <ProfileSection />
+                    </div>
+                }
                 <div
-                    className={`bar ${hamburgerClasses}`}
-                    id="bar1">
-                </div>
-                <div
-                    className={`bar ${hamburgerClasses}`}
-                    id="bar2">
-                </div>
-                <div
-                    className={`bar ${hamburgerClasses}`}
-                    id="bar3">
+                    className={`icon border border-gray-700 dark:border-white ${isMenuOpen ? 'change' : ''}`}
+                    onClick={openMenu}>
+                    <div
+                        className={`bar ${hamburgerClasses}`}
+                        id="bar1">
+                    </div>
+                    <div
+                        className={`bar ${hamburgerClasses}`}
+                        id="bar2">
+                    </div>
+                    <div
+                        className={`bar ${hamburgerClasses}`}
+                        id="bar3">
+                    </div>
                 </div>
             </div>
             <ul className={`menu font-semibold dark:border-gray-600 dark:text-white ${isMenuOpen ? 'open' : ''} bg-gradient-to-r ${gradientClasses}`}>

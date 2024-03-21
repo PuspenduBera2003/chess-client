@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useSpring, animated } from 'react-spring';
 import Countdown from 'react-countdown';
-import handleSignUpSubmit from './handleSignUpSubmit';
+import handleSignUpSubmit from '../../../api/handleSignUpSubmit';
 import AuthenticationAlert from '../AuthenticationAlert';
 import updateIsAuthenticated from '../../../redux/Auth/Actions/IsAuthenticated';
-import generateOTP from './generateOtp';
+import generateOTP from '../../../api/generateOtp';
 import ResendOtpSuccess from './ResendOtpSuccess';
 import updateSignUpInitialized from '../../../redux/Auth/Actions/signUpInitialized';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';

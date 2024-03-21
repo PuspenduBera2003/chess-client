@@ -1,0 +1,41 @@
+.greet-card-home-morning {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.light-greet-card-home-morning {
+    background: linear-gradient(to right, rgb(254 215 170), rgb(253 230 138), rgb(253 224 71));
+    box-shadow: 0 0 100px rgba(250, 179, 37, 0.8);
+}
+
+.dark-greet-card-home-morning {
+    background: linear-gradient(to right, rgb(68 64 60), rgb(82 82 82), rgb(82 82 91));
+    box-shadow: 0 0 15px rgba(250, 179, 37, 0.4);
+}
+
+.greet-card-home-night {
+    background: linear-gradient(to right, rgb(64 64 64), rgb(39 39 42), rgb(17 24 39));
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.greet-card-home-night.dark-greet-card-home {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border: 0.1px solid rgb(71 85 105);
+}
+
+.greet-card-home-night.light-greet-card-home {
+    box-shadow: 0 0 100px rgba(23, 23, 23, 1);
+}
+
+.greet-text-home {
+    text-transform: uppercase;
+}
+
+.text-purple-950 {
+    color: rgb(59 7 100);
+}

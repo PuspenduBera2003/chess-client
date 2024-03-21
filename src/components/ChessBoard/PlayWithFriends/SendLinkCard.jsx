@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useInterval } from 'react-use';
 import { useDispatch, useSelector } from 'react-redux'
-import handleGenerateLink from './createLink'
+import handleGenerateLink from '../../../api/handleGenerateLink';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 import UserCard from './UserCard';
 import URLCard from './URLCard';

@@ -18,7 +18,7 @@ const NavigationBar = () => {
     : 'bg-white';
 
   return (
-    <Navbar fluid rounded className={`text-gray-900 bg-gradient-to-r ${gradientClasses} fixed top-0 start-0 w-full z-50 shadow-md shadow-stone-900`}>
+    <Navbar fluid rounded className={`text-gray-900 bg-gradient-to-r ${gradientClasses} fixed top-0 start-0 w-full z-50 shadow-md shadow-stone-900 rounded-none`}>
       <NavbarLogo />
       <NavbarMiddle />
       <div className='hidden md:flex items-center justify-center gap-0.5 theme-changer'>

@@ -149,7 +149,6 @@
 .menu li:hover {
     transform: scale(1.1);
     transition: 0.2s ease;
-    color: rgb(35, 35, 35);
 }
 
 .open {

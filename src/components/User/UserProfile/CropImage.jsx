@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Slider from "@mui/material/Slider";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "./Crop";
-import handleUploadImage from "./handleUploadImage";
+import handleUploadImage from "../../../api/handleUploadImage";
 import updateShowBotomToast from "../../../redux/Auth/Actions/showBottomToast";
 import updateUserDetails from "../../../redux/Auth/Actions/userDetails";
 

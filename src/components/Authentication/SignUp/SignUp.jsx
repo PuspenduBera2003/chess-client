@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import './PasswordChecker.css'
 import AuthenticationAlert from '../AuthenticationAlert';
 import updateSignUpInitialized from '../../../redux/Auth/Actions/signUpInitialized';
-import generateOTP from './generateOtp';
+import generateOTP from '../../../api/generateOtp';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 
 const SignUp = () => {

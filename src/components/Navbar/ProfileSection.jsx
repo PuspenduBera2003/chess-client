@@ -1,6 +1,6 @@
 import React from 'react'
-import { Dropdown, Avatar, Navbar } from 'flowbite-react'
-import handleSignOut from './handleSignOut';
+import { Dropdown, Avatar } from 'flowbite-react'
+import handleSignOut from '../../api/handleSignOut';
 import { useSelector, useDispatch } from 'react-redux'
 import updateIsAuthenticated from '../../redux/Auth/Actions/IsAuthenticated';
 import { Link, useNavigate } from 'react-router-dom'
@@ -82,7 +82,6 @@ const ProfileSection = () => {
         <Dropdown.Divider />
         <Dropdown.Item onClick={handleSubmit}>Sign out</Dropdown.Item>
       </Dropdown>
-      <Navbar.Toggle />
     </div>
   )
 }

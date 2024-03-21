@@ -1,5 +1,5 @@
-import { setAuthenticated, setShowBottomToast, setSignUpInitialized, setUserDetails } from "../Actions/ActionType/AuthTypes";
-import { authChecker, getUserDetails } from "../AuthChecker";
+import { setAuthenticated, setShowBottomToast, setSignUpInitialized, setUserDetails, setUserFriend } from "../Actions/ActionType/AuthTypes";
+import { authChecker, getUserDetails } from "../../../api/authChecker";
 
 const auth = async () => {
     const responseAuthChecker = await authChecker();
@@ -30,7 +30,8 @@ const initialState = {
     showBottomToast: {
         show: false, type: '', message: ''
     },
-    userDetails: await user()
+    userDetails: await user(),
+    userFriend: {}
 }
 
 const AuthReducer = (state = initialState, action) => {
@@ -54,6 +55,11 @@ const AuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 showBottomToast: { show: action.payload.show, type: action.payload.type, message: action.payload.message }
+            }
+        case setUserFriend:
+            return {
+                ...state,
+                userFriend: action.payload
             }
         default:
             return state
