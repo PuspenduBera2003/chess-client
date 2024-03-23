@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import Search from './Search/Search'
-import './UserFriend.css'
+import UserFriendNav from './UserFriendNav'
+import Friends from './Friends/Friends';
+import Pending from './Pending/Pending';
 
 const UserFriend = () => {
 
-    const currentTheme = useSelector(state => state.Theme.currentTheme)
+    const currentTheme = useSelector(state => state.Theme.currentTheme);
+
+    const [activeTab, setActiveTab] = useState("friends");
 
     const userHomeClasses = (currentTheme === 'dark') ?
         'dark-user-right-panel' :
@@ -13,8 +16,14 @@ const UserFriend = () => {
 
     return (
         <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
-            <div className='user-friend py-3 w-full'>
-                <Search />
+            <UserFriendNav setActiveTab={setActiveTab} activeTab={activeTab} />
+            <div className='w-full' style={{marginTop: 65}}>
+                {
+                    activeTab === "friends" && <Friends />
+                }
+                {
+                    activeTab === "pending" && <Pending />
+                }
             </div>
         </section>
     )

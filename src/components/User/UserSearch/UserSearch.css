@@ -26,6 +26,12 @@
     }
 }
 
+@media screen and (min-width: 700px) {
+    .search-bar {
+        width: 400px;
+    }
+}
+
 @media screen and (min-width: 900px) {
     .search-bar {
         width: 500px;

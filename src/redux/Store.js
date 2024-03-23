@@ -1,9 +1,9 @@
-import { createStore, combineReducers } from "redux"
-import PassPlayReducer from "./OfflinePlay/Reducers/PassPlayReducers"
-import AuthReducer from "./Auth/Reducers/AuthReducer"
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { thunk } from 'redux-thunk';
+import PassPlayReducer from "./OfflinePlay/Reducers/PassPlayReducers";
+import AuthReducer from "./Auth/Reducers/AuthReducer";
 import ThemeReducer from "./Theme/Reducer/ThemeReducer";
 import MultiPlayerReducer from "./MultiPlayer/Reducers/MultiPlayerReducer";
-
 
 const rootReducer = combineReducers({
   PassPlay: PassPlayReducer,
@@ -12,6 +12,5 @@ const rootReducer = combineReducers({
   MultiPlayer: MultiPlayerReducer
 });
 
-const store = createStore(rootReducer)
-
-export default store
+const store = createStore(rootReducer, applyMiddleware(thunk));
+export default store;

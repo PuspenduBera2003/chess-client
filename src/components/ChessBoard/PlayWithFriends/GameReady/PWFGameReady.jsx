@@ -48,11 +48,14 @@ const PWFGameReady = () => {
       dispatch(updateShowBotomToast({ show: true, type: 'failure', message: linkExpired.error }));
       return;
     }
-    socket.emit("game-created", { room: gameId, socketId  });
+    socket.emit("game-created", { room: gameId, socketId });
     socket.on("closed", () => {
       navigate('/game/play-with-friends');
     })
     dispatch(updateGameId(gameId));
+    return () => {
+      socket.off("closed");
+    }
   }, [dispatch, linkExpired.error, linkExpired.expired, socketId, navigate]);
 
   return (

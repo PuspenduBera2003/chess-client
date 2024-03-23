@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import Chess from 'chess.js';
 import updateGame from '../redux/MultiPlayer/Actions/updateGame';
 import updateBoardOrientaion from '../redux/MultiPlayer/Actions/updateBoardOrientation';
+import updateShowNotification from '../redux/Auth/Actions/showNotification';
+import updateUserFriend from '../redux/Auth/Actions/userFriend';
 
 const SocketProvider = ({ children }) => {
 
@@ -16,6 +18,10 @@ const SocketProvider = ({ children }) => {
 
     const userDetails = useSelector(state => state.Auth.userDetails);
 
+    const friends = useSelector(state => state.Auth.userFriend)
+
+    const notification = useSelector(state => state.Auth.notification)
+
     const gameLink = useSelector(state => state.MultiPlayer.gameLink);
 
     const navigate = useNavigate();
@@ -25,7 +31,7 @@ const SocketProvider = ({ children }) => {
     useEffect(() => {
 
         if (userDetails) {
-            socket.emit('logIn', { sessionID: userDetails.sessionID });
+            socket.emit('logIn', { sessionID: userDetails.sessionID, id: userDetails.id });
         }
 
         const handleAuthCheck = () => {
@@ -57,6 +63,36 @@ const SocketProvider = ({ children }) => {
         socket.on("board-orientation", (data) => {
             dispatch(updateBoardOrientaion(data.orientation));
         })
+
+        socket.on("new-friend-request", (data) => {
+            const updatedFriends = { ...friends, [data.sid]: 'p' };
+            dispatch(updateUserFriend(updatedFriends));
+            dispatch(updateShowNotification({ show: true, type: 'newFriendRequest', data: { sid: data.sid, username: data.susername, profile_photo: data.sprofile_photo } }))
+        })
+
+        socket.on("new-friend", (data) => {
+            delete friends[data.sid];
+            const updatedFriends = { ...friends, [data.sid]: 'f' };
+            dispatch(updateUserFriend(updatedFriends));
+            dispatch(updateShowNotification({ show: true, type: 'newFriend', data: { username: data.username, profile_photo: data.profile_photo } }))
+        })
+
+        socket.on("remove-request", (data) => {
+            delete friends[data.sid];
+            const updatedFriends = { ...friends };
+            dispatch(updateUserFriend(updatedFriends));
+            if (data.sid === notification.data.sid) {
+                dispatch(updateShowNotification({ show: false, type: '', data: {} }))
+            }
+        })
+
+        return () => {
+            socket.off("redirect");
+            socket.off("board");
+            socket.off("board-orientation");
+            socket.off("search-user-result");
+            socket.off("new-friend-request");
+        }
     })
     return children
 }

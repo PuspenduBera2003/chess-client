@@ -1,3 +1,23 @@
 .dark-mode-shadow {
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2) !important;
 }
+
+.bg-sky-100 {
+    background-color: rgb(224 242 254);
+}
+
+.bg-sky-50 {
+    background-color: rgb(240 249 255);
+}
+
+.bg-yellow-50 {
+    background-color: rgb(254 252 232);
+}
+
+.bg-cyan-50 {
+    background-color: rgb(236 254 255);
+}
+
+.border-blue-600 {
+    border-color: rgb(37 99 235);
+}

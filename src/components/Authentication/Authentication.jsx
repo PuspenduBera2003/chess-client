@@ -7,6 +7,7 @@ import SignIn from './SignIn/SignIn';
 import OtpPage from './SignUp/OtpPage';
 import SignUpToaster from './SignUp/SignUpToaster';
 import updateSignUpInitialized from '../../redux/Auth/Actions/signUpInitialized';
+import PasswordPolicy from './SignUp/PasswordPolicy';
 
 const Authentication = () => {
     const [isSignIn, setIsSignIn] = useState(false);
@@ -79,6 +80,7 @@ const Authentication = () => {
                                         <h1 className='text-3xl font-bold'>Welcome Back !</h1>
                                         <p>Enter your personal details to use all site features</p>
                                         <button className="toggle-button auth-button" id='login' onClick={handleLoginClick}>Sign In</button>
+                                        <PasswordPolicy />
                                     </div>
                                     <div className="toggle-panel toggle-right">
                                         <h1 className='text-3xl font-bold'>Welcome, Friend!</h1>

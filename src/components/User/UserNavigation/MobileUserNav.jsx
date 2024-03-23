@@ -12,7 +12,7 @@ const MobileUserNav = () => {
         'light-user-nav'
 
 	return (
-		<div className={`fixed bottom-0 w-full bg-gradient-to-r ${usernavClasses} z-50`}>
+		<div className={`fixed bottom-0 w-full bg-gradient-to-r ${usernavClasses} z-40`}>
 			<nav className="nav" data-nav>
 				<ul className="nav__items">
 					<li className="nav__item">

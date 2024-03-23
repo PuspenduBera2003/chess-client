@@ -46,6 +46,24 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
+                    <li className={`item-list  ${(active === "search") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to='/user/dashboard/search' className='dark:text-white'>
+                            <span className="icons">
+                                <ion-icon name="search-outline"></ion-icon>
+                            </span>
+                            <span className="title">Search User</span>
+                        </Link>
+                    </li>
+
+                    <li className={`item-list  ${(active === "friends") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to='/user/dashboard/friends' className='dark:text-white'>
+                            <span className="icons">
+                                <ion-icon name="people-outline"></ion-icon>
+                            </span>
+                            <span className="title">Friends</span>
+                        </Link>
+                    </li>
+
                     <li className={`item-list  ${(active === "messages") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/messages' className='dark:text-white'>
                             <span className="icons">
@@ -79,15 +97,6 @@ const UserNav = (props) => {
                                 <ion-icon name="help-outline"></ion-icon>
                             </span>
                             <span className="title">FAQs</span>
-                        </Link>
-                    </li>
-
-                    <li className={`item-list  ${(active === "get-help") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
-                        <Link to="/user/dashboard/get-help" className='dark:text-white'>
-                            <span className="icons">
-                                <ion-icon name="information-circle-outline"></ion-icon>
-                            </span>
-                            <span className="title">Help</span>
                         </Link>
                     </li>
 

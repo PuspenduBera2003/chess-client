@@ -15,6 +15,8 @@ import PWFGameReady from './components/ChessBoard/PlayWithFriends/GameReady/PWFG
 import { useEffect } from 'react'
 import checkFriends from './api/friendChecker'
 import updateUserFriend from './redux/Auth/Actions/userFriend'
+import updateShowBotomToast from './redux/Auth/Actions/showBottomToast'
+import NotificationShower from './components/Notification/NotificationShower'
 
 const App = () => {
 
@@ -26,14 +28,32 @@ const App = () => {
 
   const userDetails = useSelector(state => state.Auth.userDetails);
 
-  useEffect(()=>{
+  const notification = useSelector(state => state.Auth.notification);
+
+  useEffect(() => {
     const friends = async () => {
       const friendList = await checkFriends(userDetails.id);
-      if(friendList)
+      if (friendList)
         dispatch(updateUserFriend(friendList.friends));
     }
     userDetails && friends();
-  },[isAuthenticated, userDetails, dispatch])
+  }, [isAuthenticated, userDetails, dispatch])
+
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'This browser does not support notification!' }));
+    }
+    else if (Notification.permission === "granted") return
+    else if (Notification.permission === "default") {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'Notification Allowed' }));
+        } else {
+          dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Notification Denied' }))
+        }
+      });
+    }
+  }, [])
 
   return (
     <BrowserRouter>
@@ -78,6 +98,9 @@ const App = () => {
           </Routes>
           {
             showBottomToast.show && <BottomToast />
+          }
+          {
+            notification.show && <NotificationShower />
           }
         </div>
       </SocketProvider>

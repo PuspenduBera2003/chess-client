@@ -1,9 +1,9 @@
-import { setAuthenticated, setShowBottomToast, setSignUpInitialized, setUserDetails, setUserFriend } from "../Actions/ActionType/AuthTypes";
+import { setAuthenticated, setShowBottomToast, setShowNotification, setSignUpInitialized, setUserDetails, setUserFriend } from "../Actions/ActionType/AuthTypes";
 import { authChecker, getUserDetails } from "../../../api/authChecker";
 
 const auth = async () => {
     const responseAuthChecker = await authChecker();
-    if(responseAuthChecker.success){
+    if (responseAuthChecker.success) {
         localStorage.setItem('isAuthenticated', true);
         return true;
     } else {
@@ -14,7 +14,7 @@ const auth = async () => {
 
 const user = async () => {
     const userDetails = await getUserDetails();
-    if(!userDetails.success)
+    if (!userDetails.success)
         return null;
     return userDetails.user
 }
@@ -31,7 +31,10 @@ const initialState = {
         show: false, type: '', message: ''
     },
     userDetails: await user(),
-    userFriend: {}
+    userFriend: {},
+    notification: {
+        show: false, type: '', data: {}
+    }
 }
 
 const AuthReducer = (state = initialState, action) => {
@@ -41,11 +44,11 @@ const AuthReducer = (state = initialState, action) => {
                 ...state,
                 isAuthenticated: action.payload
             }
-            case setUserDetails:
-                return {
-                    ...state,
-                    userDetails: action.payload
-                }
+        case setUserDetails:
+            return {
+                ...state,
+                userDetails: action.payload
+            }
         case setSignUpInitialized:
             return {
                 ...state,
@@ -60,6 +63,11 @@ const AuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userFriend: action.payload
+            }
+        case setShowNotification:
+            return {
+                ...state,
+                notification: { show: action.payload.show, type: action.payload.type, data: action.payload.data }
             }
         default:
             return state
