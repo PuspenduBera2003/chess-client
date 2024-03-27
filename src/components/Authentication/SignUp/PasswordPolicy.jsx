@@ -67,7 +67,7 @@ const PasswordPolicy = () => {
                             Password Policy - ChessHub
                         </h3>
                         <p className="text-gray-900 text-center dark:text-white">
-                            Password Should be containing at least six characters including one uppercase letter, one lowercase letter, one numeric character, and one special character.
+                            Password should be containing at least six characters including one uppercase letter, one lowercase letter, one numeric character, and one special character.
                         </p>
                     </Box>
                 </Fade>

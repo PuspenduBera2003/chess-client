@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import FriendRequestNotification from './FriendRequestNotification';
 import NewFriendNotification from './NewFriendNotification';
 import NotificationSound from '../../static/audio/notification_sound.mp3'
+import NewGameRequest from './NewGameRequest';
 
 const NotificationShower = () => {
 
@@ -23,6 +24,9 @@ const NotificationShower = () => {
       }
       {
         notification.type === 'newFriend' && <NewFriendNotification />
+      }
+      {
+        notification.type === 'newMatchRequest' && <NewGameRequest />
       }
     </div>
   )

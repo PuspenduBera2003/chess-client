@@ -64,12 +64,12 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
-                    <li className={`item-list  ${(active === "messages") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
-                        <Link to='/user/dashboard/messages' className='dark:text-white'>
+                    <li className={`item-list  ${(active === "feedback") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to='/user/dashboard/feedback' className='dark:text-white'>
                             <span className="icons">
                                 <ion-icon name="chatbubble-outline"></ion-icon>
                             </span>
-                            <span className="title">Messages</span>
+                            <span className="title">Feedback</span>
                         </Link>
                     </li>
 

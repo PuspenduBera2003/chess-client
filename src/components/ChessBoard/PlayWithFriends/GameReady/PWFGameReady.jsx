@@ -7,6 +7,8 @@ import updateShowBotomToast from '../../../../redux/Auth/Actions/showBottomToast
 import socket from '../../../../socket/socket';
 import updateGameId from '../../../../redux/MultiPlayer/Actions/updateGameId';
 import Board from './Board';
+import updateGameLink from '../../../../redux/MultiPlayer/Actions/updateGameLink';
+import SimpleBackdrop from './Backdrop';
 
 const PWFGameReady = () => {
 
@@ -19,6 +21,8 @@ const PWFGameReady = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const sender = useSelector(state => state.MultiPlayer.requestSender);
 
   const [linkExpired, setLinkExpired] = useState({
     expired: false, error: ''
@@ -33,11 +37,17 @@ const PWFGameReady = () => {
     }
   }
 
+  const url = new URL(window.location.href);
+  const pathSegments = url.pathname.split('/');
+  const gameId = pathSegments[pathSegments.length - 1];
+
   useEffect(() => {
     const url = new URL(window.location.href);
     const pathSegments = url.pathname.split('/');
     const gameId = pathSegments[pathSegments.length - 1];
     const expiryValue = url.searchParams.get('expiry');
+    const path = window.location.pathname
+    dispatch(updateGameLink(path));
     if (Date.now() > decryptData(expiryValue)) {
       setLinkExpired({
         expired: true, error: "Link Expired!"
@@ -51,6 +61,7 @@ const PWFGameReady = () => {
     socket.emit("game-created", { room: gameId, socketId });
     socket.on("closed", () => {
       navigate('/game/play-with-friends');
+      dispatch(updateShowBotomToast({ show: true, type: 'failure', message: "Both Player Joined" }));
     })
     dispatch(updateGameId(gameId));
     return () => {
@@ -60,6 +71,10 @@ const PWFGameReady = () => {
 
   return (
     <div className={`chessboard-layout text-gray-900 bg-gradient-to-r ${gradientClasses} py-2`}>
+      {
+        sender &&
+        <SimpleBackdrop gameId={gameId} />
+      }
       <Board />
     </div>
   );

@@ -36,7 +36,6 @@ const SendLinkCard = () => {
     });
 
     const linkGenerator = async () => {
-        console.log(selectedPiece)
         if(!selectedPiece) {
             dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Please select your piece'}));
             return;

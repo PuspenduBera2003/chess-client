@@ -30,7 +30,7 @@ const Pending = () => {
 
     return (
         <div>
-            <div className='flex items-center justify-center gap-4 flex-wrap'>
+            <div className='flex items-center justify-center gap-4 flex-wrap mb-6'>
                 {
                     pending
                         ?

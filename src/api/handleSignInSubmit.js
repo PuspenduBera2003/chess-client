@@ -18,7 +18,7 @@ const handleSignInSubmit = async (credentials) => {
         const jsonFromAuth = responseFromCredentials.data;
         return jsonFromAuth
     } catch (error) {
-        return ({ success: false, error })
+        return ({ success: false, error: error.message })
     }
 }
 

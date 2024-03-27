@@ -23,11 +23,9 @@ const handleSignUpSubmit = async (credentials, otp) => {
             const responseFromCredentials = await axios.get(credentialsURL);
             console.log("Credentials request served successfully")
             const jsonFromAuth = responseFromCredentials.data;
-            console.log(jsonFromAuth);
-            console.log("object from sign up")
             return jsonFromAuth;
         } catch (error) {
-            return({ success: false, error});
+            return({ success: false, error: error.message });
         }
 }
 

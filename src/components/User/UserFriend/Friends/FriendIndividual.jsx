@@ -1,19 +1,28 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import Unfriend from '../../UserSearch/Search/Buttons/Unfriend'
 import ViewProfile from '../../UserSearch/Search/Buttons/ViewProfile'
 import { useSpring, animated } from 'react-spring';
+import PlayMatch from '../../UserSearch/Search/Buttons/PlayMatch';
+import updateOpponentDetails from '../../../../redux/MultiPlayer/Actions/updateOpponentDetails';
 
 const FriendIndividual = (props) => {
 
+    const dispatch = useDispatch();
+
     const { details } = props;
 
-    const [hidden, setHidden] = useState(false)
+    const [hidden, setHidden] = useState(false);
 
     const animationProps = useSpring({
         from: { transform: 'translateY(30px)', opacity: 0 },
         to: { transform: 'translateY(0)', opacity: 1 },
         config: { tension: 300, friction: 10 },
     })
+
+    const handlePlayMatch = () => {
+        dispatch(updateOpponentDetails(details));
+    }
 
     return (
         <animated.div
@@ -38,10 +47,9 @@ const FriendIndividual = (props) => {
                         <Unfriend rid={details.id} />
                     </div>
                     <ViewProfile />
-                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Play a Match
-                        <i className="fa-solid fa-chess w-3.5 h-3.5 ms-2"></i>
-                    </button>
+                    <div onClick={handlePlayMatch}>
+                        <PlayMatch oid={details.id} />
+                    </div>
                 </div>
             </div>
         </animated.div>

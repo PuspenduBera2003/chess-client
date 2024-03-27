@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 const MobileUserNav = () => {
 
 	const currentTheme = useSelector(state => state.Theme.currentTheme)
-    const usernavClasses = (currentTheme === 'dark') ?
-        'dark-user-nav-mobile' :
-        'light-user-nav'
+	const usernavClasses = (currentTheme === 'dark') ?
+		'dark-user-nav-mobile' :
+		'light-user-nav'
 
 	return (
 		<div className={`fixed bottom-0 w-full bg-gradient-to-r ${usernavClasses} z-40`}>
@@ -24,7 +24,7 @@ const MobileUserNav = () => {
 							</svg>
 							<span className="nav__item-text">Home</span>
 						</Link>
-					</li>	
+					</li>
 					<li className="nav__item">
 						<Link to='/user/dashboard/profile' className="nav__item-btn dark:text-white" data-nav-item="5">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
@@ -38,13 +38,13 @@ const MobileUserNav = () => {
 						</Link>
 					</li>
 					<li className="nav__item">
-						<Link to='/user/dashboard/messages' className="nav__item-btn dark:text-white" data-nav-item="3">
+						<Link to='/user/dashboard/feedback' className="nav__item-btn dark:text-white" data-nav-item="3">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
 								<g className="icon3" fill="currentColor">
 									<Message />
 								</g>
 							</svg>
-							<span className="nav__item-text">Message</span>
+							<span className="nav__item-text">Feedback</span>
 						</Link>
 					</li>
 					<li className="nav__item">

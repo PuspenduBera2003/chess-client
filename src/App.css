@@ -21,3 +21,28 @@
 .border-blue-600 {
     border-color: rgb(37 99 235);
 }
+
+.bg-zinc-900 {
+    background-color: rgb(24 24 27);
+    ;
+}
+
+.bg-zinc-700 {
+    background-color: rgb(63 63 70);
+}
+
+.bg-zinc-800 {
+    background-color: rgb(39 39 42);
+}
+
+.bg-red-50 {
+    background-color: rgb(254 242 242);
+}
+
+.bg-cyan-50 {
+    background-color: rgb(236 254 255);
+}
+
+.bg-slate-900 {
+    background-color: rgb(15 23 42);
+}

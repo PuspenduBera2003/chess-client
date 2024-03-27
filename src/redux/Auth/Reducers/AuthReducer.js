@@ -1,4 +1,4 @@
-import { setAuthenticated, setShowBottomToast, setShowNotification, setSignUpInitialized, setUserDetails, setUserFriend } from "../Actions/ActionType/AuthTypes";
+import { setAuthenticated, setShowBottomToast, setShowNotification, setSignUpInitialized, setUserDetails, setUserFriend, setUserRating } from "../Actions/ActionType/AuthTypes";
 import { authChecker, getUserDetails } from "../../../api/authChecker";
 
 const auth = async () => {
@@ -34,7 +34,8 @@ const initialState = {
     userFriend: {},
     notification: {
         show: false, type: '', data: {}
-    }
+    },
+    userRating: 5
 }
 
 const AuthReducer = (state = initialState, action) => {
@@ -68,6 +69,11 @@ const AuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 notification: { show: action.payload.show, type: action.payload.type, data: action.payload.data }
+            }
+        case setUserRating:
+            return {
+                ...state,
+                userRating: action.payload
             }
         default:
             return state

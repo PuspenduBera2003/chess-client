@@ -29,7 +29,7 @@ const Friends = () => {
     }, [])
 
     return (
-        <div className='mx-4 mb-3'>
+        <div className='mx-4 mb-6'>
             {
                 !friends ?
                 <div className='flex items-center justify-center gap-4 flex-wrap'>

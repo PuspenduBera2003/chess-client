@@ -17,6 +17,7 @@ import checkFriends from './api/friendChecker'
 import updateUserFriend from './redux/Auth/Actions/userFriend'
 import updateShowBotomToast from './redux/Auth/Actions/showBottomToast'
 import NotificationShower from './components/Notification/NotificationShower'
+import RandomPlayButton from './components/ChessBoard/RandomPlay/RandomPlayButton'
 
 const App = () => {
 
@@ -83,6 +84,10 @@ const App = () => {
             <Route
               path='/game/play-with-friends/:id'
               element={<PWFGameReady />}
+            />
+            <Route
+              path='/game/random-game'
+              element={<RandomPlayButton />}
             />
             <Route
               path="/user/dashboard" element={

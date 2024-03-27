@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import updateShowNotification from '../../redux/Auth/Actions/showNotification';
-import Accept from '../User/UserSearch/Search/Buttons/Accept';
-import Reject from '../User/UserSearch/Search/Buttons/Reject';
+import { useSelector } from 'react-redux'
+import AcceptGameRequest from '../User/UserSearch/Search/Buttons/AcceptGameRequest';
+import RejectGameRequest from '../User/UserSearch/Search/Buttons/RejectGameRequest';
 
-const FriendRequestNotification = () => {
-
-    const dispatch = useDispatch();
+const NewGameRequest = () => {
 
     const notification = useSelector(state => state.Auth.notification);
 
@@ -14,14 +11,10 @@ const FriendRequestNotification = () => {
 
     const frontEndHost = process.env.REACT_APP_HOST_CLIENT;
 
-    const handleDismiss = () => {
-        dispatch(updateShowNotification({ show: false, type: '', data: {} }))
-    }
-
     useEffect(() => {
-        const text = `Hey ${userDetails.username}! ${notification.data.username} send you Game request`;
+        const text = `Hey ${userDetails.username}! ${notification.data.username} send you friend request`;
         if (Notification.permission === "granted") {
-            const requestReceived = new Notification("ChessHub Game Request Received", { body: text });
+            const requestReceived = new Notification("ChessHub Friend Request Received", { body: text });
             requestReceived.onclick = function () {
                 window.open(frontEndHost, "_blank");
                 requestReceived.close();
@@ -42,9 +35,10 @@ const FriendRequestNotification = () => {
                             </svg>
                         </div>
                 }
+                <i className="fa-solid fa-chess ml-2" style={{ fontSize: 30 }}></i>
                 <div className='flex flex-col flex-wrap gap-1 justify-center'>
                     <div className="ms-3 font-bold text-md block text-gray-800 dark:text-gray-200">
-                        Friend Request
+                        Game Request
                     </div>
                     <div className="ms-3 text-sm font-normal block">
                         {notification.data.username}
@@ -52,18 +46,11 @@ const FriendRequestNotification = () => {
                 </div>
             </div>
             <div className='flex flex-row flex-wrap gap-2 mt-2'>
-                <Accept rid={notification.data.sid} />
-                <Reject rid={notification.data.sid} />
-                <button
-                    type="button"
-                    onClick={handleDismiss}
-                    className="text-blue-800 bg-transparent border border-blue-800 hover:bg-blue-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-900 dark:border-blue-600 dark:text-blue-200 dark:hover:text-white dark:focus:ring-blue-800"
-                    aria-label="Close">
-                    Dismiss
-                </button>
+                <AcceptGameRequest />
+                <RejectGameRequest />
             </div>
         </div>
     )
 }
 
-export default FriendRequestNotification
+export default NewGameRequest

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import UserProfile from './UserProfile/UserProfile'
 import UserSearch from './UserSearch/UserSearch'
 import UserFriend from './UserFriend/UserFriend'
+import UserFeedback from './UserFeedback/UserFeedback'
 
 const User = () => {
 
@@ -31,6 +32,9 @@ const User = () => {
             }
             {
                 tab === "friends" && <UserFriend />
+            }
+            {
+                tab === "feedback" && <UserFeedback />
             }
         </div>
     )

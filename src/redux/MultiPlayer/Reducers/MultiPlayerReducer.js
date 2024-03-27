@@ -1,4 +1,4 @@
-import { setBoardOrientation, setGame, setGameId, setGameLink, setPieceSelection, setRemainingTime } from "../Actions/ActionTypes/ActionTypes"
+import { setBoardOrientation, setGame, setGameId, setGameLink, setOpponentDetails, setPieceSelection, setRemainingTime, setRequestSender } from "../Actions/ActionTypes/ActionTypes"
 import Chess from "chess.js"
 
 const game = new Chess();
@@ -9,7 +9,9 @@ const initialState = {
     gameId: '',
     game: game,
     boardOrientation: 'white',
-    pieceSelection: ''
+    pieceSelection: '',
+    requestSender: false,
+    opponentDetails: null
 }
 
 const MultiPlayerReducer = (state = initialState, action) => {
@@ -43,6 +45,16 @@ const MultiPlayerReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pieceSelection: action.payload
+            }
+        case setRequestSender:
+            return {
+                ...state,
+                requestSender: action.payload
+            }
+        case setOpponentDetails:
+            return {
+                ...state,
+                opponentDetails: action.payload
             }
         default:
             return state

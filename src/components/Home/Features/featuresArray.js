@@ -29,7 +29,7 @@ const features = [
         name: "Play With Random Player",
         image: chessBoard4,
         description: "This is the option which enables to play you with a random player available in our server!",
-        url: "/",
+        url: "/game/random-game",
         button: "Random Match"
     },
 ];

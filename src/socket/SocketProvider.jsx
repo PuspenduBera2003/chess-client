@@ -54,6 +54,7 @@ const SocketProvider = ({ children }) => {
 
         socket.on("redirect", (data) => {
             navigate(gameLink);
+            console.log(data)
         });
 
         socket.on("board", (data) => {
@@ -84,6 +85,24 @@ const SocketProvider = ({ children }) => {
             if (data.sid === notification.data.sid) {
                 dispatch(updateShowNotification({ show: false, type: '', data: {} }))
             }
+        })
+
+        socket.on("new-match-request", (data) => {
+            dispatch(updateShowNotification({ show: true, type: 'newMatchRequest', data: { id: data.sid, username: data.susername, profile_photo: data.sprofile_photo, gameLink: data.gameLink, gameId: data.gameId } }))
+        })
+
+        socket.on("game-cancelled", (data) => {
+            if (data.gameId === notification.data.gameId) {
+                dispatch(updateShowNotification({ show: false, type: '', data: {} }))
+            }
+        })
+
+        socket.on("challenge-rejected", () => {
+            navigate('/game/play-with-friends');
+        })
+
+        socket.on("random-game-id", (data) => {
+            console.log(data);
         })
 
         return () => {
