@@ -57,26 +57,26 @@ const MobileMenu = (props) => {
             </div>
             <ul className={`menu font-semibold dark:border-gray-600 dark:text-white ${isMenuOpen ? 'open' : ''} bg-gradient-to-r ${gradientClasses}`}>
                 <li className={navBorderClasses}>
-                    <Link to='/'>
+                    <Link to='/' onClick={() => { setMenuOpen(false) }}>
                         Home
                     </Link>
                 </li>
-                <li className={navBorderClasses}>
+                <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
                     <Link to='/about'>
                         About
                     </Link>
                 </li>
-                <li className={navBorderClasses}>
+                <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
                     <Link to="/services">
                         Services
                     </Link>
                 </li>
-                <li className={navBorderClasses}>
+                <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
                     <Link to="/pricing">
                         Pricing
                     </Link>
                 </li>
-                <li className={navBorderClasses}>
+                <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
                     <Link to="/contact">
                         Contact
                     </Link>

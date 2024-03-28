@@ -36,7 +36,7 @@ const BouncingDiv = () => {
                     <i className="fa-solid fa-chess mr-2"></i>
                     Play With Friends
                 </Link>
-                <Link to='/' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium rounded-t-lg  dark:border-gray-600">
+                <Link to='/game/random-game' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium rounded-t-lg  dark:border-gray-600">
                     <i className="fa-solid fa-chess-bishop mr-2"></i>
                     Play With Random User
                 </Link>

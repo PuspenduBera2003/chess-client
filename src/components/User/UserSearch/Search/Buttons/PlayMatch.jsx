@@ -35,13 +35,30 @@ const PlayMatch = (props) => {
     }
 
     return (
-        <button
-            type="button"
-            onClick={handlePlayMatch}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Play a Match
-            <i className="fa-solid fa-chess w-3.5 h-3.5 ms-2"></i>
-        </button>
+        <>
+            {
+                !props.resend ?
+                    (
+                        <button
+                            type="button"
+                            onClick={handlePlayMatch}
+                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Play a Match
+                            <i className="fa-solid fa-chess w-3.5 h-3.5 ms-2"></i>
+                        </button>
+                    )
+                    :
+                    (
+                        <button
+                            onClick={handlePlayMatch}
+                            type="button"
+                            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Resend Request
+                            <i className="fa-solid fa-rotate-right w-3.5 h-3.5 ms-2"></i>
+                        </button>
+                    )
+            }
+        </>
     )
 }
 

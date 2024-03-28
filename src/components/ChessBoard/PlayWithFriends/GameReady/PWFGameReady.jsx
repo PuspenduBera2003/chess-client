@@ -10,9 +10,11 @@ import Board from './Board';
 import updateGameLink from '../../../../redux/MultiPlayer/Actions/updateGameLink';
 import SimpleBackdrop from './Backdrop';
 
-const PWFGameReady = () => {
+const PWFGameReady = (props) => {
 
   const currentTheme = useSelector(state => state.Theme.currentTheme);
+
+  const userDetails = useSelector(state => state.Auth.userDetails);
 
   const socketId = useSelector(state => state.MultiPlayer.socketId);
 
@@ -47,27 +49,30 @@ const PWFGameReady = () => {
     const gameId = pathSegments[pathSegments.length - 1];
     const expiryValue = url.searchParams.get('expiry');
     const path = window.location.pathname
-    dispatch(updateGameLink(path));
-    if (Date.now() > decryptData(expiryValue)) {
-      setLinkExpired({
-        expired: true, error: "Link Expired!"
-      })
+    if (!props.gameData) {
+      dispatch(updateGameLink(path));
+      if (Date.now() > decryptData(expiryValue)) {
+        setLinkExpired({
+          expired: true, error: "Link Expired!"
+        })
+      }
     }
     if (linkExpired.expired) {
       navigate('/game/play-with-friends');
       dispatch(updateShowBotomToast({ show: true, type: 'failure', message: linkExpired.error }));
       return;
     }
-    socket.emit("game-created", { room: gameId, socketId });
+    socket.emit("game-created", { room: gameId, socketId, userDetails });
     socket.on("closed", () => {
       navigate('/game/play-with-friends');
-      dispatch(updateShowBotomToast({ show: true, type: 'failure', message: "Both Player Joined" }));
+      dispatch(updateShowBotomToast({ show: true, type: 'failure', message: "Game Started" }));
+      return;
     })
     dispatch(updateGameId(gameId));
     return () => {
       socket.off("closed");
     }
-  }, [dispatch, linkExpired.error, linkExpired.expired, socketId, navigate]);
+  }, [dispatch, linkExpired.error, linkExpired.expired, socketId, navigate, props.gameData, userDetails]);
 
   return (
     <div className={`chessboard-layout text-gray-900 bg-gradient-to-r ${gradientClasses} py-2`}>

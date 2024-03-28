@@ -8,6 +8,7 @@ import socket from '../../../../socket/socket';
 import updateShowBotomToast from '../../../../redux/Auth/Actions/showBottomToast';
 import updateRequestSender from '../../../../redux/MultiPlayer/Actions/updateRequestSender';
 import PlayMatch from '../../../User/UserSearch/Search/Buttons/PlayMatch';
+import updateOpponentDetails from '../../../../redux/MultiPlayer/Actions/updateOpponentDetails';
 
 const renderTime = ({ remainingTime, username, profilePhoto }) => {
 
@@ -45,6 +46,12 @@ export default function SimpleBackdrop(props) {
 
   const [open, setOpen] = React.useState(true);
   const [timeOver, setTimeOver] = React.useState(false);
+  const [key, setKey] = React.useState(0);
+
+  const handlePlayAgainClick = () => {
+    setTimeOver(false);
+    setKey((prevKey) => prevKey + 1);
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -59,6 +66,8 @@ export default function SimpleBackdrop(props) {
   })
 
   const handleCancelRequest = () => {
+    dispatch(updateRequestSender(false));
+    dispatch(updateOpponentDetails(null));
     socket.emit("game-request-cancelled", { rid: opponentDetails.id, room: gameId });
     handleClose();
     navigate('/user/dashboard/friends');
@@ -77,6 +86,7 @@ export default function SimpleBackdrop(props) {
       >
         <div className='bg-white dark:bg-gray-800 rounded-lg p-5 flex flex-col gap-3 items-center justify-center'>
           <CountdownCircleTimer
+            key={key}
             isPlaying
             duration={120}
             colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
@@ -111,8 +121,8 @@ export default function SimpleBackdrop(props) {
                     <i className="fa-solid fa-arrow-left me-3"></i>
                     Back
                   </button>
-                  <div onClick={() => { setTimeOver(false) }}>
-                    <PlayMatch oid={opponentDetails.id} />
+                  <div onClick={handlePlayAgainClick}>
+                    <PlayMatch oid={opponentDetails.id} resend={1} />
                   </div>
                 </div>
               </div>

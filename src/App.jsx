@@ -15,9 +15,8 @@ import PWFGameReady from './components/ChessBoard/PlayWithFriends/GameReady/PWFG
 import { useEffect } from 'react'
 import checkFriends from './api/friendChecker'
 import updateUserFriend from './redux/Auth/Actions/userFriend'
-import updateShowBotomToast from './redux/Auth/Actions/showBottomToast'
 import NotificationShower from './components/Notification/NotificationShower'
-import RandomPlayButton from './components/ChessBoard/RandomPlay/RandomPlayButton'
+import RandomPlay from './components/ChessBoard/RandomPlay/RandomPlay'
 
 const App = () => {
 
@@ -39,22 +38,6 @@ const App = () => {
     }
     userDetails && friends();
   }, [isAuthenticated, userDetails, dispatch])
-
-  useEffect(() => {
-    if (!("Notification" in window)) {
-      dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'This browser does not support notification!' }));
-    }
-    else if (Notification.permission === "granted") return
-    else if (Notification.permission === "default") {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'Notification Allowed' }));
-        } else {
-          dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Notification Denied' }))
-        }
-      });
-    }
-  }, [])
 
   return (
     <BrowserRouter>
@@ -87,7 +70,11 @@ const App = () => {
             />
             <Route
               path='/game/random-game'
-              element={<RandomPlayButton />}
+              element={<RandomPlay />}
+            />
+            <Route
+              path='/game/random-game/:id'
+              element={<PWFGameReady gameData={1} />}
             />
             <Route
               path="/user/dashboard" element={

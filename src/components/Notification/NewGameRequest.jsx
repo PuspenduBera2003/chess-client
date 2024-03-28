@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import AcceptGameRequest from '../User/UserSearch/Search/Buttons/AcceptGameRequest';
 import RejectGameRequest from '../User/UserSearch/Search/Buttons/RejectGameRequest';
@@ -6,21 +6,6 @@ import RejectGameRequest from '../User/UserSearch/Search/Buttons/RejectGameReque
 const NewGameRequest = () => {
 
     const notification = useSelector(state => state.Auth.notification);
-
-    const userDetails = useSelector(state => state.Auth.userDetails);
-
-    const frontEndHost = process.env.REACT_APP_HOST_CLIENT;
-
-    useEffect(() => {
-        const text = `Hey ${userDetails.username}! ${notification.data.username} send you friend request`;
-        if (Notification.permission === "granted") {
-            const requestReceived = new Notification("ChessHub Friend Request Received", { body: text });
-            requestReceived.onclick = function () {
-                window.open(frontEndHost, "_blank");
-                requestReceived.close();
-            };
-        }
-    }, [])
 
     return (
         <div className="flex border border-gray-600 dark:border-gray-500 flex-wrap flex-col gap-1 items-center w-full max-w-xs p-4 text-gray-700 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 fixed bottom-2 right-2 z-40" role="alert">

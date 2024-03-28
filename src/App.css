@@ -46,3 +46,16 @@
 .bg-slate-900 {
     background-color: rgb(15 23 42);
 }
+
+.bg-indigo-50 {
+    background-color: rgb(238 242 255);
+}
+
+.h-50 {
+    height: 12.5rem;
+}
+
+.game {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

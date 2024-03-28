@@ -7,6 +7,8 @@ import updateGame from '../redux/MultiPlayer/Actions/updateGame';
 import updateBoardOrientaion from '../redux/MultiPlayer/Actions/updateBoardOrientation';
 import updateShowNotification from '../redux/Auth/Actions/showNotification';
 import updateUserFriend from '../redux/Auth/Actions/userFriend';
+import updateShowBotomToast from '../redux/Auth/Actions/showBottomToast';
+import updateOpponentDetails from '../redux/MultiPlayer/Actions/updateOpponentDetails';
 
 const SocketProvider = ({ children }) => {
 
@@ -53,9 +55,31 @@ const SocketProvider = ({ children }) => {
     useEffect(() => {
 
         socket.on("redirect", (data) => {
-            navigate(gameLink);
-            console.log(data)
+            if (userDetails && userDetails.id && data.opponentDetails && data.opponentDetails.id) {
+                if (userDetails.id !== data.opponentDetails.id) {
+                    sessionStorage.setItem('gameId', data.gameId);
+                    navigate(gameLink);
+                    dispatch(updateOpponentDetails(data.opponentDetails));
+                } else {
+                    return;
+                }
+            } else {
+                navigate(gameLink);
+            }
         });
+
+        socket.on("both-joined", (data) => {
+            if (userDetails && userDetails.id && data.opponentDetails && data.opponentDetails.id) {
+                if (userDetails.id === data.opponentDetails.id) {
+                    dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'You Cannot Play Game With Yourself' }));
+                    socket.emit("game-between-same-user", { gameId: data.gameId })
+                    navigate('/game/play-with-friends');
+                }
+            } else {
+                dispatch(updateOpponentDetails(data.opponentDetails));
+                sessionStorage.setItem('gameId', data.gameId);
+            }
+        })
 
         socket.on("board", (data) => {
             dispatch(updateGame(new Chess(data.position)))
@@ -98,11 +122,8 @@ const SocketProvider = ({ children }) => {
         })
 
         socket.on("challenge-rejected", () => {
-            navigate('/game/play-with-friends');
-        })
-
-        socket.on("random-game-id", (data) => {
-            console.log(data);
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Your friend rejected your request' }))
+            navigate('/user/dashboard/friends');
         })
 
         return () => {

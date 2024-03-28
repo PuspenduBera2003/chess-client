@@ -21,8 +21,6 @@ const Board = () => {
 
     const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
 
-    const currPlayer = (boardOrientation === 'white') ? 'w' : 'b';
-
     const oppositionPlayer = (boardOrientation === 'white') ? 'b' : 'w';
 
     const dispatch = useDispatch();
@@ -74,22 +72,18 @@ const Board = () => {
     function onSquareClick(square) {
         setRightClickedSquares({});
 
-        console.log(currPlayer);
-        console.log(oppositionPlayer);
-
         const clickedPiece = game.get(square);
-        console.log("Clicked Piece:", clickedPiece);
 
         // Check if it's the current player's turn and they clicked on the opponent's piece
         if (moveFrom && clickedPiece && clickedPiece.color === oppositionPlayer) {
-    
+
             const gameCopy = { ...game };
             const move = gameCopy.move({
                 from: moveFrom,
                 to: square,
                 promotion: "q",
             });
-    
+
             // Check if the move is valid
             if (move !== null) {
                 setMoveFrom("");
@@ -98,8 +92,7 @@ const Board = () => {
                 socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn() });
                 return;
             }
-        } else if(clickedPiece && clickedPiece.color === oppositionPlayer) {
-            console.log("opposition player");
+        } else if (clickedPiece && clickedPiece.color === oppositionPlayer) {
             return
         }
 
@@ -226,25 +219,25 @@ const Board = () => {
         "bR",
         "bQ",
         "bK",
-      ];
-    
-      const customPieces = useMemo(() => {
+    ];
+
+    const customPieces = useMemo(() => {
         const pieceComponents = {};
         pieces.forEach((piece) => {
-          const imagePath = require(`../../../../static/images/pieces/${piece}.png`);
-          pieceComponents[piece] = ({ squareWidth }) => (
-            <div
-              style={{
-                width: squareWidth,
-                height: squareWidth,
-                backgroundImage: `url(${imagePath})`,
-                backgroundSize: "100%",
-              }}
-            />
-          );
+            const imagePath = require(`../../../../static/images/pieces/${piece}.png`);
+            pieceComponents[piece] = ({ squareWidth }) => (
+                <div
+                    style={{
+                        width: squareWidth,
+                        height: squareWidth,
+                        backgroundImage: `url(${imagePath})`,
+                        backgroundSize: "100%",
+                    }}
+                />
+            );
         });
         return pieceComponents;
-      }, []);
+    }, []);
 
     return (
         <div>

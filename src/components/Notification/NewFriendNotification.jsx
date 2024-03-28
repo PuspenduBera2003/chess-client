@@ -8,10 +8,6 @@ const NewFriendNotification = () => {
 
     const notification = useSelector(state => state.Auth.notification);
 
-    const userDetails = useSelector(state => state.Auth.userDetails);
-
-    const frontEndHost = process.env.REACT_APP_HOST_CLIENT;
-
     const handleDismiss = () => {
         dispatch(updateShowNotification({ show: false, type: '', data: {} }))
     }
@@ -23,20 +19,9 @@ const NewFriendNotification = () => {
         return () => clearTimeout(timeoutId);
     });
 
-    useEffect(() => {
-        const text = `Hey ${userDetails.username}! ${notification.data.username} accepted your friend request`;
-        if (Notification.permission === "granted") {
-            const requestAccepted = new Notification("ChessHub Friend Request Accepted", { body: text });
-            requestAccepted.onclick = function () {
-                window.open(frontEndHost, "_blank");
-                requestAccepted.close();
-            };
-        }
-    }, [])
-
     return (
-        <div className="flex border border-gray-600 dark:border-gray-500 flex-wrap flex-row gap-1 items-center w-full max-w-sm p-4 text-gray-700 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 fixed bottom-2 right-2 z-40" role="alert">
-            <div className='flex flex-row flex-wrap gap-2 items-center justify-center'>
+        <div className="flex border border-gray-600 dark:border-gray-500 flex-row gap-1 items-center w-full max-w-sm p-4 text-gray-700 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 fixed bottom-2 right-2 z-40" role="alert">
+            <div className='flex flex-row gap-2 items-center justify-center'>
                 {
                     notification.data.profile_photo ?
                         <img src={notification.data.profile_photo} alt={notification.data.username} className='rounded-full w-12 h-12' />

@@ -24,6 +24,8 @@ const SendLinkCard = () => {
 
     const socketId = useSelector(state => state.MultiPlayer.socketId);
 
+    const userDetails = useSelector(state => state.Auth.userDetails);
+
     const [linkGenerated, setLinkGenerated] = useState(false);
     const [loading, setLoading] = useState(false);
     const [gameURL, setGameURL] = useState("");
@@ -36,8 +38,8 @@ const SendLinkCard = () => {
     });
 
     const linkGenerator = async () => {
-        if(!selectedPiece) {
-            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Please select your piece'}));
+        if (!selectedPiece) {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Please select your piece' }));
             return;
         }
         setLoading(true);
@@ -53,7 +55,7 @@ const SendLinkCard = () => {
         dispatch(updateGameLink(`/game/play-with-friends/${response.id}`));
         setLinkGenerated(true);
         setGameURL(gameLink);
-        socket.emit("game-created", { room: response.uniqueId, socketId, userSelection: selectedPiece });
+        socket.emit("game-created", { room: response.uniqueId, socketId, userSelection: selectedPiece, userDetails });
     }
 
     useInterval(() => {

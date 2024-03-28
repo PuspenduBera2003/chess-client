@@ -13,7 +13,7 @@ const renderTime = ({ remainingTime }) => {
     }
 
     return (
-        <div className="timer">
+        <div className="timer animate-spin">
             <img src={timerImg} alt="timer" className="w-20" />
         </div>
     );
