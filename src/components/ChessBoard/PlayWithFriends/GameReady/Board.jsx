@@ -4,6 +4,9 @@ import { Chessboard } from 'react-chessboard'
 import socket from '../../../../socket/socket';
 import updateGame from '../../../../redux/MultiPlayer/Actions/updateGame';
 import Chess from 'chess.js'
+import updateTurn from '../../../../redux/MultiPlayer/Actions/updateTurn';
+import updatePosition from '../../../../redux/MultiPlayer/Actions/updatePoisition';
+import responsiveBoard from '../../../../utils/responsiveBoard';
 
 const Board = () => {
     const [moveFrom, setMoveFrom] = useState("");
@@ -12,6 +15,8 @@ const Board = () => {
     const [rightClickedSquares, setRightClickedSquares] = useState({});
     const [moveSquares, setMoveSquares] = useState({});
     const [optionSquares, setOptionSquares] = useState({});
+    const [boardWidth, setBoardWidth] = useState(400);
+    const [clickedPiece, setClickedPiece] = useState(null);
 
     const currentTheme = useSelector(state => state.Theme.currentTheme);
 
@@ -21,9 +26,15 @@ const Board = () => {
 
     const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
 
-    const oppositionPlayer = (boardOrientation === 'white') ? 'b' : 'w';
+    const boardPosition = useSelector(state => state.MultiPlayer.position);
+
+    const result = useSelector(state => state.MultiPlayer.gameResult)
 
     const dispatch = useDispatch();
+
+    const oppositionPlayer = (boardOrientation === 'white') ? 'b' : 'w';
+
+    const username = boardOrientation;
 
     const customSquareStyles = (currentTheme === "dark")
         ? {
@@ -70,114 +81,134 @@ const Board = () => {
 
 
     function onSquareClick(square) {
+        if (game.fen() !== boardPosition || result.has(gameId)) {
+            return;
+        }
+
         setRightClickedSquares({});
 
-        const clickedPiece = game.get(square);
+        const currentClick = game.get(square);
 
         // Check if it's the current player's turn and they clicked on the opponent's piece
-        if (moveFrom && clickedPiece && clickedPiece.color === oppositionPlayer) {
-
-            const gameCopy = { ...game };
+        if (moveFrom && currentClick && currentClick.color === oppositionPlayer) {
+            setClickedPiece(currentClick)
+            const gameCopy = new Chess(game.fen());
             const move = gameCopy.move({
                 from: moveFrom,
                 to: square,
-                promotion: "q",
+                promotion: "q", // Assume promotion to queen for simplicity
             });
 
             // Check if the move is valid
             if (move !== null) {
-                setMoveFrom("");
-                setMoveTo(null);
-                setOptionSquares({});
-                socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn() });
+                setMoveTo(square);
+                if (move.flags.includes("p") && move.captured && (square[1] === "8" || square[1] === "1")) {
+                    setShowPromotionDialog(true);
+                } else {
+                    setMoveFrom("");
+                    setMoveTo(null);
+                    setOptionSquares({});
+                    dispatch(updatePosition(game.fen()));
+                    const newMove = gameCopy.history();
+                    socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick } });
+                    dispatch(updateGame(gameCopy))
+                }
                 return;
             }
-        } else if (clickedPiece && clickedPiece.color === oppositionPlayer) {
-            return
-        }
-
-        // from square
-        if (!moveFrom) {
-            const hasMoveOptions = getMoveOptions(square);
-            if (hasMoveOptions) setMoveFrom(square);
+        } else if (currentClick && currentClick.color === oppositionPlayer) {
             return;
-        }
+        } else {
+            setClickedPiece(null);
 
-        // to square
-        if (!moveTo) {
-            // check if valid move before showing dialog
-            const moves = game.moves({
-                moveFrom,
-                verbose: true,
-            });
-            const foundMove = moves.find(
-                (m) => m.from === moveFrom && m.to === square
-            );
-            // not a valid move
-            if (!foundMove) {
-                // check if clicked on new piece
-                const hasMoveOptions = getMoveOptions(square);
-                // if new piece, setMoveFrom, otherwise clear moveFrom
-                setMoveFrom(hasMoveOptions ? square : "");
-                return;
-            }
-
-            // valid move
-            setMoveTo(square);
-
-            // if promotion move
-            if (
-                (foundMove.color === "w" &&
-                    foundMove.piece === "p" &&
-                    square[1] === "8") ||
-                (foundMove.color === "b" &&
-                    foundMove.piece === "p" &&
-                    square[1] === "1")
-            ) {
-                setShowPromotionDialog(true);
-                return;
-            }
-
-            // is normal move
-            const gameCopy = { ...game };
-            const move = gameCopy.move({
-                from: moveFrom,
-                to: square,
-                promotion: "q",
-            });
-
-            // if invalid, setMoveFrom and getMoveOptions
-            if (move === null) {
+            // from square
+            if (!moveFrom) {
                 const hasMoveOptions = getMoveOptions(square);
                 if (hasMoveOptions) setMoveFrom(square);
                 return;
             }
 
-            setMoveFrom("");
-            setMoveTo(null);
-            setOptionSquares({});
-            socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn });
-            return;
+            // to square
+            if (!moveTo) {
+                // check if valid move before showing dialog
+                const moves = game.moves({ moveFrom, verbose: true });
+                const foundMove = moves.find((m) => m.from === moveFrom && m.to === square);
+
+                // not a valid move
+                if (!foundMove) {
+                    // check if clicked on a new piece
+                    const hasMoveOptions = getMoveOptions(square);
+                    // if new piece, setMoveFrom; otherwise, clear moveFrom
+                    setMoveFrom(hasMoveOptions ? square : "");
+                    return;
+                }
+
+                // valid move
+                setMoveTo(square);
+
+                // if promotion move
+                if ((foundMove.color === "w" && foundMove.piece === "p" && square[1] === "8") || (foundMove.color === "b" && foundMove.piece === "p" && square[1] === "1")) {
+                    const newMove = game.history();
+                    setShowPromotionDialog(true);
+                    socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn, move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
+                    return;
+                }
+
+                // is normal move
+                const gameCopy = { ...game };
+                const move = gameCopy.move({ from: moveFrom, to: square, promotion: "q" });
+
+                // if invalid, setMoveFrom and getMoveOptions
+                if (move === null) {
+                    const hasMoveOptions = getMoveOptions(square);
+                    if (hasMoveOptions) setMoveFrom(square);
+                    return;
+                }
+
+                setMoveFrom("");
+                setMoveTo(null);
+                setOptionSquares({});
+                const newMove = game.history();
+                socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn, move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
+                return;
+            }
         }
     }
 
+
     function onPromotionPieceSelect(piece) {
-        // if no piece passed then user has cancelled dialog, don't make move and reset
         if (piece) {
-            const gameCopy = { ...game };
-            gameCopy.move({
+            const gameCopy = new Chess(game.fen());
+            const move = gameCopy.move({
                 from: moveFrom,
                 to: moveTo,
                 promotion: piece[1].toLowerCase() ?? "q",
             });
-            dispatch(updateGame(gameCopy))
+
+            if (move !== null) {
+                // Send move details including the captured piece (if any)
+                const newMove = gameCopy.history();
+                socket.emit("move", {
+                    room: gameId,
+                    game: gameCopy,
+                    position: gameCopy.fen(),
+                    turn: gameCopy.turn(),
+                    move: {
+                        square: newMove[0],
+                        position: gameCopy.fen(),
+                        player: username,
+                        captured: move.captured ? clickedPiece : null,
+                    },
+                });
+                dispatch(updateGame(gameCopy)); // Update Redux state with the new game state after promotion
+            }
         }
 
+        // Reset states after the promotion move
         setMoveFrom("");
         setMoveTo(null);
         setShowPromotionDialog(false);
         setOptionSquares({});
-        return true;
+        return
     }
 
     function onSquareRightClick(square) {
@@ -196,6 +227,20 @@ const Board = () => {
         if (game.in_checkmate()) {
             console.log("checkmate!!!")
         }
+        socket.on("board-orientation", (data) => {
+            if (data.orientation === 'white') {
+                dispatch(updateTurn(true));
+            } else {
+                dispatch(updateTurn(false));
+            }
+        })
+        socket.on("board", (data) => {
+            if (boardOrientation !== data.move.player) {
+                dispatch(updateTurn(true))
+            } else {
+                dispatch(updateTurn(false))
+            }
+        })
     })
 
     useEffect(() => {
@@ -206,22 +251,33 @@ const Board = () => {
         };
     }, [dispatch]);
 
-    const pieces = [
-        "wP",
-        "wN",
-        "wB",
-        "wR",
-        "wQ",
-        "wK",
-        "bP",
-        "bN",
-        "bB",
-        "bR",
-        "bQ",
-        "bK",
-    ];
+    useEffect(() => {
+        const handleResize = () => {
+            const screenWidth = window.innerWidth;
+            const boardWidth = responsiveBoard(screenWidth);
+            setBoardWidth(boardWidth);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const customPieces = useMemo(() => {
+        const pieces = [
+            "wP",
+            "wN",
+            "wB",
+            "wR",
+            "wQ",
+            "wK",
+            "bP",
+            "bN",
+            "bB",
+            "bR",
+            "bQ",
+            "bK",
+        ];
         const pieceComponents = {};
         pieces.forEach((piece) => {
             const imagePath = require(`../../../../static/images/pieces/${piece}.png`);
@@ -262,7 +318,7 @@ const Board = () => {
                 customLightSquareStyle={customSquareStyles.customLightSquareStyle}
                 promotionToSquare={moveTo}
                 showPromotionDialog={showPromotionDialog}
-                boardWidth={400}
+                boardWidth={boardWidth}
                 boardOrientation={boardOrientation}
                 customPieces={customPieces}
             />

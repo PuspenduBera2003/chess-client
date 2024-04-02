@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chessboard } from "react-chessboard";
 import { useSelector, useDispatch } from 'react-redux'
 import gameSituation from '../../../redux/OfflinePlay/Actions/PassPlayGame';
@@ -14,6 +14,7 @@ import updateStartTime from '../../../redux/OfflinePlay/Actions/PassPlayStartTim
 import getTimeGap from '../../../utils/getTimeGap';
 import updateRotation from '../../../redux/OfflinePlay/Actions/PassPlayRotation';
 import updateOrientation from '../../../redux/OfflinePlay/Actions/PassPlayOrientation';
+import responsiveBoard from '../../../utils/responsiveBoard';
 
 const Board = (props) => {
 
@@ -44,6 +45,8 @@ const Board = (props) => {
     const orientation = useSelector(state => state.PassPlay.orientation)
 
     const currentTheme = useSelector(state => state.Theme.currentTheme);
+
+    const [boardWidth, setBoardWidth] = useState(400);
 
     const customSquareStyles = (currentTheme === "dark")
         ? {
@@ -183,6 +186,17 @@ const Board = (props) => {
         checkGameStatus();
     });
 
+    useEffect(() => {
+        const handleResize = () => {
+            const screenWidth = window.innerWidth;
+            const boardWidth = responsiveBoard(screenWidth);
+            setBoardWidth(boardWidth);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <>
@@ -211,7 +225,7 @@ const Board = (props) => {
                 customLightSquareStyle={customSquareStyles.customLightSquareStyle}
                 promotionToSquare={moveTo}
                 showPromotionDialog={showPromotionDialog}
-                boardWidth={400}
+                boardWidth={boardWidth}
                 boardOrientation={orientation}
             />
             {gameEnd && <ResultModal isFullscreen={isFullscreen} />}

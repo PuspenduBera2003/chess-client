@@ -15,10 +15,10 @@ const UserFeedback = () => {
         'bg-white'
 
     return (
-        <div className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
-            <div className='flex flex-col gap-4 items-center justify-center'>
+        <div className={`user-right-panel w-full border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
+            <div className='flex flex-col gap-4 w-full items-center justify-center'>
                 <UserFeedbackNav activeTab={activeTab} setActiveTab={setActiveTab} />
-                <div className='w-full' style={{ marginTop: 65 }}>
+                <div className='w-full flex items-center justify-center' style={{ marginTop: 65 }}>
                     {
                         activeTab === "myFeedback" &&
                         <PostFeedback />

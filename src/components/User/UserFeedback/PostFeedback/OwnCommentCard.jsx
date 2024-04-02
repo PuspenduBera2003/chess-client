@@ -19,7 +19,7 @@ const OwnCommentCard = (props) => {
         <>
             {showComment ?
                 (
-                    <div className={`w-full mb-2 max-w-sm bg-cyan-50 border border-gray-200 rounded-lg shadow ${theme === 'dark' ? 'dark-mode-feature-card' : 'bg-cyan-50'} dark:border-gray-700 flex-col flex-wrap`}>
+                    <div className={`w-full flex mb-2 max-w-sm bg-cyan-50 border border-gray-200 rounded-lg shadow ${theme === 'dark' ? 'dark-mode-feature-card' : 'bg-cyan-50'} dark:border-gray-700 flex-col flex-wrap`}>
                         <div className={`w-full flex border-b dark:border-gray-600 items-center justify-end bg-gray-200 dark:bg-gray-700 p-2 rounded-t-lg  ${theme === 'dark' ? 'dark-mode-landing-page' : 'bg-cyan-50'}`}>
                             <button
                                 type="button"

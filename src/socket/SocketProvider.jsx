@@ -9,6 +9,10 @@ import updateShowNotification from '../redux/Auth/Actions/showNotification';
 import updateUserFriend from '../redux/Auth/Actions/userFriend';
 import updateShowBotomToast from '../redux/Auth/Actions/showBottomToast';
 import updateOpponentDetails from '../redux/MultiPlayer/Actions/updateOpponentDetails';
+import updateGameHistory from '../redux/MultiPlayer/Actions/updateGameHistory';
+import updatePosition from '../redux/MultiPlayer/Actions/updatePoisition';
+import updateGameAnalyzer from '../redux/MultiPlayer/Actions/updateGameAnalyzer';
+import updateResult from '../redux/MultiPlayer/Actions/updateGameResult';
 
 const SocketProvider = ({ children }) => {
 
@@ -25,6 +29,8 @@ const SocketProvider = ({ children }) => {
     const notification = useSelector(state => state.Auth.notification)
 
     const gameLink = useSelector(state => state.MultiPlayer.gameLink);
+
+    const gameHistory = useSelector(state => state.MultiPlayer.gameHistory);
 
     const navigate = useNavigate();
 
@@ -74,6 +80,9 @@ const SocketProvider = ({ children }) => {
                     dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'You Cannot Play Game With Yourself' }));
                     socket.emit("game-between-same-user", { gameId: data.gameId })
                     navigate('/game/play-with-friends');
+                } else {
+                    dispatch(updateOpponentDetails(data.opponentDetails));
+                    sessionStorage.setItem('gameId', data.gameId);
                 }
             } else {
                 dispatch(updateOpponentDetails(data.opponentDetails));
@@ -82,8 +91,18 @@ const SocketProvider = ({ children }) => {
         })
 
         socket.on("board", (data) => {
-            dispatch(updateGame(new Chess(data.position)))
+            if (data && data.move && data.move.square && data.move.position) {
+                const updatedHistory = [...gameHistory, data.move];
+                dispatch(updateGameHistory(updatedHistory));
+                dispatch(updateGameAnalyzer(updatedHistory));
+            }
+            dispatch(updatePosition(data.position));
+            dispatch(updateGame(new Chess(data.position)));
         });
+
+        socket.on("draw-request-received", (data) => {
+            dispatch(updateShowNotification({ show: true, type: 'drawRequest', data: { sender: data.sender, room: data.room } }))
+        })
 
         socket.on("board-orientation", (data) => {
             dispatch(updateBoardOrientaion(data.orientation));
@@ -93,6 +112,14 @@ const SocketProvider = ({ children }) => {
             const updatedFriends = { ...friends, [data.sid]: 'p' };
             dispatch(updateUserFriend(updatedFriends));
             dispatch(updateShowNotification({ show: true, type: 'newFriendRequest', data: { sid: data.sid, username: data.susername, profile_photo: data.sprofile_photo } }))
+        })
+
+        socket.on("game-drawn", (data) => {
+            dispatch(updateResult({key: data.gameId, value: 'Drawn'}));
+        })
+
+        socket.on("draw-rejected", () => {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Opponent Rejected Your Draw Request' }));
         })
 
         socket.on("new-friend", (data) => {

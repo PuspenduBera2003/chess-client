@@ -35,33 +35,36 @@ const Comment = () => {
     }, [])
 
     return (
-        <div className='flex items-center justify-center gap-6 flex-wrap my-2'>
+        <div className='flex items-center justify-center gap-6 flex-wrap my-2 w-full'>
             {
                 feedbacks ? (
-                    <InfiniteScroll
-                        dataLength={feedbacks.length}
-                        next={fetchMoreFeedback}
-                        hasMore={feedbacks.length < totalResult}
-                        loader={
-                            <div className="flex flex-wrap gap-3 items-center justify-center mt-3">
-                                {fetchMoreSkeleton.map((skeleton) => (
-                                    <div className="w-full px-8" key={skeleton}>
-                                        <CommentSkeleton />
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                    >
-                        <div className="flex flex-col gap-3 items-center justify-center">
-                            {
-                                feedbacks.map((feedback, index) => (
-                                    <div className="w-full px-8" key={index}>
-                                        <CommentCard feedback={feedback} />
-                                    </div>
-                                ))
+                    <div className="w-full">
+                        <InfiniteScroll
+                            dataLength={feedbacks.length}
+                            next={fetchMoreFeedback}
+                            hasMore={feedbacks.length < totalResult}
+                            loader={
+                                <div className="flex flex-wrap gap-3 items-center justify-center mt-3">
+                                    {fetchMoreSkeleton.map((skeleton) => (
+                                        <div className="w-full px-8" key={skeleton}>
+                                            <CommentSkeleton />
+                                        </div>
+                                    ))}
+                                </div>
                             }
-                        </div>
-                    </InfiniteScroll>
+                        >
+                            <div className="flex flex-col gap-3 items-center justify-center w-full">
+                                {
+                                    feedbacks.map((feedback, index) => (
+                                        <div className="w-full px-8" key={index}>
+                                            <CommentCard feedback={feedback} />
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </InfiniteScroll>
+                    </div>
+
                 )
                     :
                     (

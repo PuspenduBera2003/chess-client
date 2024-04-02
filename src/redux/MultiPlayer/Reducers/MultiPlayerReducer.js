@@ -1,4 +1,4 @@
-import { setBoardOrientation, setGame, setGameId, setGameLink, setOpponentDetails, setPieceSelection, setRemainingTime, setRequestSender } from "../Actions/ActionTypes/ActionTypes"
+import { setBoardOrientation, setGame, setGameAnalyzer, setGameHistory, setGameId, setGameLink, setGameResult, setOpponentDetails, setPieceSelection, setPlayingGame, setPosition, setRemainingTime, setRequestSender, setTurn } from "../Actions/ActionTypes/ActionTypes"
 import Chess from "chess.js"
 
 const game = new Chess();
@@ -11,7 +11,13 @@ const initialState = {
     boardOrientation: 'white',
     pieceSelection: '',
     requestSender: false,
-    opponentDetails: null
+    opponentDetails: null,
+    turn: false,
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+    gameHistory: [],
+    gameAnalyzer: [],
+    playingGame: false,
+    gameResult: new Map()
 }
 
 const MultiPlayerReducer = (state = initialState, action) => {
@@ -56,6 +62,40 @@ const MultiPlayerReducer = (state = initialState, action) => {
                 ...state,
                 opponentDetails: action.payload
             }
+        case setTurn:
+            return {
+                ...state,
+                turn: action.payload
+            }
+        case setGameHistory:
+            return {
+                ...state,
+                gameHistory: action.payload
+            }
+        case setGameAnalyzer:
+            return {
+                ...state,
+                gameAnalyzer: action.payload
+            }
+        case setPosition:
+            return {
+                ...state,
+                position: action.payload
+            }
+        case setPlayingGame:
+            return {
+                ...state,
+                playingGame: action.payload
+            }
+        case setGameResult:
+            const { key, value } = action.payload;
+            const updatedGameResult = new Map(state.gameResult);
+            updatedGameResult.set(key, value);
+            return {
+                ...state,
+                gameResult: updatedGameResult
+            }
+
         default:
             return state
     }

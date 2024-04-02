@@ -12,7 +12,7 @@ import SocketProvider from './socket/SocketProvider'
 import GameOptions from './components/Game/GameOptions'
 import PlayWithFriends from './components/ChessBoard/PlayWithFriends/PlayWithFriends'
 import PWFGameReady from './components/ChessBoard/PlayWithFriends/GameReady/PWFGameReady'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import checkFriends from './api/friendChecker'
 import updateUserFriend from './redux/Auth/Actions/userFriend'
 import NotificationShower from './components/Notification/NotificationShower'
@@ -39,62 +39,62 @@ const App = () => {
     userDetails && friends();
   }, [isAuthenticated, userDetails, dispatch])
 
+  
+
   return (
     <BrowserRouter>
       <SocketProvider>
         <NavigationBar />
-        <div style={{ marginTop: '3.75rem' }}>
-          <Routes>
-            <Route
-              path='/'
-              element={<LandingPage />}
-            />
-            <Route
-              path="/auth/:path"
-              element={<Authentication />}
-            />
-            <Route
-              path='/game'
-              element={<GameOptions />} />
-            <Route
-              path='/game/passplay'
-              element={<PassPlay />}
-            />
-            <Route
-              path='/game/play-with-friends'
-              element={<PlayWithFriends />}
-            />
-            <Route
-              path='/game/play-with-friends/:id'
-              element={<PWFGameReady />}
-            />
-            <Route
-              path='/game/random-game'
-              element={<RandomPlay />}
-            />
-            <Route
-              path='/game/random-game/:id'
-              element={<PWFGameReady gameData={1} />}
-            />
-            <Route
-              path="/user/dashboard" element={
-                <ProtectedRoute>
-                  <User />
-                </ProtectedRoute>
-              } />
-            <Route path="/user/dashboard/:tab" element={
+        <Routes>
+          <Route
+            path='/'
+            element={<LandingPage />}
+          />
+          <Route
+            path="/auth/:path"
+            element={<Authentication />}
+          />
+          <Route
+            path='/game'
+            element={<GameOptions />} />
+          <Route
+            path='/game/passplay'
+            element={<PassPlay />}
+          />
+          <Route
+            path='/game/play-with-friends'
+            element={<PlayWithFriends />}
+          />
+          <Route
+            path='/game/play-with-friends/:id'
+            element={<PWFGameReady />}
+          />
+          <Route
+            path='/game/random-game'
+            element={<RandomPlay />}
+          />
+          <Route
+            path='/game/random-game/:id'
+            element={<PWFGameReady gameData={1} />}
+          />
+          <Route
+            path="/user/dashboard" element={
               <ProtectedRoute>
                 <User />
               </ProtectedRoute>
             } />
-          </Routes>
-          {
-            showBottomToast.show && <BottomToast />
-          }
-          {
-            notification.show && <NotificationShower />
-          }
-        </div>
+          <Route path="/user/dashboard/:tab" element={
+            <ProtectedRoute>
+              <User />
+            </ProtectedRoute>
+          } />
+        </Routes>
+        {
+          showBottomToast.show && <BottomToast />
+        }
+        {
+          notification.show && <NotificationShower />
+        }
       </SocketProvider>
     </BrowserRouter>
   )

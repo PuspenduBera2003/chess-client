@@ -1,6 +1,7 @@
 import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import timerImg from '../../../static/images/timer-icon.png'
+import timerDial from '../../../static/images/timer-dial.png'
 import sadEmoji from '../../../static/images/sad_emoji.webp'
 import { PulseLoader } from 'react-spinners'
 import { useSelector } from 'react-redux'
@@ -13,8 +14,11 @@ const renderTime = ({ remainingTime }) => {
     }
 
     return (
-        <div className="timer animate-spin">
+        <div className="timer relative">
             <img src={timerImg} alt="timer" className="w-20" />
+            <div className="absolute top-4 animate-spin" style={{ right: 15 }}>
+                <img src={timerDial} alt="timer dial" className="w-11" />
+            </div>
         </div>
     );
 };

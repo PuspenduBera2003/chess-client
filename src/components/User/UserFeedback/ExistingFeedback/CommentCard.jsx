@@ -30,7 +30,7 @@ const CommentCard = (props) => {
                     <CommentStar value={feedback.rating} />
                 </div>
             </div>
-            <div className={`text-justify border rounded-xl text-black dark:text-gray-300 border-gray-400 dark:border-gray-500 p-2 ${theme === 'dark' ? 'bg-zinc-800' : ''}`}>
+            <div className={`w-full text-justify border rounded-xl text-black dark:text-gray-300 border-gray-400 dark:border-gray-500 p-2 ${theme === 'dark' ? 'bg-zinc-800' : ''}`}>
                 {
                     (userDetails.username === feedback.username) &&
                     <span className="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">

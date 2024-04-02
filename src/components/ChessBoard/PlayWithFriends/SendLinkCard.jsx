@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useInterval } from 'react-use';
 import { useDispatch, useSelector } from 'react-redux'
 import handleGenerateLink from '../../../api/handleGenerateLink';
@@ -15,6 +16,8 @@ import PieceSelector from './PieceSelector';
 const SendLinkCard = () => {
 
     const client = process.env.REACT_APP_HOST_CLIENT;
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -47,7 +50,7 @@ const SendLinkCard = () => {
         const response = await handleGenerateLink();
         setLoading(false);
         if (!response.success) {
-            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error }));
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error.message }));
             return;
         }
         dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'URL generated successfully' }));
@@ -56,6 +59,15 @@ const SendLinkCard = () => {
         setLinkGenerated(true);
         setGameURL(gameLink);
         socket.emit("game-created", { room: response.uniqueId, socketId, userSelection: selectedPiece, userDetails });
+    }
+
+    const handlePlayWithFriend = () => {
+        if(!userDetails) {
+            dispatch(updateShowBotomToast({show: true, type: 'failure', message: 'You Are Not Authenticated'}));
+            navigate('/auth/signin');            
+        } else {
+            navigate('/user/dashboard/friends')
+        }
     }
 
     useInterval(() => {
@@ -98,7 +110,9 @@ const SendLinkCard = () => {
                                         onClick={linkGenerator}>
                                         Create Link
                                     </button>
-                                    <button className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    <button
+                                    onClick={handlePlayWithFriend}
+                                     className="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                         Play With Friend
                                     </button>
                                 </div>

@@ -4,10 +4,13 @@ import FriendRequestNotification from './FriendRequestNotification';
 import NewFriendNotification from './NewFriendNotification';
 import NotificationSound from '../../static/audio/notification_sound.mp3'
 import NewGameRequest from './NewGameRequest';
+import DrawRequest from './DrawRequest';
 
 const NotificationShower = () => {
 
   const notification = useSelector(state => state.Auth.notification);
+
+  const playingGame = useSelector(state => state.MultiPlayer.playingGame);
 
   const audioRef = useRef(new Audio(NotificationSound));
 
@@ -26,7 +29,10 @@ const NotificationShower = () => {
         notification.type === 'newFriend' && <NewFriendNotification />
       }
       {
-        notification.type === 'newMatchRequest' && <NewGameRequest />
+        (!playingGame && notification.type === 'newMatchRequest') && <NewGameRequest />
+      }
+      {
+        notification.type === 'drawRequest' && <DrawRequest />
       }
     </div>
   )
