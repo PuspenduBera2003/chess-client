@@ -7,6 +7,9 @@ import UserProfile from './UserProfile/UserProfile'
 import UserSearch from './UserSearch/UserSearch'
 import UserFriend from './UserFriend/UserFriend'
 import UserFeedback from './UserFeedback/UserFeedback'
+import UserGame from './UserGame/UserGame'
+import UserSettings from './UserSettings/UserSettings'
+import UserPWReset from './UserPWReset/UserPWReset'
 
 const User = () => {
 
@@ -35,6 +38,15 @@ const User = () => {
             }
             {
                 tab === "feedback" && <UserFeedback />
+            }
+            {
+                tab === "games" && <UserGame />
+            }
+            {
+                tab === "settings" && <UserSettings />
+            }
+            {
+                tab === "password-reset" && <UserPWReset />
             }
         </div>
     )

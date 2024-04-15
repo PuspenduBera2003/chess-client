@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
+import Chess from 'chess.js'
 import updateShowBotomToast from '../../../../redux/Auth/Actions/showBottomToast';
 import socket from '../../../../socket/socket';
 import updateGameId from '../../../../redux/MultiPlayer/Actions/updateGameId';
@@ -16,7 +17,18 @@ import MobileGameHistory from '../History/MobileGameHistory';
 import ControlsLayout from '../Controls/ControlsLayout';
 import updatePlayingGame from '../../../../redux/MultiPlayer/Actions/updatePlayingGame';
 import updateResult from '../../../../redux/MultiPlayer/Actions/updateGameResult';
-import SelfTimer from '../Timer/SelfTimer';
+import Result from '../Result/Result';
+import updateGameAnalyzer from '../../../../redux/MultiPlayer/Actions/updateGameAnalyzer';
+import updateGameHistory from '../../../../redux/MultiPlayer/Actions/updateGameHistory';
+import updateAtBeginning from '../../../../redux/MultiPlayer/Actions/updateAtBeginning';
+import clearPromoted from '../../../../redux/MultiPlayer/Actions/updateClearPromoted';
+import Controls from '../History/Controls';
+import updateResultModalOpen from '../../../../redux/MultiPlayer/Actions/updateModalOpen';
+import updateGame from '../../../../redux/MultiPlayer/Actions/updateGame';
+import updatePosition from '../../../../redux/MultiPlayer/Actions/updatePoisition';
+import ResultBoard from '../Result/ResultBoard';
+import MobileControls from '../History/MobileControls';
+import MobileControlsMenu from '../Controls/MobileControlsMenu';
 
 const PWFGameReady = (props) => {
 
@@ -25,6 +37,10 @@ const PWFGameReady = (props) => {
   const userDetails = useSelector(state => state.Auth.userDetails);
 
   const socketId = useSelector(state => state.MultiPlayer.socketId);
+
+  const playingGame = useSelector(state => state.MultiPlayer.playingGame);
+
+  const gameHistory = useSelector(state => state.MultiPlayer.gameHistory);
 
   const gradientClasses = currentTheme === 'dark' ? 'dark-mode-landing-page' : 'light-mode-landing-page';
 
@@ -88,22 +104,69 @@ const PWFGameReady = (props) => {
 
   useEffect(() => {
     const onBeforeUnload = (event) => {
-      event.preventDefault();
-      alert('Page is refreshing');
-      dispatch(updateResult({key: gameId, value: 'Loss'}));
-      event.returnValue = 'Are you sure you want to leave the page?';
+      if (playingGame) {
+        event.preventDefault();
+        alert('Page is refreshing');
+        dispatch(updateResult({ key: gameId, value: 'Loss' }));
+        event.returnValue = 'Are you sure you want to leave the page?';
+      }
     };
-  
+
     window.addEventListener('beforeunload', onBeforeUnload);
-  
+
     return () => {
       window.removeEventListener('beforeunload', onBeforeUnload);
     };
   });
-  
+
   useEffect(() => {
-    dispatch(updatePlayingGame(true))
+    dispatch(updatePlayingGame(true));
+    const updatedHistory = [];
+    dispatch(updateGameHistory(updatedHistory));
+    dispatch(updateGameAnalyzer(updatedHistory));
+    dispatch(updateAtBeginning(true));
+    dispatch(clearPromoted());
+    dispatch(updateResultModalOpen(false))
   }, [])
+
+  const game = useSelector(state => state.MultiPlayer.game);
+  const open = useSelector(state => state.MultiPlayer.resultModal)
+  const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
+  const oppositionPlayer = (boardOrientation === 'white') ? 'b' : 'w';
+
+  useEffect(() => {
+    if (game.in_checkmate()) {
+      if ((game.turn() === 'w' && oppositionPlayer === 'w') || (game.turn() === 'b' && oppositionPlayer === 'b')) {
+        dispatch(updateResult({ key: gameId, value: 'W' }));
+      } else {
+        dispatch(updateResult({ key: gameId, value: 'L' }));
+      }
+      dispatch(updatePlayingGame(false));
+    } else if (game.in_stalemate()) {
+      dispatch(updateResult({ key: gameId, value: 'SD' }));
+      dispatch(updatePlayingGame(false));
+    } else if (game.in_draw()) {
+      dispatch(updateResult({ key: gameId, value: 'D' }));
+      dispatch(updatePlayingGame(false));
+    }
+  }, [game, gameId, oppositionPlayer, dispatch]);
+
+  useEffect(() => {
+    // Cleanup function to reset chess instance when component unmounts
+    return () => {
+      const newGame = new Chess();
+      dispatch(updateGame(newGame));
+      dispatch(updatePosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'));
+    };
+  }, [dispatch]);
+
+  const result = useSelector(state => state.MultiPlayer.gameResult);
+
+  useEffect(() => {
+    if (result.has(gameId)) {
+      dispatch(updateResultModalOpen(true));
+    }
+  }, [result, gameId])
 
   return (
     <div className={`chessboard-layout text-gray-900 bg-gradient-to-r ${gradientClasses} p-2`} ref={fullscreenDivRef}>
@@ -111,20 +174,43 @@ const PWFGameReady = (props) => {
         sender &&
         <SimpleBackdrop gameId={gameId} />
       }
-      <div className='flex flex-row items-center justify-center w-full flex-wrap gap-5 lg:gap-16'>
-        <ControlsLayout data={{ fullscreenDivRef, isFullscreen, setIsFullscreen }} />
-        <div className='flex flex-col gap-3'>
+      <div className='flex flex-col md:flex-row items-center justify-center w-full flex-wrap gap-2 md:gap-6 lg:gap-16'>
+        <div className='hidden md:block'>
+          <ControlsLayout data={{ fullscreenDivRef, isFullscreen, setIsFullscreen }} />
+        </div>
+        <div className={`flex-col gap-3`}>
           <OpponentDetails />
-          <Board />
+          <div className={`${open ? 'hidden' : 'block'}`}>
+            <Board />
+          </div>
+          <div className={`${open ? 'block' : 'hidden'} relative`}>
+            <ResultBoard />
+            <Result />
+          </div>
           <SelfDetails />
         </div>
         <div
-          className='hidden md:block overflow-y-auto overflow-x-hidden p-2 rounded-lg' style={{ maxHeight: '80vh' }}>
+          className='hidden md:flex items-center justify-center overflow-y-auto overflow-x-hidden p-2 rounded-lg relative' style={{ height: '80vh' }}>
           <GameHistory />
+          <Controls />
         </div>
-        <div className='block md:hidden overflow-x-auto rounded-lg p-2' style={{ maxWidth: '90vw' }}>
-          <MobileGameHistory />
+        <div className='relative block md:hidden mt-3' style={{ right: '35vw' }}>
+          <MobileControlsMenu data={{ fullscreenDivRef, isFullscreen, setIsFullscreen }} />
         </div>
+        {
+          gameHistory.length &&
+          <div className='flex flex-col items-center justify-center gap-4 md:hidden overflow-x-auto rounded-lg p-2' style={{ maxWidth: '90vw' }}>
+            <MobileGameHistory />
+          </div>
+        }
+        {
+          gameHistory.length > 1 &&
+          <div className='flex md:hidden'>
+            <div style={{ flexGrow: 1, flexBasis: 0 }}>
+              <MobileControls />
+            </div>
+          </div>
+        }
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const currentFriend = async (id) => {
         const response = await axios.post(addFriendURL, { id });
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 

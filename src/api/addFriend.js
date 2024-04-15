@@ -10,7 +10,7 @@ const addFriend = async (sid, rid, sid_email, friendList) => {
         const response = await axios.post(addFriendURL, { sid, rid, sid_email, friendList });
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 

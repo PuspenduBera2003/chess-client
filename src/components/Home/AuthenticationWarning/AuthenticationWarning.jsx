@@ -17,37 +17,11 @@ const AuthenticationWarning = () => {
     });
 
     const handleSignInClick = () => {
-        api.start({
-            from: {
-                x: 0,
-            },
-            to: {
-                x: 1200,
-            },
-            config: {
-                duration: 800,
-            },
-            onRest: () => {
-                navigate('/auth/signin');
-            },
-        })
+        navigate('/auth/signin');
     }
 
     const handleSignUpClick = () => {
-        api.start({
-            from: {
-                x: 0,
-            },
-            to: {
-                x: -1200,
-            },
-            config: {
-                duration: 800,
-            },
-            onRest: () => {
-                navigate('/auth/signup');
-            },
-        })
+        navigate('/auth/signup');
     }
 
     return (

@@ -10,7 +10,7 @@ const removeFriend = async (sid, rid, friendList) => {
         const response = await axios.post(removeFriendURL, { sid, rid, friendList });
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 

@@ -1,9 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
-
-.welcome-text {
-    font-family: "Protest Revolution", sans-serif;
-}
 
 .tagline {
     color: rgb(38, 15, 15);
@@ -11,10 +6,6 @@
     background-color: rgb(224 231 255);
     padding: 10px !important;
     cursor: pointer;
-}
-
-.app-name {
-    font-family: "Protest Revolution", sans-serif;
 }
 
 @media only screen and (min-width: 1024px) {

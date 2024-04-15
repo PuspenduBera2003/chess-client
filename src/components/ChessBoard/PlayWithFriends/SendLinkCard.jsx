@@ -50,7 +50,7 @@ const SendLinkCard = () => {
         const response = await handleGenerateLink();
         setLoading(false);
         if (!response.success) {
-            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error.message }));
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error }));
             return;
         }
         dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'URL generated successfully' }));
@@ -91,7 +91,7 @@ const SendLinkCard = () => {
     return (
         <animated.div
             style={animationProps}
-            className="w-96 py-2 bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            className="w-96 py-2 m-2 px-1 bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div className="flex flex-col items-center pb-10">
                 {
                     !linkGenerated ?

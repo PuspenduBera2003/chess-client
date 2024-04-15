@@ -1,5 +1,6 @@
-import { setAuthenticated, setShowBottomToast, setShowNotification, setSignUpInitialized, setUserDetails, setUserFriend, setUserRating } from "../Actions/ActionType/AuthTypes";
+import { setAuthenticated, setConclusion, setHistoryAnalyzer, setHistoryBoard, setHistoryBoardOrientation, setHistoryGame, setMoveHistory, setOpponentDetails, setShowBottomToast, setShowNotification, setSignUpInitialized, setUserDetails, setUserFriend, setUserRating } from "../Actions/ActionType/AuthTypes";
 import { authChecker, getUserDetails } from "../../../api/authChecker";
+import Chess from "chess.js";
 
 const auth = async () => {
     const responseAuthChecker = await authChecker();
@@ -35,7 +36,14 @@ const initialState = {
     notification: {
         show: false, type: '', data: {}
     },
-    userRating: 5
+    userRating: 5,
+    showHistoryBoard: false,
+    moveHistory: null,
+    historyGame: new Chess(),
+    boardOrientation: 'white',
+    opponentDetails: null,
+    historyAnalyzer: null,
+    gameConclusion: ''
 }
 
 const AuthReducer = (state = initialState, action) => {
@@ -74,6 +82,41 @@ const AuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userRating: action.payload
+            }
+        case setHistoryBoard:
+            return {
+                ...state,
+                showHistoryBoard: action.payload
+            }
+        case setMoveHistory:
+            return {
+                ...state,
+                moveHistory: action.payload
+            }
+        case setHistoryGame:
+            return {
+                ...state,
+                historyGame: action.payload
+            }
+        case setHistoryBoardOrientation:
+            return {
+                ...state,
+                boardOrientation: action.payload
+            }
+        case setOpponentDetails:
+            return {
+                ...state,
+                opponentDetails: action.payload
+            }
+        case setHistoryAnalyzer:
+            return {
+                ...state,
+                historyAnalyzer: action.payload
+            }
+        case setConclusion:
+            return {
+                ...state,
+                gameConclusion: action.payload
             }
         default:
             return state

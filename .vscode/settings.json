@@ -1,0 +1,5 @@
+{
+    "java.dependency.syncWithFolderExplorer": false,
+    "java.project.explorer.showNonJavaResources": false,
+    "java.dependency.packagePresentation": "hierarchical"
+}

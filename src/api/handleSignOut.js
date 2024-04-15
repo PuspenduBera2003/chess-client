@@ -10,7 +10,7 @@ const handleSignOut = async () => {
       const response = await axios.post(signOutURL);
       return response.data;
     } catch (error) {
-      return ({success: false, error});
+      return ({success: false, error: error.message});
     }
 }
 

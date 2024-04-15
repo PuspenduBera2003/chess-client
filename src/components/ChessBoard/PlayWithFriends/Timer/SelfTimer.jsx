@@ -1,69 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-
-const minuteSeconds = 60;
-const hourSeconds = 3600;
-
-const timerProps = {
-    isPlaying: true,
-    size: 120,
-    strokeWidth: 6
-};
-
-const renderTime = (dimension, time) => {
-    return (
-        <div className="time-wrapper">
-            <div className="time">{time}</div>
-            <div>{dimension}</div>
-        </div>
-    );
-};
-
-const getTimeSeconds = (time) => (minuteSeconds - time) | 0;
-const getTimeMinutes = (time) => ((time % hourSeconds) / minuteSeconds) | 0;
+import { useDispatch, useSelector } from 'react-redux';
+import socket from "../../../../socket/socket";
+import updatePlayingGame from "../../../../redux/MultiPlayer/Actions/updatePlayingGame";
+import updateResult from "../../../../redux/MultiPlayer/Actions/updateGameResult";
+import updateShowBotomToast from "../../../../redux/Auth/Actions/showBottomToast";
 
 export default function SelfTimer() {
-    const stratTime = Date.now() / 1000; // use UNIX timestamp in seconds
-    const endTime = stratTime + 243248; // use UNIX timestamp in seconds
 
-    const remainingTime = endTime - stratTime;
+    const time = 1800;
+    const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
+    const theme = useSelector(state => state.Theme.currentTheme);
+    const game = useSelector(state => state.MultiPlayer.game);
+    const player = (boardOrientation === 'black') ? 'b' : 'w';
+    const gameId = useSelector(state => state.MultiPlayer.gameId);
+    const result = useSelector(state => state.MultiPlayer.gameResult);
+    const userDetails = useSelector(state => state.Auth.userDetails);
+    const [turn, setTurn] = useState(false);
+    const dispatch = useDispatch();
+
+    const renderTime = (remainingTime) => {
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+        return (
+            <div className="bg-gray-200 dark:bg-gray-800 p-1 rounded-md border dark:border-gray-600 text-sm">
+                {formattedMinutes} : {formattedSeconds}
+            </div>
+        )
+    }
+
+    useEffect(() => {
+        socket.on("board", (data) => {
+            setTurn(data.turn === player)
+        })
+    })
+
+    useEffect(() => {
+        const firstMoveChecker = (boardOrientation === 'black') ? 'b' : 'w';
+        if (game.turn() === firstMoveChecker) {
+            setTurn(true);
+        } else {
+            setTurn(false)
+        }
+    }, [boardOrientation])
+
+    const handleComplete = () => {
+        let user;
+        if (userDetails) {
+            user = userDetails.username;
+        } else {
+            user = boardOrientation;
+        }
+        socket.emit("time-out", {room: gameId, sender: user });
+        dispatch(updateResult({ key: gameId, value: 'T' }));
+        dispatch(updatePlayingGame(false));
+        dispatch(updateShowBotomToast({show: true, type: 'failure', message: 'Your Time Out'}))
+    }
 
     return (
-        <div className="flex flex-row items-center justify-center font-semibold" style={{color: '#218380'}}>
+        <div className="font-semibold text-gray-900 dark:text-gray-200">
             <CountdownCircleTimer
-                {...timerProps}
-                colors="#218380"
-                duration={hourSeconds}
-                initialRemainingTime={remainingTime % hourSeconds}
-                onComplete={(totalElapsedTime) => ({
-                    shouldRepeat: remainingTime - totalElapsedTime > minuteSeconds
-                })}
+                colors={theme === 'dark' ? '#e6e7e8' : '#1c1c1c'}
+                duration={time}
                 strokeWidth={0}
-                size={30}
+                size={55}
+                onComplete={handleComplete}
+                isPlaying={turn && !result.has(gameId)}
             >
-                {({ elapsedTime, color }) => (
-                    <span style={{ color }}>
-                        {renderTime(getTimeMinutes(hourSeconds - elapsedTime))}
-                    </span>
-                )}
-            </CountdownCircleTimer>
-            :
-            <CountdownCircleTimer
-                {...timerProps}
-                colors="#218380"
-                duration={minuteSeconds}
-                initialRemainingTime={remainingTime % minuteSeconds}
-                onComplete={(totalElapsedTime) => ({
-                    shouldRepeat: remainingTime - totalElapsedTime > 0
-                })}
-                strokeWidth={0}
-                size={30}
-            >
-                {({ elapsedTime, color }) => (
-                    <span style={{ color }}>
-                        {renderTime(getTimeSeconds(elapsedTime))}
-                    </span>
-                )}
+                {({ remainingTime }) => renderTime(remainingTime)}
             </CountdownCircleTimer>
         </div>
     );

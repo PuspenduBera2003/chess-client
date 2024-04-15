@@ -29,9 +29,6 @@ const PieceSelector = () => {
 
     return (
         <div className='flex flex-col items-center justify-center gap-3 mb-2'>
-            {/* <span className={`text-black text-xl text-bold me-2 px-2.5 py-0.5 rounded dark:text-gray-300 ms-2 text-center play-heading`}>
-                I want to play as
-            </span> */}
             <div className="flex flex-wrap gap-2">
                 <div
                     onClick={() => onItemSelected("White")}

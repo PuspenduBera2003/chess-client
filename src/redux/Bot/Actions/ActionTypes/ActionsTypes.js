@@ -1,0 +1,8 @@
+export const setBotHistory = 'setBotHistory'
+export const setBotAnalyzer = 'setBotAnalyzer'
+export const setGame = 'setGame'
+export const setTurn = 'setTurn'
+export const setPosition = 'setPosition'
+export const setBotResult = 'setBotResult'
+export const setResultOpen = 'setResultOpen'
+export const setBotLevel = 'setBotLevel'

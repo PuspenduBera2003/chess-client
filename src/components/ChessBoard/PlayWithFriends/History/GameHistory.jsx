@@ -9,10 +9,13 @@ import Bishop from '../../Pieces/Bishop';
 import Rook from '../../Pieces/Rook';
 import King from '../../Pieces/King';
 import Queen from '../../Pieces/Queen';
+import updateResultModalOpen from '../../../../redux/MultiPlayer/Actions/updateModalOpen';
 
 const GameHistory = () => {
 
     const gameHistory = useSelector(state => state.MultiPlayer.gameHistory);
+
+    const game = useSelector(state => state.MultiPlayer.game);
 
     const dispatch = useDispatch();
 
@@ -20,6 +23,7 @@ const GameHistory = () => {
         let newArray = gameHistory.slice(0, index + 1);
         dispatch(updateGameAnalyzer(newArray));
         dispatch(updateGame(new Chess(position)));
+        dispatch(updateResultModalOpen(false));
     }
 
     const renderPiece = (piece, c) => {
@@ -56,73 +60,96 @@ const GameHistory = () => {
 
     return (
         <>
-            {
-                (gameHistory.length > 0) ?
-                    (
-                        <div className="shadow-md rounded-lg">
-                            <table className="rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            Pieces
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Move
-                                        </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {gameHistory.map((item, index) => (
-                                        <tr
-                                            key={index}
-                                            onClick={() => handleViewHistory(item.position, index)}
-                                            className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {item.player}
-                                            </th>
-                                            <td className="px-6 py-4">
-                                                {
-                                                    (item.square.length > 2) ?
-                                                        (
-                                                            (item.square.slice(0, 1) >= 'a' && item.square.slice(0, 1) <= 'h') ?
-                                                                (
-                                                                    <div className='flex flex-row'>
-                                                                        {renderPiece('P', item.player)}
-                                                                        {item.square.slice(1)}
-                                                                    </div>
-                                                                )
-                                                                :
-                                                                (
-                                                                    <div className='flex flex-row'>
-                                                                        {renderPiece(item.square.slice(0, 1), item.player)}
-                                                                        {item.square.slice(1)}
-                                                                    </div>
-                                                                )
-                                                        ) :
-                                                        (
-                                                            <div className='flex flex-row'>
-                                                                {renderPiece('P', item.player)}
-                                                                {item.square}
-                                                            </div>
-                                                        )
-                                                }
-                                            </td>
-                                        </tr>
-                                    ))
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    ) :
-                    (
-                        <div className='uppercase border border-gray-400 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 p-2 text-center rounded-lg font-semibold text-sm text-gray-800 dark:text-gray-200' style={{ width: '170px' }}>
-                            No moves yet!
-                        </div>
-                    )
-            }
+            {gameHistory.length > 0 ? (
+                <div className="shadow-md rounded-lg grid grid-cols-2 overflow-y-auto overflow-x-hidden" style={{maxHeight: '65vh'}}>
+                    <div className="odd-column border-r dark:border-gray-700">
+                        {gameHistory.map((item, index) => {
+                            if (index % 2 === 0) {
+                                return (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleViewHistory(item.position, index)}
+                                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700 border-b cursor-pointer"
+                                    >
+                                        <div className="px-4 py-2 text-gray-900 dark:text-gray-50">
+                                            {item.square.length > 2 ? (
+                                                item.square.slice(0, 1) >= 'a' && item.square.slice(0, 1) <= 'h' ? (
+                                                    <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? 'bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                        {renderPiece('P', item.player)}
+                                                        <div className='text-gray-900 dark:text-gray-200'>
+                                                            {item.square.slice(1)}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                        {renderPiece(item.square.slice(0, 1), item.player)}
+                                                        <div className='text-gray-900 dark:text-gray-200'>
+                                                            {item.square.slice(1)}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            ) : (
+                                                <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                    {renderPiece('P', item.player)}
+                                                    <div className='text-gray-900 dark:text-gray-200'>
+                                                        {item.square}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
+                    </div>
+                    <div className="even-column">
+                        {gameHistory.map((item, index) => {
+                            if (index % 2 !== 0) {
+                                return (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleViewHistory(item.position, index)}
+                                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700 border-b cursor-pointer"
+                                    >
+                                        <div className="px-4 py-2">
+                                            {item.square.length > 2 ? (
+                                                item.square.slice(0, 1) >= 'a' && item.square.slice(0, 1) <= 'h' ? (
+                                                    <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                        {renderPiece('P', item.player)}
+                                                        <div className='text-gray-900 dark:text-gray-200'>
+                                                            {item.square.slice(1)}
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                        {renderPiece(item.square.slice(0, 1), item.player)}
+                                                        <div className='text-gray-900 dark:text-gray-200'>
+                                                            {item.square.slice(1)}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            ) : (
+                                                <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
+                                                    {renderPiece('P', item.player)}
+                                                    <div className='text-gray-900 dark:text-gray-200'>
+                                                        {item.square}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
+                    </div>
+                </div>
+            ) : (
+                <div className="uppercase border border-gray-400 dark:border-gray-700 bg-gray-200 dark:bg-gray-800 p-2 text-center rounded-lg font-semibold text-sm text-gray-800 dark:text-gray-200" style={{ width: '170px' }}>
+                    No moves yet!
+                </div>
+            )}
         </>
     )
 }

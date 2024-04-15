@@ -12,23 +12,23 @@ const features = [
         button: "Pass & Play"
     },
     {
-        name: "Play With Bot",
+        name: "Play Against Bot",
         image: chessBoard2,
         description: "This is the option which enables to play you with a trained computer bot, you can choose the level as well, there are three levels, beginner, intermedium, expert!",
-        url: "/",
-        button: "Play With Bot"
+        url: "/game/play-vs-computer",
+        button: "Play Against Bot"
     },
     {
-        name: "Play With Friends Online",
+        name: "Play Against Friends Online",
         image: chessBoard3,
-        description: "This is the option which enables to play you with your friend online. We will provide you a code. Using that code, both of you can join the game!",
+        description: "This is the option which enables to play you against your friend online. We will provide you a code. Using that code, both of you can join the game!",
         url: "/game/play-with-friends",
-        button: "Play With Friend"
+        button: "Play Against Friend"
     },
     {
-        name: "Play With Random Player",
+        name: "Play Against Random Player",
         image: chessBoard4,
-        description: "This is the option which enables to play you with a random player available in our server!",
+        description: "This is the option which enables to play you against a random player available in our server!",
         url: "/game/random-game",
         button: "Random Match"
     },

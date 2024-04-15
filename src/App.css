@@ -71,3 +71,82 @@
 .captured-pieces-container>div {
     position: absolute;
 }
+
+.bg-blur {
+    opacity: 0.95;
+}
+
+.bg-unblur {
+    opacity: 1;
+}
+
+.min-h-32 {
+    min-height: 8rem;
+}
+
+.min-w-32 {
+    min-width: 8rem;
+}
+
+.h-32 {
+    height: 8rem;
+}
+
+.bottom-8 {
+    bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+    .md\:h-48 {
+        height: 12rem
+            /* 192px */
+        ;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:w-96 {
+        width: 24rem
+            /* 384px */
+        ;
+    }
+}
+
+.bg-zinc-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(244 244 245 / var(--tw-bg-opacity));
+}
+
+.bg-zinc-900 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(24 24 27 / var(--tw-bg-opacity));
+}
+
+.bg-gray-950 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(3 7 18 / var(--tw-bg-opacity));
+}
+
+.max-w-20 {
+    max-width: 5rem/* 80px */;
+}
+
+.max-w-32 {
+    max-width: 8rem/* 128px */;
+}
+
+.w-36 {
+    width: 9rem/* 144px */;
+}
+
+.w-28 {
+    width: 7.5rem/* 112px */;
+}
+
+.w-34 {
+    width: 8.25rem
+}
+
+.max-w-96 {
+    max-width: 24rem/* 384px */;
+}

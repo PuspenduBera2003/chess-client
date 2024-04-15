@@ -10,7 +10,7 @@ const checkFeedbackStatus = async (offset) => {
         const response = await axios.post(fetchFeedbackURL);
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 

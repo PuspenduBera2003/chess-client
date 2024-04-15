@@ -9,7 +9,7 @@ const submitFeedback = async (rating, comment) => {
         const response = await axios.post(submitFeedbackURL, { rating, comment });
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 
@@ -19,7 +19,7 @@ const updateFeedback = async (rating, comment) => {
         const response = await axios.put(updateFeedbackURL, { rating, comment });
         return response.data;
     } catch (error) {
-        return ({ success: false, error });
+        return ({ success: false, error: error.message });
     }
 }
 

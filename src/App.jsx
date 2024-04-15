@@ -12,11 +12,12 @@ import SocketProvider from './socket/SocketProvider'
 import GameOptions from './components/Game/GameOptions'
 import PlayWithFriends from './components/ChessBoard/PlayWithFriends/PlayWithFriends'
 import PWFGameReady from './components/ChessBoard/PlayWithFriends/GameReady/PWFGameReady'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import checkFriends from './api/friendChecker'
 import updateUserFriend from './redux/Auth/Actions/userFriend'
 import NotificationShower from './components/Notification/NotificationShower'
 import RandomPlay from './components/ChessBoard/RandomPlay/RandomPlay'
+import SelectionUI from './components/ChessBoard/PlayVsComputer/SelectionUI'
 
 const App = () => {
 
@@ -64,6 +65,10 @@ const App = () => {
           <Route
             path='/game/play-with-friends'
             element={<PlayWithFriends />}
+          />
+          <Route
+            path='/game/play-vs-computer'
+            element={<SelectionUI />}
           />
           <Route
             path='/game/play-with-friends/:id'

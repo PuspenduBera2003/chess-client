@@ -2,10 +2,10 @@ import React from 'react'
 
 const UserFriendNav = (props) => {
 
-    const { setActiveTab, activeTab } = props;
+    const { setActiveTab, activeTab, top } = props;
 
     return (
-        <div className="inline-flex rounded-md shadow-md dark:shadow-white fixed z-10" style={{ top: 75 }} role="group">
+        <div className="inline-flex rounded-md shadow-md dark:shadow-white fixed z-10" style={{ top: top }} role="group">
             <button
                 type="button"
                 onClick={() => { setActiveTab("friends") }}

@@ -13,6 +13,9 @@ import updateGameHistory from '../redux/MultiPlayer/Actions/updateGameHistory';
 import updatePosition from '../redux/MultiPlayer/Actions/updatePoisition';
 import updateGameAnalyzer from '../redux/MultiPlayer/Actions/updateGameAnalyzer';
 import updateResult from '../redux/MultiPlayer/Actions/updateGameResult';
+import deletePromoted from '../redux/MultiPlayer/Actions/updateDeletePromoted';
+import addPromoted from '../redux/MultiPlayer/Actions/updateAddPromoted';
+import updatePlayingGame from '../redux/MultiPlayer/Actions/updatePlayingGame';
 
 const SocketProvider = ({ children }) => {
 
@@ -31,6 +34,10 @@ const SocketProvider = ({ children }) => {
     const gameLink = useSelector(state => state.MultiPlayer.gameLink);
 
     const gameHistory = useSelector(state => state.MultiPlayer.gameHistory);
+
+    const promoted = useSelector(state => state.MultiPlayer.promoted);
+
+    const playingGame = useSelector(state => state.MultiPlayer.playingGame);
 
     const navigate = useNavigate();
 
@@ -98,7 +105,35 @@ const SocketProvider = ({ children }) => {
             }
             dispatch(updatePosition(data.position));
             dispatch(updateGame(new Chess(data.position)));
+            if (data.move.promoted) {
+                if (promoted.has(data.move.promoted.from)) {
+                    dispatch(deletePromoted({ promotedPiece: data.move.promoted.from }));
+                }
+                dispatch(addPromoted({ promotedPiece: data.move.promoted.to }));
+            } else if (data.move.promotedCaptured) {
+                dispatch(deletePromoted({ promotedPiece: data.move.promotedCaptured }));
+            }
         });
+
+        socket.on("game-cancelled", (data) => {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: data.message}));
+            dispatch(updatePlayingGame(false));
+            setTimeout(() => {
+                navigate('/game/play-with-friends')
+            }, 3000);
+        })
+
+        socket.on("opponent-resigned", (data) => {
+            dispatch(updatePlayingGame(false));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message}));
+            dispatch(updateResult({ key: data.gameId, value: 'OR' }));
+        })
+
+        socket.on("opponent-time-out", (data) => {
+            dispatch(updatePlayingGame(false));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message}));
+            dispatch(updateResult({ key: data.gameId, value: 'OT' }));
+        })
 
         socket.on("draw-request-received", (data) => {
             dispatch(updateShowNotification({ show: true, type: 'drawRequest', data: { sender: data.sender, room: data.room } }))
@@ -115,7 +150,8 @@ const SocketProvider = ({ children }) => {
         })
 
         socket.on("game-drawn", (data) => {
-            dispatch(updateResult({key: data.gameId, value: 'Drawn'}));
+            dispatch(updateResult({ key: data.gameId, value: 'MA' }));
+            dispatch(updatePlayingGame(false));
         })
 
         socket.on("draw-rejected", () => {
@@ -149,7 +185,8 @@ const SocketProvider = ({ children }) => {
         })
 
         socket.on("challenge-rejected", () => {
-            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Your friend rejected your request' }))
+            dispatch(updatePlayingGame(false));
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Your Friend Rejected Your Request' }))
             navigate('/user/dashboard/friends');
         })
 

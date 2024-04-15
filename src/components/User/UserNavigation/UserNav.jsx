@@ -46,6 +46,15 @@ const UserNav = (props) => {
                         </Link>
                     </li>
 
+                    <li className={`item-list  ${(active === "games") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to='/user/dashboard/games' className='dark:text-white'>
+                            <span className="icons">
+                                <ion-icon name="game-controller-outline"></ion-icon>
+                            </span>
+                            <span className="title">Games</span>
+                        </Link>
+                    </li>
+
                     <li className={`item-list  ${(active === "search") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/search' className='dark:text-white'>
                             <span className="icons">
@@ -70,15 +79,6 @@ const UserNav = (props) => {
                                 <ion-icon name="chatbubble-outline"></ion-icon>
                             </span>
                             <span className="title">Feedback</span>
-                        </Link>
-                    </li>
-
-                    <li className={`item-list  ${(active === "settings") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
-                        <Link to='/user/dashboard/settings' className='dark:text-white'>
-                            <span className="icons">
-                                <ion-icon name="settings-outline"></ion-icon>
-                            </span>
-                            <span className="title">Settings</span>
                         </Link>
                     </li>
 

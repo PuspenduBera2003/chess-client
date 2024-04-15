@@ -68,7 +68,7 @@ const MobileUserNav = () => {
 						</Link>
 					</li>
 					<li className="nav__item">
-						<Link className="nav__item-btn dark:text-white" data-nav-item="2">
+						<Link to='/user/dashboard/settings' className="nav__item-btn dark:text-white" data-nav-item="2">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
 								<g className="icon6" fill="none" stroke="currentColor" strokeWidth="2">
 									<Settings />

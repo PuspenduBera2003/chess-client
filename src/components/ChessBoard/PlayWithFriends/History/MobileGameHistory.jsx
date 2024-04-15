@@ -9,10 +9,13 @@ import Bishop from '../../Pieces/Bishop';
 import Rook from '../../Pieces/Rook';
 import King from '../../Pieces/King';
 import Queen from '../../Pieces/Queen';
+import updateResultModalOpen from '../../../../redux/MultiPlayer/Actions/updateModalOpen';
 
 const MobileGameHistory = () => {
 
     const gameHistory = useSelector(state => state.MultiPlayer.gameHistory);
+
+    const game = useSelector(state => state.MultiPlayer.game)
 
     const dispatch = useDispatch();
 
@@ -20,6 +23,7 @@ const MobileGameHistory = () => {
         let newArray = gameHistory.slice(0, index + 1);
         dispatch(updateGameAnalyzer(newArray));
         dispatch(updateGame(new Chess(position)));
+        dispatch(updateResultModalOpen(false))
     }
 
     const renderPiece = (piece, c) => {
@@ -63,27 +67,27 @@ const MobileGameHistory = () => {
                             type="button"
                             key={index}
                             onClick={() => handleViewHistory(item.position, index)}
-                            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                            className={`px-4 py-2 text-sm font-medium text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-white ${(game.fen() === item.position) ? 'bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500' : 'bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
                             {
                                 (item.square.length > 2) ?
                                     (
                                         (item.square.slice(0, 1) >= 'a' && item.square.slice(0, 1) <= 'h') ?
                                             (
-                                                <div className='flex flex-row'>
+                                                <div className={`flex flex-row items-center justify-center`}>
                                                     {renderPiece('P', item.player)}
                                                     {item.square.slice(1)}
                                                 </div>
                                             )
                                             :
                                             (
-                                                <div className='flex flex-row'>
+                                                <div className={`flex flex-row items-center justify-center`}>
                                                     {renderPiece(item.square.slice(0, 1), item.player)}
                                                     {item.square.slice(1)}
                                                 </div>
                                             )
                                     ) :
                                     (
-                                        <div className='flex flex-row'>
+                                        <div className={`flex flex-row items-center justify-center`}>
                                             {renderPiece('P', item.player)}
                                             {item.square}
                                         </div>

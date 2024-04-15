@@ -15,11 +15,10 @@ const DrawOffer = () => {
 
     const currentPosition = useSelector(state => state.MultiPlayer.position);
 
-    const result = useSelector(state => state.MultiPlayer.gameResult)
-
     const handleSendDrawOffer = () => {
         if(currentPosition === 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
-            dispatch(updateShowBotomToast({show: true, type: 'failure', message: 'Cannot send'}))
+            dispatch(updateShowBotomToast({show: true, type: 'failure', message: 'Cannot send'}));
+            return;
         }
         let user;
         if (userDetails) {

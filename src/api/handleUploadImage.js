@@ -5,7 +5,7 @@ const host = process.env.REACT_APP_HOST_SERVER;
 axios.defaults.withCredentials = true;
 
 const handleUploadImage = async (file) => {
-    console.log('File Object:', file);
+
     if (!(file instanceof File) || !file.size) {
         return { success: false, error: 'Invalid file object' };
     }

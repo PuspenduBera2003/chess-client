@@ -3,10 +3,16 @@ import { FileInput, Label } from 'flowbite-react';
 import { useDropzone } from 'react-dropzone';
 import Drawer from '@mui/material/Drawer';
 import CropImage from './CropImage';
+import handleDeleteImage from '../../../api/handleDeleteImage';
+import { useDispatch, useSelector } from 'react-redux';
+import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
+import updateUserDetails from '../../../redux/Auth/Actions/userDetails';
 
 const UploadProfilePhoto = ({ buttonName }) => {
 
     const [uploadedFile, setUploadedFile] = useState(null);
+    const userDetails = useSelector(state => state.Auth.userDetails);
+    const dispatch = useDispatch();
 
     const [drawerOpen, setDrawerOpen] = useState({
         bottom: false,
@@ -32,13 +38,37 @@ const UploadProfilePhoto = ({ buttonName }) => {
         maxFiles: 1,
     });
 
+    const handleDelete = async () => {
+        dispatch(updateShowBotomToast({ show: true, type: 'loading', message: 'Deleting profile photo' }))
+        const response = await handleDeleteImage();
+        if (!response.success) {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Error deleting profile photo' }));
+        }
+        else {
+            dispatch(updateUserDetails(response.user));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'Profile photo deleted successfully!' }));
+        }
+    }
+
     return (
         <div>
-            <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400" onClick={toggleDrawer('bottom', true)}>
-                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    {buttonName}
-                </span>
-            </button>
+            <div className='flex flex-wrap items-center justify-center gap-2 m-2'>
+                <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400" onClick={toggleDrawer('bottom', true)}>
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        {buttonName}
+                    </span>
+                </button>
+                {
+                    userDetails.profile_photo &&
+                    <button
+                        onClick={handleDelete}
+                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                            <i className="fa-regular fa-trash-can" style={{ fontSize: '1.2rem' }}></i>
+                        </span>
+                    </button>
+                }
+            </div>
             <Drawer
                 anchor="bottom"
                 open={drawerOpen.bottom}
@@ -67,7 +97,7 @@ const UploadProfilePhoto = ({ buttonName }) => {
                                                 <path
                                                     stroke="currentColor"
                                                     strokeLinecap="round"
-                                                    strokeLineJoin="round"
+                                                    strokeLinejoin="round"
                                                     strokeWidth="2"
                                                     d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                                                 />

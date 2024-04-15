@@ -21,15 +21,21 @@ const CapturedPiece = () => {
 
   useEffect(() => {
     const newCapturedPieces = { p: [], n: [], b: [], r: [], q: [] };
-
+  
     gameAnalyzer.forEach(item => {
-      if (item.captured && item.captured.color === oppositionPlayer) {
+      if (item.captured && Array.isArray(item.captured)) {
+        item.captured.forEach(capturedPiece => {
+          if (capturedPiece.color === oppositionPlayer) {
+            newCapturedPieces[capturedPiece.type].push(capturedPiece.color);
+          }
+        });
+      } else if (item.captured && item.captured.color === oppositionPlayer) {
         newCapturedPieces[item.captured.type].push(item.captured.color);
       }
     });
-
+  
     setCapturedPieces(newCapturedPieces);
-  }, [gameAnalyzer, oppositionPlayer]);
+  }, [gameAnalyzer, oppositionPlayer]);  
 
   return (
     <div className="flex flex-row flex-wrap gap-3">

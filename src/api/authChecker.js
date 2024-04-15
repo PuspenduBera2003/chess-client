@@ -10,7 +10,7 @@ const authChecker = async () => {
             const jsonFromAuth = responseFromCredentials.data;
             return(jsonFromAuth)
         } catch (error) {
-            return({ success: false, error});
+            return({ success: false, error: error.message});
         }
 }
 
@@ -22,7 +22,7 @@ const getUserDetails = async (credentials, otp) => {
             const jsonFromAuth = responseFromCredentials.data;
             return(jsonFromAuth)
         } catch (error) {
-            return({ success: false, error});
+            return({ success: false, error: error.message});
         }
 }
 

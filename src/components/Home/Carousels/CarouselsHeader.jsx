@@ -24,11 +24,11 @@ const CarouselsHeader = () => {
                 sequence={[
                     'Pass & Play',
                     1000,
-                    'Play With Bots',
+                    'Play Against Bots',
                     1000,
                     'Play Online',
                     1000,
-                    'Play With Random Players',
+                    'Play Against Random Players',
                     1000,
                     'Learn Chess',
                     1000

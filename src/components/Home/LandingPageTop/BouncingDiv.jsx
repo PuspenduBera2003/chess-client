@@ -28,17 +28,17 @@ const BouncingDiv = () => {
                     <i className="fa-solid fa-chess-board mr-2"></i>
                     Pass & Play
                 </Link>
-                <Link to='/' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-700 rounded-t-lg  dark:border-gray-500">
+                <Link to='/game/play-vs-computer' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-700 rounded-t-lg  dark:border-gray-500">
                     <i className="fa-solid fa-chess-knight mr-2"></i>
-                    Play With Computer
+                    Play Against Computer
                 </Link>
                 <Link to='/game/play-with-friends' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-700 rounded-t-lg  dark:border-gray-500">
                     <i className="fa-solid fa-chess mr-2"></i>
-                    Play With Friends
+                    Play Against Friends
                 </Link>
                 <Link to='/game/random-game' className="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium rounded-t-lg  dark:border-gray-600">
                     <i className="fa-solid fa-chess-bishop mr-2"></i>
-                    Play With Random User
+                    Random Match
                 </Link>
             </div>
         </animated.div>

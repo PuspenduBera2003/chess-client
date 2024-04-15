@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import whiteKing from '../../../../static/images/white-chess-king.png'
 import blackKing from '../../../../static/images/black-chess-king.png'
 import OpponentCaptured from '../CapturedPiece/OpponentCaptured';
+import OpponentTimer from '../Timer/OpponentTimer';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -32,50 +33,58 @@ const OpponentDetails = () => {
 
     const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
 
+    const playingGame = useSelector(state => state.MultiPlayer.playingGame);
+
     return (
-        <div className='flex flex-row flex-wrap justify-end items-center gap-2'>
-            <div className='mr-3'>
-            <OpponentCaptured />
+        <div className='flex flex-row flex-wrap justify-between items-center gap-2'>
+            <div>
+                <OpponentTimer />
             </div>
-            {
-                opponentDetails ?
-                    (
-                        <div className='text-gray-800 dark:text-gray-200 text-sm font-semibold'>
-                            {opponentDetails.username}
-                        </div>
-                    )
-                    :
-                    (
-                        <div className='text-gray-800 dark:text-gray-200 text-sm font-semibold'>
-                            Guest
-                        </div>
-                    )
-            }
-            <StyledBadge
-                overlap="circular"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                variant="dot"
-            >
+            <div className='flex flex-row flex-wrap justify-end items-center gap-2'>
+
+                <div className='mr-3'>
+                    <OpponentCaptured />
+                </div>
                 {
-                    (opponentDetails && opponentDetails.profile_photo) ?
+                    opponentDetails ?
                         (
-                            <Avatar className={`${turn ? 'animate-none' : 'animate-pulse'} ring-2 ring-blue-900 dark:ring-blue-600`} sx={{ width: 50, height: 50 }} alt={opponentDetails.username} src={opponentDetails.profile_photo} />
+                            <div className='text-gray-800 dark:text-gray-200 text-sm font-semibold'>
+                                {opponentDetails.username}
+                            </div>
                         )
                         :
-                        (boardOrientation === 'black') ?
+                        (
+                            <div className='text-gray-800 dark:text-gray-200 text-sm font-semibold'>
+                                Guest
+                            </div>
+                        )
+                }
+                <StyledBadge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    variant="dot"
+                >
+                    {
+                        (opponentDetails && opponentDetails.profile_photo) ?
                             (
-                                <div className={`rounded-full bg-gray-600 dark:bg-gray-900 ${turn ? 'animate-none' : 'animate-pulse'}`}>
-                                    <img src={whiteKing} className={`${turn ? 'animate-none' : 'animate-pulse'} w-12 h-12 bg-inherit ring-2 ring-blue-900 dark:ring-blue-600 rounded-full`} alt="white king" />
-                                </div>
+                                <Avatar className={`${turn ? 'animate-none' : playingGame ? 'animate-pulse' : 'animate-none'} ring-2 ring-blue-900 dark:ring-blue-600`} sx={{ width: 50, height: 50 }} alt={opponentDetails.username} src={opponentDetails.profile_photo} />
                             )
                             :
-                            (
-                                <div className={`rounded-full bg-gray-400 dark:bg-gray-700 ${turn ? 'animate-none' : 'animate-pulse'}`}>
-                                    <img src={blackKing} className={`${turn ? 'animate-none' : 'animate-pulse'} w-12 h-12 bg-inherit ring-2 ring-blue-900 dark:ring-blue-600 rounded-full`} alt="white king" />
-                                </div>
-                            )
-                }
-            </StyledBadge>
+                            (boardOrientation === 'black') ?
+                                (
+                                    <div className={`rounded-full bg-gray-600 dark:bg-gray-900 ${turn ? 'animate-none' : playingGame ? 'animate-pulse' : 'animate-none'}`}>
+                                        <img src={whiteKing} className={`${turn ? 'animate-none' : playingGame ? 'animate-pulse' : 'animate-none'} w-12 h-12 bg-inherit ring-2 ring-blue-900 dark:ring-blue-600 rounded-full`} alt="white king" />
+                                    </div>
+                                )
+                                :
+                                (
+                                    <div className={`rounded-full bg-gray-400 dark:bg-gray-700 ${turn ? 'animate-none' : playingGame ? 'animate-pulse' : 'animate-none'}`}>
+                                        <img src={blackKing} className={`${turn ? 'animate-none' : playingGame ? 'animate-pulse' : 'animate-none'} w-12 h-12 bg-inherit ring-2 ring-blue-900 dark:ring-blue-600 rounded-full`} alt="white king" />
+                                    </div>
+                                )
+                    }
+                </StyledBadge>
+            </div>
         </div>
     )
 }

@@ -19,13 +19,13 @@ const Comment = () => {
     const fetchFeedback = async () => {
         const response = await fetchFeedbacks(0);
         setFeedbacks(response.feedbacks)
-        settotalResult(response.totalResult)
+        settotalResult(response.feedbacks)
     }
 
     const fetchMoreFeedback = async () => {
         setOffset(offset + 6);
         const response = await fetchFeedbacks(offset);
-        settotalResult(response.totalResult)
+        settotalResult(response.feedbacks)
         const newFeedbacks = feedbacks.concat(response.feedbacks)
         setFeedbacks(newFeedbacks)
     }
@@ -42,7 +42,7 @@ const Comment = () => {
                         <InfiniteScroll
                             dataLength={feedbacks.length}
                             next={fetchMoreFeedback}
-                            hasMore={feedbacks.length < totalResult}
+                            hasMore={!!totalResult.length}
                             loader={
                                 <div className="flex flex-wrap gap-3 items-center justify-center mt-3">
                                     {fetchMoreSkeleton.map((skeleton) => (

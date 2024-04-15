@@ -7,6 +7,9 @@ import Chess from 'chess.js'
 import updateTurn from '../../../../redux/MultiPlayer/Actions/updateTurn';
 import updatePosition from '../../../../redux/MultiPlayer/Actions/updatePoisition';
 import responsiveBoard from '../../../../utils/responsiveBoard';
+import addPromoted from '../../../../redux/MultiPlayer/Actions/updateAddPromoted';
+import updateAtBeginning from '../../../../redux/MultiPlayer/Actions/updateAtBeginning';
+import customBoardStyle from '../../../../utils/boardTheme';
 
 const Board = () => {
     const [moveFrom, setMoveFrom] = useState("");
@@ -18,13 +21,15 @@ const Board = () => {
     const [boardWidth, setBoardWidth] = useState(400);
     const [clickedPiece, setClickedPiece] = useState(null);
 
-    const currentTheme = useSelector(state => state.Theme.currentTheme);
+    const boardTheme = useSelector(state => state.MultiPlayer.boardTheme);
 
     const gameId = useSelector(state => state.MultiPlayer.gameId);
 
     const game = useSelector(state => state.MultiPlayer.game);
 
     const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
+
+    const promoted = useSelector(state => state.MultiPlayer.promoted);
 
     const boardPosition = useSelector(state => state.MultiPlayer.position);
 
@@ -36,7 +41,7 @@ const Board = () => {
 
     const username = boardOrientation;
 
-    const customSquareStyles = (currentTheme === "dark")
+    const customSquareStyle = (boardTheme === "dark")
         ? {
             customDarkSquareStyle: { backgroundColor: "rgb(30 41 59)" },
             customLightSquareStyle: { backgroundColor: "rgb(100 116 139)" },
@@ -49,6 +54,13 @@ const Board = () => {
             clickedSquareColor: 'rgba(255, 255, 0, 0.4)',
             possibleMoves: 'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)'
         };
+
+    const [customSquareStyles, setCustomSquareStyles] = useState(customSquareStyle);
+
+    useEffect(() => {
+        const boardStyle = customBoardStyle(boardTheme);
+        setCustomSquareStyles(boardStyle);
+    }, [boardTheme])
 
     function getMoveOptions(square) {
         const moves = game.moves({
@@ -102,15 +114,21 @@ const Board = () => {
             // Check if the move is valid
             if (move !== null) {
                 setMoveTo(square);
+                const newMove = gameCopy.history();
                 if (move.flags.includes("p") && move.captured && (square[1] === "8" || square[1] === "1")) {
                     setShowPromotionDialog(true);
                 } else {
+                    if (promoted.has(move.from)) {
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick, promoted: { to: move.to, from: move.from } } });
+                    } else if (promoted.has(move.to)) {
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: null, promotedCaptured: move.to } });
+                    } else {
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick } });
+                    }
                     setMoveFrom("");
                     setMoveTo(null);
                     setOptionSquares({});
                     dispatch(updatePosition(game.fen()));
-                    const newMove = gameCopy.history();
-                    socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick } });
                     dispatch(updateGame(gameCopy))
                 }
                 return;
@@ -147,31 +165,32 @@ const Board = () => {
 
                 // if promotion move
                 if ((foundMove.color === "w" && foundMove.piece === "p" && square[1] === "8") || (foundMove.color === "b" && foundMove.piece === "p" && square[1] === "1")) {
-                    const newMove = game.history();
                     setShowPromotionDialog(true);
-                    socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn, move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
-                    return;
                 }
+                else {
+                    // is normal move
+                    const gameCopy = { ...game };
+                    const move = gameCopy.move({ from: moveFrom, to: square, promotion: "q" });
 
-                // is normal move
-                const gameCopy = { ...game };
-                const move = gameCopy.move({ from: moveFrom, to: square, promotion: "q" });
-
-                // if invalid, setMoveFrom and getMoveOptions
-                if (move === null) {
-                    const hasMoveOptions = getMoveOptions(square);
-                    if (hasMoveOptions) setMoveFrom(square);
-                    return;
+                    // if invalid, setMoveFrom and getMoveOptions
+                    if (move === null) {
+                        const hasMoveOptions = getMoveOptions(square);
+                        if (hasMoveOptions) setMoveFrom(square);
+                        return;
+                    }
+                    const newMove = game.history();
+                    if (promoted.has(move.from)) {
+                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), player: username, captured: null, promoted: { to: move.to, from: move.from } } })
+                    } else {
+                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
+                    }
+                    setMoveFrom("");
+                    setMoveTo(null);
+                    setOptionSquares({});
                 }
-
-                setMoveFrom("");
-                setMoveTo(null);
-                setOptionSquares({});
-                const newMove = game.history();
-                socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn, move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
-                return;
             }
         }
+        dispatch(updateAtBeginning(false));
     }
 
 
@@ -196,9 +215,11 @@ const Board = () => {
                         square: newMove[0],
                         position: gameCopy.fen(),
                         player: username,
-                        captured: move.captured ? clickedPiece : null,
+                        captured: move.captured ? [clickedPiece, { type: 'p', color: move.color }] : { type: 'p', color: move.color },
+                        promoted: { to: move.to, from: move.from }
                     },
                 });
+                dispatch(addPromoted({ promotedPiece: move.to }));
                 dispatch(updateGame(gameCopy)); // Update Redux state with the new game state after promotion
             }
         }
@@ -224,9 +245,6 @@ const Board = () => {
     }
 
     useEffect(() => {
-        if (game.in_checkmate()) {
-            console.log("checkmate!!!")
-        }
         socket.on("board-orientation", (data) => {
             if (data.orientation === 'white') {
                 dispatch(updateTurn(true));
@@ -244,24 +262,16 @@ const Board = () => {
     })
 
     useEffect(() => {
-        // Cleanup function to reset chess instance when component unmounts
-        return () => {
-            const newGame = new Chess();
-            dispatch(updateGame(newGame));
-        };
-    }, [dispatch]);
-
-    useEffect(() => {
         const handleResize = () => {
             const screenWidth = window.innerWidth;
-            const boardWidth = responsiveBoard(screenWidth);
-            setBoardWidth(boardWidth);
+            const newBoardWidth = responsiveBoard(screenWidth);
+            setBoardWidth(newBoardWidth);
         };
 
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    },[]);
 
     const customPieces = useMemo(() => {
         const pieces = [

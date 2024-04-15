@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import Search from './Search/Search'
 import './UserSearch.css'
+import SearchPanel from './SearchPanel'
 
 const UserSearch = () => {
 
@@ -13,9 +13,7 @@ const UserSearch = () => {
 
     return (
         <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
-            <div className='user-friend py-3 w-full'>
-                <Search />
-            </div>
+            <SearchPanel />
         </section>
     )
 }

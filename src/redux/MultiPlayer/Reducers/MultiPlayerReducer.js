@@ -1,7 +1,15 @@
-import { setBoardOrientation, setGame, setGameAnalyzer, setGameHistory, setGameId, setGameLink, setGameResult, setOpponentDetails, setPieceSelection, setPlayingGame, setPosition, setRemainingTime, setRequestSender, setTurn } from "../Actions/ActionTypes/ActionTypes"
+import { setBoardOrientation, setGame, setGameAnalyzer, setGameHistory, setGameId, setGameLink, setGameResult, setOpponentDetails, setPieceSelection, setPlayingGame, setPosition, setAddPromoted, setRemainingTime, setRequestSender, setTurn, setDeletePromoted, setAtBeginning, setClearPromoted, setModalOpen, setBoardTheme } from "../Actions/ActionTypes/ActionTypes"
 import Chess from "chess.js"
 
 const game = new Chess();
+
+const checkTheme = () => {
+    if (localStorage.getItem('theme') === 'dark') {
+        return 'dark'
+    } else {
+        return 'light'
+    }
+}
 
 const initialState = {
     remainingTime: 120,
@@ -17,7 +25,11 @@ const initialState = {
     gameHistory: [],
     gameAnalyzer: [],
     playingGame: false,
-    gameResult: new Map()
+    gameResult: new Map(),
+    promoted: new Map(),
+    atBeginning: true,
+    resultModal: false,
+    boardTheme: checkTheme(),
 }
 
 const MultiPlayerReducer = (state = initialState, action) => {
@@ -95,7 +107,42 @@ const MultiPlayerReducer = (state = initialState, action) => {
                 ...state,
                 gameResult: updatedGameResult
             }
-
+        case setAddPromoted:
+            const { promotedPiece } = action.payload;
+            const updatedPromoted = new Map(state.promoted);
+            updatedPromoted.set(promotedPiece, true);
+            return {
+                ...state,
+                promoted: updatedPromoted
+            }
+        case setClearPromoted:
+            return {
+                ...state,
+                promoted: new Map()
+            }
+        case setDeletePromoted:
+            const { promotedPiece: pieceToDelete } = action.payload;
+            const updatedPromotedDelete = new Map(state.promoted);
+            updatedPromotedDelete.delete(pieceToDelete);
+            return {
+                ...state,
+                promoted: updatedPromotedDelete,
+            };
+        case setAtBeginning:
+            return {
+                ...state,
+                atBeginning: action.payload
+            }
+        case setModalOpen:
+            return {
+                ...state,
+                resultModal: action.payload
+            }
+        case setBoardTheme:
+            return {
+                ...state,
+                boardTheme: action.payload
+            }
         default:
             return state
     }

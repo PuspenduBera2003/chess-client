@@ -11,7 +11,7 @@ const handleGenerateLink = async () => {
             return ({ success: false, error: "Unable to Generate Link" });
         return jsonFromAuth
     } catch (error) {
-        return ({ success: false, error })
+        return ({ success: false, error: error.message })
     }
 }
 
