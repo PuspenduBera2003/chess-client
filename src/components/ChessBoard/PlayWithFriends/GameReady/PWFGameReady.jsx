@@ -29,8 +29,11 @@ import updatePosition from '../../../../redux/MultiPlayer/Actions/updatePoisitio
 import ResultBoard from '../Result/ResultBoard';
 import MobileControls from '../History/MobileControls';
 import MobileControlsMenu from '../Controls/MobileControlsMenu';
+import checkmateAudio from '../../../../static/audio/checkmate_sound_effect.mp3'
 
 const PWFGameReady = (props) => {
+
+  const checkmateAudioRef = useRef(new Audio(checkmateAudio));
 
   const currentTheme = useSelector(state => state.Theme.currentTheme);
 
@@ -165,6 +168,9 @@ const PWFGameReady = (props) => {
   useEffect(() => {
     if (result.has(gameId)) {
       dispatch(updateResultModalOpen(true));
+      checkmateAudioRef.current.play().catch(error => {
+        console.error('Failed to play audio:', error);
+      });
     }
   }, [result, gameId])
 

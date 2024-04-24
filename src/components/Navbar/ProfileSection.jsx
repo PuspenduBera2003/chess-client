@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import updateShowBotomToast from '../../redux/Auth/Actions/showBottomToast';
 import updateSignUpInitialized from '../../redux/Auth/Actions/signUpInitialized';
 import socket from '../../socket/socket';
+import updateUserDetails from '../../redux/Auth/Actions/userDetails';
 
 const ProfileSection = () => {
 
@@ -19,6 +20,7 @@ const ProfileSection = () => {
   const handleSubmit = async () => {
     const sessionID = userDetails.sessionID;
     const signOut = await handleSignOut();
+    dispatch(updateUserDetails(null));
     if (signOut.success) {
       localStorage.setItem('isAuthenticated', false);
       dispatch(updateIsAuthenticated(false));
@@ -41,7 +43,7 @@ const ProfileSection = () => {
         }, email: '', username: '', password: '', token: ''
       }))
     }
-    socket.emit("logOut", { sessionID  });
+    socket.emit("logOut", { sessionID });
   }
 
   return (
@@ -77,8 +79,9 @@ const ProfileSection = () => {
             Dashboard
           </Dropdown.Item>
         </Link>
-        <Dropdown.Item>Settings</Dropdown.Item>
-        <Dropdown.Item>Earnings</Dropdown.Item>
+        <Link to='/user/dashboard/all'>
+          <Dropdown.Item>All Options</Dropdown.Item>
+        </Link>
         <Dropdown.Divider />
         <Dropdown.Item onClick={handleSubmit}>Sign out</Dropdown.Item>
       </Dropdown>

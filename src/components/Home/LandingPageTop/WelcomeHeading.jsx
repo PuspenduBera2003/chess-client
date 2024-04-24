@@ -25,7 +25,7 @@ const WelcomeHeading = () => {
     return (
         <div className="w-full block">
             <div className='flex items-center justify-center'>
-                <animated.h1 style={textFadeIn} className={`welcome-text ${headingClass} dark:text-white text-2xl md:text-4xl font-bold mb-8 bg-gradient-to-r font-fancy rounded-lg p-2 lg:shadow-lg shadow-lime-700`}>
+                <animated.h1 style={textFadeIn} className={`welcome-text text-center ${headingClass} dark:text-white text-2xl md:text-4xl font-bold mb-8 bg-gradient-to-r font-fancy rounded-lg p-2 lg:shadow-lg shadow-lime-700`}>
                     WELCOME TO CHESSHUB
                 </animated.h1>
             </div>
@@ -42,7 +42,7 @@ const WelcomeHeading = () => {
                     wrapper="h2"
                     speed={50}
                     repeat={Infinity}
-                    className='text-lg md:text-xl font-semibold'
+                    className='text-lg md:text-xl font-semibold text-center'
                 />
             </div>
         </div>

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import botImg from '../../../../static/images/bot.jpg'
 import OpponentCaptured from '../CapturedPiece/OpponentCaptured';
+import bot1 from '../../../../static/images/bot1.jpg'
+import bot2 from '../../../../static/images/bot2.jpg'
+import bot3 from '../../../../static/images/bot3.jpeg'
+import { useSelector } from 'react-redux';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -23,6 +27,24 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const OpponentDetails = () => {
 
+    const [botName, setBotName] = useState('');
+    const [botImg, setBotImg] = useState('');
+
+    const botLevel = useSelector(state => state.Bot.botLevel);
+
+    useEffect(() => {
+        if (botLevel === 2) {
+            setBotName('RookRover');
+            setBotImg(bot1)
+        } else if (botLevel === 8) {
+            setBotName('BishopBrain');
+            setBotImg(bot2)
+        } else {
+            setBotName('CheckWiz');
+            setBotImg(bot3)
+        }
+    }, [botLevel])
+
     return (
         <div className='flex flex-row flex-wrap justify-end items-center gap-2'>
             <div className='flex flex-row flex-wrap justify-end items-center gap-2'>
@@ -31,7 +53,7 @@ const OpponentDetails = () => {
                     <OpponentCaptured />
                 </div>
                 <div className='text-gray-800 dark:text-gray-200 text-sm font-semibold'>
-                    Bot
+                    {botName}
                 </div>
                 <StyledBadge
                     overlap="circular"

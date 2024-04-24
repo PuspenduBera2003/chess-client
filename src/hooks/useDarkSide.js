@@ -6,7 +6,7 @@ export default function useDarkSide() {
 
     const dispatch = useDispatch();
 
-    const storedTheme = localStorage.getItem("theme") || "light";
+    const storedTheme = localStorage.getItem("theme") || "dark";
 
     const [theme, setTheme] = useState(storedTheme);
 

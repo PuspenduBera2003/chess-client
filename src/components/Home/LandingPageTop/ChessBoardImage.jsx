@@ -19,7 +19,7 @@ const ChessBoardImage = () => {
         config: { duration: 3000, loop: true },
     });
     return (
-        <animated.img src={chessImage} alt="Chess Board" className="w-64 h-64" style={pulsate} />
+        <animated.img src={chessImage} alt="Chess Board" className="w-64" style={pulsate} />
     )
 }
 

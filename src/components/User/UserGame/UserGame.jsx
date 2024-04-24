@@ -10,7 +10,7 @@ const UserGame = () => {
         'bg-white'
 
     return (
-        <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
+        <section className={`user-faq border-l flex items-start justify-center bg-gradient-to-r dark:border-gray-700 z-0 ${userHomeClasses}`}>
             <UserGamePanel />
         </section>
     )

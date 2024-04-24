@@ -12,13 +12,13 @@ const Developers = () => {
 
     return (
         <div>
-            <div className='p-2 flex items-center justify-center'>
+            <div className='p-2 flex items-center justify-center flex-wrap'>
                 <img
                     src={logo}
                     alt="King"
                     className='w-16 h-16'
                     style={{ filter: invertFilter }} />
-                <h1 className='features-heading text-4xl md:text-7xl'>
+                <h1 className='features-heading text-3xl sm:text-4xl md:text-7xl font-bold'>
                     Developers
                 </h1>
             </div>

@@ -148,7 +148,7 @@ const UserPWResetPanel = () => {
             if (widthPower[oldPW] === "100%") {
                 setMessage({ ...message, op: { show: true, type: 's', message: 'Password Syntax Matched' } });
             } else {
-                setMessage({ ...message, op: { show: true, type: 'e', message: 'Please Syntax Is Not Matching!' } });
+                setMessage({ ...message, op: { show: true, type: 'e', message: 'Password Syntax Is Not Matching!' } });
             }
         }
         pwChecker();
@@ -179,10 +179,10 @@ const UserPWResetPanel = () => {
             {
                 !pwChanged ?
                     <form className='flex flex-col items-center justify-center' onSubmit={handleSubmit}>
-                        <div className="mb-6">
+                        <div className="mb-4 sm:w-96 xs:w-64 xxs:w-48 md:w-96">
                             <label htmlFor="op" className={`block mb-2 text-sm font-medium ${(message.op.type === 'e') ? errorLabelClasses : (message.op.type === 's') ? successLabelClasses : normalTextClasses}`}>Old Password</label>
                             <div className='relative'>
-                                <input type={types.op ? 'password' : 'text'} id='op' name='op' onChange={handleChange} className={`text-sm rounded-lg block w-96 p-2.5 dark:bg-gray-700 ${(message.op.type === 'e') ? errorPlaceholderClasses : (message.op.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="Old Password" autoComplete='off' />
+                                <input type={types.op ? 'password' : 'text'} id='op' name='op' onChange={handleChange} className={`text-sm rounded-lg block sm:w-96 xs:w-64 xxs:w-48 md:w-96 p-2.5 dark:bg-gray-700 ${(message.op.type === 'e') ? errorPlaceholderClasses : (message.op.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="Old Password" autoComplete='off' />
                                 {
                                     types.op ?
                                         <button
@@ -204,10 +204,10 @@ const UserPWResetPanel = () => {
                                 {message.op.show && message.op.message}
                             </p>
                         </div>
-                        <div className='mb-6'>
+                        <div className='mb-4 sm:w-96 xs:w-64 xxs:w-48 md:w-96'>
                             <label htmlFor="np" className={`block mb-2 text-sm font-medium ${(message.np.type === 'e') ? errorLabelClasses : (message.np.type === 's') ? successLabelClasses : normalTextClasses}`}>New Password</label>
                             <div className='relative'>
-                                <input type={types.np ? 'password' : 'text'} id='np' name='np' onChange={handleChange} className={`text-sm rounded-lg block w-96 p-2.5 dark:bg-gray-700 ${(message.np.type === 'e') ? errorPlaceholderClasses : (message.np.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="New Password" autoComplete='off' />
+                                <input type={types.np ? 'password' : 'text'} id='np' name='np' onChange={handleChange} className={`text-sm rounded-lg block sm:w-96 xs:w-64 xxs:w-48 md:w-96 p-2.5 dark:bg-gray-700 ${(message.np.type === 'e') ? errorPlaceholderClasses : (message.np.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="New Password" autoComplete='off' />
                                 {
                                     types.np ?
                                         <button
@@ -239,10 +239,10 @@ const UserPWResetPanel = () => {
                                 </div>
                             }
                         </div>
-                        <div>
+                        <div className='sm:w-96 xs:w-64 xxs:w-48 md:w-96'>
                             <label htmlFor="cnp" className={`block mb-2 text-sm font-medium ${(message.cnp.type === 'e') ? errorLabelClasses : (message.cnp.type === 's') ? successLabelClasses : normalTextClasses}`}>Retype New Password</label>
                             <div className="relative">
-                                <input type={types.cnp ? 'password' : 'text'} name='cnp' id='cnp' onChange={handleChange} className={`text-sm rounded-lg block w-96 p-2.5 dark:bg-gray-700 ${(message.cnp.type === 'e') ? errorPlaceholderClasses : (message.cnp.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="Re-enter Password" autoComplete='off' />
+                                <input type={types.cnp ? 'password' : 'text'} name='cnp' id='cnp' onChange={handleChange} className={`text-sm rounded-lg block sm:w-96 xs:w-64 xxs:w-48 md:w-96 p-2.5 dark:bg-gray-700 ${(message.cnp.type === 'e') ? errorPlaceholderClasses : (message.cnp.type === 's') ? successPlaceholderClasses : normalTextClasses}`} placeholder="Re-enter Password" autoComplete='off' />
                                 {
                                     types.cnp ?
                                         <button

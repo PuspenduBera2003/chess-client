@@ -6,9 +6,13 @@ import updateSignUpInitialized from '../../../redux/Auth/Actions/signUpInitializ
 import generateOTP from '../../../api/generateOtp';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 
+const toggleClasses = 'text-gray-800 dark:text-gray-200'
+
 const SignUp = () => {
 
     const currentTheme = useSelector(state => state.Theme.currentTheme);
+
+    const [type, setType] = useState(false)
 
     const formClasses = (currentTheme === "dark")
         ? 'dark-auth-container'
@@ -36,10 +40,12 @@ const SignUp = () => {
         if (widthPower[point] !== "100%")
             return
         setPassword('')
-        dispatch(updateSignUpInitialized({ start: true,response: {
-            success: false,
-            serverReplied: false
-        }, email: '', password: '', username: '', token: '' }))
+        dispatch(updateSignUpInitialized({
+            start: true, response: {
+                success: false,
+                serverReplied: false
+            }, email: '', password: '', username: '', token: ''
+        }))
         const handleGenerateOTP = await generateOTP(credentials);
         if (!handleGenerateOTP.success) {
             setError({ error: true, description: handleGenerateOTP.error })
@@ -50,11 +56,21 @@ const SignUp = () => {
                 }, email: '', password: '', username: '', token: ''
             }))
         } else {
-            dispatch(updateSignUpInitialized({ start: true, response: {
-                success: true,
-                serverReplied: true
-            }, email: credentials.email, password: credentials.password, username: credentials.username, token: handleGenerateOTP.token }));
-            dispatch(updateShowBotomToast({show: true, type: 'success', message: 'OTP Send Successfully'}))
+            dispatch(updateSignUpInitialized({
+                start: true, response: {
+                    success: true,
+                    serverReplied: true
+                }, email: credentials.email, password: credentials.password, username: credentials.username, token: handleGenerateOTP.token
+            }));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'OTP Send Successfully' }))
+        }
+    }
+
+    const handleTypeChange = () => {
+        if (type) {
+            setType(false);
+        } else {
+            setType(true);
         }
     }
 
@@ -91,11 +107,11 @@ const SignUp = () => {
                 <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
                     Create Account
                 </h1>
-                <div className="social-icons">
-                    <a href="/" className="icon"><i className="fa-brands fa-google-plus-g dark:text-white"></i></a>
-                    <a href="/" className="icon"><i className="fa-brands fa-facebook-f dark:text-white"></i></a>
-                    <a href="/" className="icon dark:text-white"><i className="fa-brands fa-github"></i></a>
-                    <a href="/" className="icon dark:text-white"><i className="fa-brands fa-linkedin-in"></i></a>
+                <div className="social-icons flex flex-row flex-wrap gap-2">
+                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-google-plus-g dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-facebook-f dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-github"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-linkedin-in"></i></div>
                 </div>
                 <span className='text-gray-900 dark:text-white'>
                     or use your email for registration
@@ -103,13 +119,30 @@ const SignUp = () => {
                 <input type="text" placeholder="Username" value={credentials.username} name='username' onChange={onChange} className={`${inputClass} dark:text-white`} />
                 <input type="email" placeholder="Email" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} required />
                 <div className="password-group">
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={credentials.password}
-                        name='password'
-                        onChange={handlePasswordChange}
-                        className={`${inputClass} dark:text-white`} />
+                    <div className='relative'>
+                        <input
+                            type={type ? 'password' : 'text'}
+                            placeholder="Password"
+                            value={credentials.password}
+                            name='password'
+                            onChange={handlePasswordChange}
+                            className={`${inputClass} dark:text-white`} />
+                        {
+                            type ?
+                                <button
+                                    type='button'
+                                    onClick={() => handleTypeChange()}
+                                    className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                    <i className={`fa-regular fa-eye ${toggleClasses}`}></i>
+                                </button> :
+                                <button
+                                    type='button'
+                                    onClick={() => handleTypeChange()}
+                                    className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                    <i className={`fa-regular fa-eye-slash ${toggleClasses}`} ></i>
+                                </button>
+                        }
+                    </div>
                     {
                         password &&
                         <div className={`power-container ${passwordCheckerClasses} mt-1`}>
@@ -124,7 +157,7 @@ const SignUp = () => {
                         <AuthenticationAlert error={error} setError={setError} />
                     }
                 </div>
-                <button type='submit' className={`auth-button ${showSubmitButton ? 'sign-up-clickable' : 'sign-up-disabled'}`} disabled={!showSubmitButton}>
+                <button type='submit' className={`auth-button ${showSubmitButton ? 'sign-up-clickable' : 'sign-up-disabled pointer-events-none'}`} disabled={!showSubmitButton}>
                     Sign Up
                 </button>
             </form>

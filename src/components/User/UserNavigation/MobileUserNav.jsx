@@ -1,6 +1,6 @@
 import React from 'react'
 import './MobileUserNav.css'
-import { Home, Key, Message, Person2, QuestionMark, Settings } from '@mui/icons-material'
+import { Home, Key, Message, Person2, QuestionMark, Tune } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -48,7 +48,7 @@ const MobileUserNav = () => {
 						</Link>
 					</li>
 					<li className="nav__item">
-						<Link className="nav__item-btn dark:text-white" data-nav-item="4">
+						<Link to='/user/dashboard/password-reset' className="nav__item-btn dark:text-white" data-nav-item="4">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
 								<g fill="none" className='icon7' stroke="currentColor" strokeWidth="2">
 									<Key />
@@ -58,7 +58,7 @@ const MobileUserNav = () => {
 						</Link>
 					</li>
 					<li className="nav__item">
-						<Link className="nav__item-btn dark:text-white" data-nav-item="3">
+						<Link to="/user/dashboard/frequently-asked-questions" className="nav__item-btn dark:text-white" data-nav-item="3">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
 								<g className="icon1" fill="currentColor">
 									<QuestionMark />
@@ -68,13 +68,13 @@ const MobileUserNav = () => {
 						</Link>
 					</li>
 					<li className="nav__item">
-						<Link to='/user/dashboard/settings' className="nav__item-btn dark:text-white" data-nav-item="2">
+						<Link to='/user/dashboard/all' className="nav__item-btn dark:text-white" data-nav-item="2">
 							<svg className="nav__item-icon" width="24px" height="24px" viewBox="0 0 24 24">
 								<g className="icon6" fill="none" stroke="currentColor" strokeWidth="2">
-									<Settings />
+									<Tune />
 								</g>
 							</svg>
-							<span className="nav__item-text">Settings</span>
+							<span className="nav__item-text">All</span>
 						</Link>
 					</li>
 				</ul>

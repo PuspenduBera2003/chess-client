@@ -2,6 +2,9 @@ import { setTheme } from "../Actions/CurrentTheme";
 
 const themeChecker = () => {
     const theme = localStorage.getItem('theme');
+    if(!theme) {
+        return 'dark'
+    }
     return theme
 }
 

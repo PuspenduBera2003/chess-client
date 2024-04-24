@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import responsiveBoard from '../../../utils/responsiveBoard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +8,22 @@ import updateTurn from '../../../redux/Bot/Actions/updateTurn';
 import updatePosition from '../../../redux/Bot/Actions/updatePosition';
 import updateBotAnalyzer from '../../../redux/Bot/Actions/updateBotAnalyzer';
 import Chess from 'chess.js';
+import normalMoveAudio from '../../../static/audio/move.mp3'
+import captureMoveAudio from '../../../static/audio/capture.mp3'
+import checkAudio from '../../../static/audio/check.mp3'
+import castleAudio from '../../../static/audio/castle.mp3'
 
 const Board = () => {
 
     const dispatch = useDispatch();
+
+    const moveAudioRef = useRef(new Audio(normalMoveAudio));
+
+    const captureAudioRef = useRef(new Audio(captureMoveAudio));
+
+    const checkAudioRef = useRef(new Audio(checkAudio));
+
+    const castleAudioRef = useRef(new Audio(castleAudio));
 
     const stockfish = new Worker(`${process.env.PUBLIC_URL}/stockfish.js`);
     const botLevel = useSelector(state => state.Bot.botLevel);
@@ -143,7 +155,24 @@ const Board = () => {
 
             let captured = null;
             if (move.captured) {
-                captured = currentClick
+                captured = currentClick;
+            }
+            if (gameCopy.in_check()) {
+                checkAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (game.history()[game.history().length - 1] === 'O-O') {
+                castleAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (move.captured) {
+                captureAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else {
+                moveAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
             }
 
             const newMove = { square: game.history().pop(), position: gameCopy.fen(), player, captured }
@@ -173,10 +202,27 @@ const Board = () => {
             });
             let captured = null;
             if (move.captured) {
-                captured = currentClick
+                captured = currentClick;
             }
             dispatch(updateGame(gameCopy));
             const newMove = { square: game.history().pop(), position: gameCopy.fen(), player, captured, promoted: { to: move.to, from: move.from } };
+            if (game.in_check()) {
+                checkAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (game.history()[game.history().length - 1] === 'O-O') {
+                castleAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (captured) {
+                captureAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else {
+                moveAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            }
             const updatedHistory = [...botHistory, newMove];
             dispatch(updateBotHistory(updatedHistory));
             dispatch(updateBotAnalyzer(updatedHistory))
@@ -228,7 +274,24 @@ const Board = () => {
                         let captured = null;
                         let promoted = null;
                         if (move && move.captured) {
-                            captured = currentClick
+                            captured = currentClick;
+                        }
+                        if (game.in_check()) {
+                            checkAudioRef.current.play().catch(error => {
+                                console.error("Failed to play audio: ", error);
+                            })
+                        } else if (game.history()[game.history().length - 1] === 'O-O') {
+                            castleAudioRef.current.play().catch(error => {
+                                console.error('Failed to play audio:', error);
+                            });
+                        } else if (move && move.captured) {
+                            captureAudioRef.current.play().catch(error => {
+                                console.error('Failed to play audio:', error);
+                            });
+                        } else {
+                            moveAudioRef.current.play().catch(error => {
+                                console.error('Failed to play audio:', error);
+                            });
                         }
                         if (move && move.flags && move.flags.includes("p")) {
                             promoted = { to: move.to, from: move.from }

@@ -13,7 +13,7 @@ export const devArray = [
             facebook: 'https://www.facebook.com/itspuspendu9584/',
             linkedin: 'https://www.linkedin.com/in/puspendu-bera-29b78620a/'
         },
-        image: 'https://firebasestorage.googleapis.com/v0/b/chess-14b8c.appspot.com/o/developers%2Fpuspendu.jpg?alt=media&token=96a40b8f-678e-4a07-8bb4-94b57b7e65be'
+        image: 'https://firebasestorage.googleapis.com/v0/b/chess-14b8c.appspot.com/o/developers%2FPuspendu%20Bera.jpg?alt=media&token=e7f4902a-7223-4a9a-b1bd-1aa83f90fa91'
     },
     {
         name: "Santanu Kapas",
@@ -21,13 +21,14 @@ export const devArray = [
         skills: [
             { skillName: 'NodeJS', website: 'https://nodejs.org/en' },
             { skillName: 'PostgreSQL', website: 'https://www.postgresql.org/' },
-            { skillName: 'WebSocket', website: 'https://socket.io/' }
+            { skillName: 'WebSocket', website: 'https://socket.io/' },
+            { skillName: 'RestAPI', website: '/#'}
         ],
         profiles: {
-            github: '',
+            github: 'https://github.com/Santanu-Kapas',
             facebook: '',
-            linkedin: ''
+            linkedin: 'https://www.linkedin.com/in/santanu-kapas-3404732a4/'
         },
-        image: 'https://firebasestorage.googleapis.com/v0/b/chess-14b8c.appspot.com/o/developers%2Fsantanu.jpg?alt=media&token=a249dccf-b823-4e97-add6-3051b605b47d'
+        image: 'https://firebasestorage.googleapis.com/v0/b/chess-14b8c.appspot.com/o/developers%2FSantanu%20Kapas.jpg?alt=media&token=163ca6d2-2b99-4b8d-8001-682218341e67'
     }
 ]

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import socket from './socket';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +16,10 @@ import updateResult from '../redux/MultiPlayer/Actions/updateGameResult';
 import deletePromoted from '../redux/MultiPlayer/Actions/updateDeletePromoted';
 import addPromoted from '../redux/MultiPlayer/Actions/updateAddPromoted';
 import updatePlayingGame from '../redux/MultiPlayer/Actions/updatePlayingGame';
+import normalMoveAudio from '../static/audio/move.mp3'
+import captureMoveAudio from '../static/audio/capture.mp3'
+import checkAudio from '../static/audio/check.mp3'
+import castleAudio from '../static/audio/castle.mp3'
 
 const SocketProvider = ({ children }) => {
 
@@ -37,7 +41,15 @@ const SocketProvider = ({ children }) => {
 
     const promoted = useSelector(state => state.MultiPlayer.promoted);
 
-    const playingGame = useSelector(state => state.MultiPlayer.playingGame);
+    const moveAudioRef = useRef(new Audio(normalMoveAudio));
+
+    const captureAudioRef = useRef(new Audio(captureMoveAudio));
+
+    const checkAudioRef = useRef(new Audio(checkAudio));
+
+    const castleAudioRef = useRef(new Audio(castleAudio));
+
+    const game = useSelector(state => state.MultiPlayer.game);
 
     const navigate = useNavigate();
 
@@ -63,7 +75,6 @@ const SocketProvider = ({ children }) => {
         };
 
     }, [refreshCallback, gameLink, userDetails, navigate]);
-
 
     useEffect(() => {
 
@@ -113,10 +124,27 @@ const SocketProvider = ({ children }) => {
             } else if (data.move.promotedCaptured) {
                 dispatch(deletePromoted({ promotedPiece: data.move.promotedCaptured }));
             }
+            if (game.in_check()) {
+                checkAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (data.move.square === 'O-O') {
+                castleAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                })
+            } else if (data.move.captured) {
+                captureAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else {
+                moveAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            }
         });
 
         socket.on("game-cancelled", (data) => {
-            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: data.message}));
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: data.message }));
             dispatch(updatePlayingGame(false));
             setTimeout(() => {
                 navigate('/game/play-with-friends')
@@ -125,13 +153,13 @@ const SocketProvider = ({ children }) => {
 
         socket.on("opponent-resigned", (data) => {
             dispatch(updatePlayingGame(false));
-            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message}));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message }));
             dispatch(updateResult({ key: data.gameId, value: 'OR' }));
         })
 
         socket.on("opponent-time-out", (data) => {
             dispatch(updatePlayingGame(false));
-            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message}));
+            dispatch(updateShowBotomToast({ show: true, type: 'success', message: data.message }));
             dispatch(updateResult({ key: data.gameId, value: 'OT' }));
         })
 

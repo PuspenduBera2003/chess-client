@@ -18,7 +18,7 @@ const RandomPlayRequestCard = () => {
                 !requestSend ?
                     (
                         <div className="bg-indigo-50 flex flex-row flex-wrap gap-2 items-center justify-center border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-2">
-                            <img className="rounded-t-lg w-72 h-72" src={randomPlayImage} alt="Random Play" />
+                            <img className="rounded-t-lg md:rounded-l-lg md:rounded-tr-none w-72 h-72" src={randomPlayImage} alt="Random Play" />
                             <div className="p-5 flex flex-col gap-2">
                                 <h5 className="mb-2 text-2xl font-bold text-center tracking-tight text-gray-900 dark:text-white">
                                     Play with random players

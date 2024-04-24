@@ -22,7 +22,7 @@ const style = {
 const ResultModal = (props) => {
     const { isFullscreen } = props;
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [warning, setWarning] = useState(false);
     
     const modalData = useSelector(state => state.PassPlay.modalData);

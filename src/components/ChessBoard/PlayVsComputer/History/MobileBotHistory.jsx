@@ -75,14 +75,14 @@ const MobileBotHistory = () => {
                                             (
                                                 <div className={`flex flex-row items-center justify-center`}>
                                                     {renderPiece('P', item.player)}
-                                                    {item.square.slice(1)}
+                                                    {item.square}
                                                 </div>
                                             )
                                             :
                                             (
                                                 <div className={`flex flex-row items-center justify-center`}>
                                                     {renderPiece(item.square.slice(0, 1), item.player)}
-                                                    {item.square.slice(1)}
+                                                    {item.square}
                                                 </div>
                                             )
                                     ) :

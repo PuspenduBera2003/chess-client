@@ -43,13 +43,13 @@ const SelectionUI = () => {
     }
 
     return (
-        <div className={`${gradientClasses} flex items-center justify-center`} style={{ minHeight: 'calc(100vh - 3.75rem)' }}>
+        <div className={`${gradientClasses} flex items-center justify-center py-2`} style={{ minHeight: 'calc(100vh - 3.75rem)' }}>
             {
                 !clicked ?
                     <animated.div
                         style={animationProps}
                         className='flex flex-col gap-3 items-center justify-center bg-gray-50 border dark:border-gray-500 dark:bg-gray-800 p-3 rounded-md shadow-lg m-1'>
-                        <span className='text-black dark:text-white font-semibold'>
+                        <span className='text-black dark:text-white font-semibold my-2'>
                             Select Your Piece
                         </span>
                         <PieceSelector />

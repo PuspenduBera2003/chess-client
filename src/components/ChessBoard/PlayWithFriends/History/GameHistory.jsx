@@ -77,14 +77,14 @@ const GameHistory = () => {
                                                     <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? 'bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
                                                         {renderPiece('P', item.player)}
                                                         <div className='text-gray-900 dark:text-gray-200'>
-                                                            {item.square.slice(1)}
+                                                            {item.square === "O-O" ? item.square : item.square.slice(1)}
                                                         </div>
                                                     </div>
                                                 ) : (
                                                     <div className={`p-1.5 rounded-md flex flex-row items-center justify-center ${(game.fen() === item.position) ? ' bg-gray-200 dark:bg-gray-700' : 'border-none'}`}>
                                                         {renderPiece(item.square.slice(0, 1), item.player)}
                                                         <div className='text-gray-900 dark:text-gray-200'>
-                                                            {item.square.slice(1)}
+                                                        {item.square === "O-O" ? item.square : item.square.slice(1)}
                                                         </div>
                                                     </div>
                                                 )

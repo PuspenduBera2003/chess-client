@@ -18,13 +18,13 @@ const FeatureIndividual = (props) => {
         : 'light-mode-feature-card';
 
     return (
-        <div className={`flex flex-col items-center ${isDarkMode} border dark:border-gray-200 rounded-lg shadow-md md:flex-row md:max-w-xl dark:shadow-cyan-800/80`} to='/passplay'>
-            <img className="object-cover w-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={data.image} alt={data.name} loading='lazy' />
+        <div className={`flex flex-col items-center ${isDarkMode} border dark:border-gray-200 rounded-lg shadow-md sm:flex-row md:max-w-xl dark:shadow-cyan-800/80`} to='/passplay'>
+            <img className="object-cover w-full sm:w-60 sm:h-60 rounded-t-lg sm:rounded-tr-none sm:rounded-l-lg" src={data.image} alt={data.name} loading='lazy' />
             <div className="flex flex-col justify-between p-4 leading-normal">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {data.name}
                 </h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 text-justify">
                     {data.description}
                 </p>
                 <div className="flex item-center justify-center">

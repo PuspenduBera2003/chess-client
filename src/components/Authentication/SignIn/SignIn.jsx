@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import handleSignInSubmit from '../../../api/handleSignInSubmit';
 import updateIsAuthenticated from '../../../redux/Auth/Actions/IsAuthenticated';
 import AuthenticationAlert from '../AuthenticationAlert';
@@ -20,6 +20,8 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     const currentTheme = useSelector(state => state.Theme.currentTheme);
+
+    const [disabled, setDisabled] = useState(true);
 
     const formClasses = (currentTheme === "dark")
         ? 'dark-auth-container'
@@ -41,10 +43,12 @@ const SignIn = () => {
             navigate('/user/dashboard');
             dispatch(updateShowBotomToast({ show: true, type: 'success', message: "Signed In Successfully" }));
         } else {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error }));
             localStorage.setItem('isAuthenticated', false);
             dispatch(updateIsAuthenticated(false));
             setError({ error: true, description: response.error })
         }
+        setSignInInitialized(false)
     }
 
     const onChange = (e) => {
@@ -55,31 +59,39 @@ const SignIn = () => {
         setSignInInitialized(false)
     }, [])
 
+    useEffect(() => {
+        if (credentials.password.length >= 5) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
+        }
+    }, [credentials])
+
     return (
         <div className={`form-container sign-in ${formClasses}`} style={{ backgroundColor: 'black' }}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete='off'>
                 <h1 className='text-3xl font-bold text-gray-950 dark:text-white'>
                     Sign In
                 </h1>
-                <div className="social-icons">
-                    <a href="/" className="icon"><i className="fa-brands fa-google-plus-g dark:text-white"></i></a>
-                    <a href="/" className="icon"><i className="fa-brands fa-facebook-f dark:text-white"></i></a>
-                    <a href="/" className="icon"><i className="fa-brands fa-github dark:text-white"></i></a>
-                    <a href="/" className="icon"><i className="fa-brands fa-linkedin-in dark:text-white"></i></a>
+                <div className="social-icons flex flex-row flex-wrap gap-2">
+                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-google-plus-g dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-facebook-f dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-github"></i></div>
+                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-linkedin-in"></i></div>
                 </div>
                 <span className='text-gray-900 dark:text-white'>
                     or use your email password
                 </span>
-                <input type="text" value={credentials.username} name='username' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Username" />
+                <input type="text" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Email" autoComplete='off' />
                 <input type="password" value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Password" />
                 {
                     error.error &&
                     <AuthenticationAlert error={error} setError={setError} />
                 }
-                <a href="/" className='dark:text-gray-200'>
+                <Link to='/forget-password' className='dark:text-gray-200'>
                     Forget Your Password?
-                </a>
-                <button type='submit' className='auth-button sign-up-clickable' disabled={signInInitialized}>
+                </Link>
+                <button type='submit' className={`auth-button ${disabled ? 'sign-up-disabled' : 'sign-up-clickable'}`} disabled={signInInitialized || disabled}>
                     Sign In
                 </button>
             </form>

@@ -62,23 +62,18 @@ const MobileMenu = (props) => {
                     </Link>
                 </li>
                 <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
-                    <Link to='/about'>
-                        About
+                    <Link to='/about-us'>
+                        About Us
                     </Link>
                 </li>
                 <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
-                    <Link to="/services">
-                        Services
+                    <Link to="/game">
+                        Games
                     </Link>
                 </li>
                 <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
-                    <Link to="/pricing">
-                        Pricing
-                    </Link>
-                </li>
-                <li className={navBorderClasses} onClick={() => { setMenuOpen(false) }}>
-                    <Link to="/contact">
-                        Contact
+                    <Link to="/frequently-asked-questions">
+                        Support
                     </Link>
                 </li>
             </ul>

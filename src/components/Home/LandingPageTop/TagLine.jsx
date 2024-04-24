@@ -21,7 +21,7 @@ const TagLine = () => {
                 iteration="3"
                 fillMode="none"
             >
-                <p className={`font-medium ${isDarkMode} dark:text-white text-xl lg:text-4xl tagline rounded-lg border border-gray-700 dark:border-gray-400`}>
+                <p className={`font-medium ${isDarkMode} dark:text-white text-xl lg:text-4xl tagline rounded-lg border border-gray-700 dark:border-gray-400 text-center`}>
                     Elevate Your Chess IQ With <span className='app-name font-bold text-blue-900 dark:text-white'>CHESSHUB</span>,<br /> Where Strategy Meets Success
                 </p>
             </MovingText>

@@ -18,6 +18,10 @@ import updateUserFriend from './redux/Auth/Actions/userFriend'
 import NotificationShower from './components/Notification/NotificationShower'
 import RandomPlay from './components/ChessBoard/RandomPlay/RandomPlay'
 import SelectionUI from './components/ChessBoard/PlayVsComputer/SelectionUI'
+import ForgetPassword from './components/Authentication/ForgetPassword/ForgetPassword'
+import DevFromNav from './components/Developers/DevFromNav'
+import Support from './components/Support/Support'
+import PageNotFound from './components/PageNotFound/PageNotFound'
 
 const App = () => {
 
@@ -40,7 +44,7 @@ const App = () => {
     userDetails && friends();
   }, [isAuthenticated, userDetails, dispatch])
 
-  
+
 
   return (
     <BrowserRouter>
@@ -50,6 +54,21 @@ const App = () => {
           <Route
             path='/'
             element={<LandingPage />}
+          />
+          <Route
+            path='*'
+            element={<PageNotFound />}
+          />
+          <Route
+            path='/about-us'
+            element={<DevFromNav />} />
+          <Route
+            path='/forget-password'
+            element={<ForgetPassword />}
+          />
+          <Route
+            path='/frequently-asked-questions'
+            element={<Support />}
           />
           <Route
             path="/auth/:path"

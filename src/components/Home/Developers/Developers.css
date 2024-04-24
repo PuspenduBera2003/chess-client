@@ -13,8 +13,8 @@
 }
 
 .dev-box {
-    width: 320px;
-    height: 250px;
+    width: 180px;
+    height: 260px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.288);
     border-radius: 20px;
     flex-direction: column;
@@ -25,12 +25,14 @@
 .dev-box img {
     width: 100px;
     height: 100px;
-    border-radius: 50px;
+    border-radius: 50%;
 }
 .user_name {
     margin-bottom: 5px;
     font-size: 1.5rem;
+    font-weight: 600;
 }
+
 .skills {
     color: rgba(255,255,255,0.555);
 }
@@ -109,4 +111,60 @@
 }
 .left_container .icons i:hover {
     color: rgb(151, 150, 150);
+}
+
+@media (min-width: 250px) {
+    .dev-box {
+        width: 230px;
+        gap: 4;
+    }
+}
+
+@media (min-width: 400px) {
+    .dev-box {
+        width: 320px;
+        gap: 4;
+    }
+}
+
+@media (min-width: 720px) {
+    .dev-box {
+        width: 350px;
+        gap: 4;
+    }
+}
+
+@media (min-width: 1080px) {
+    .dev-box {
+        width: 375px;
+        gap: 4;
+    }
+}
+
+@media (min-width: 250px) {
+    .dev-box img {
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media (min-width: 400px) {
+    .dev-box img {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media (min-width: 720px) {
+    .dev-box img {
+        width: 155px;
+        height: 155px;
+    }
+}
+
+@media (min-width: 1080px) {
+    .dev-box img {
+        width: 165px;
+        height: 165px;
+    }
 }

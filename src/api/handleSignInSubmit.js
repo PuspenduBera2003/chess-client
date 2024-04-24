@@ -8,7 +8,7 @@ const handleSignInSubmit = async (credentials) => {
     const credentialsURL = `${host}/api/credentials`;
     try {
         const doSignIn = await axios.post(signInURL, {
-            username: credentials.username,
+            username: credentials.email,
             email: credentials.email,
             password: credentials.password
         });

@@ -11,7 +11,7 @@ const GameOptions = () => {
         : 'light-mode-landing-page';
 
     return (
-        <div className={`game ${gradientClasses} p-2`}>
+        <div className={`${gradientClasses} p-2 min-height-without-navbar`} >
             <Features />
         </div>
     )

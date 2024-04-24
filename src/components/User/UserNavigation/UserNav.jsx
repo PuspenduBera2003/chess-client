@@ -99,13 +99,12 @@ const UserNav = (props) => {
                             <span className="title">FAQs</span>
                         </Link>
                     </li>
-
-                    <li className={`item-list  ${(active === "sign-out") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
-                        <Link to="/user/dashboard/sign-out" className='dark:text-white'>
+                    <li className={`item-list  ${(active === "all") && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
+                        <Link to="/user/dashboard/all" className='dark:text-white'>
                             <span className="icons">
-                                <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                                <ion-icon name="options-outline"></ion-icon>
                             </span>
-                            <span className="title">Sign Out</span>
+                            <span className="title">All Options</span>
                         </Link>
                     </li>
                 </ul>

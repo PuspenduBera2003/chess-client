@@ -27,24 +27,19 @@ const NavbarMiddle = () => {
                         Home
                     </div>
                 </Link>
-                <Link to='/about'>
-                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/about' ? 'activenav' : ''}`}>
-                        About
+                <Link to='/about-us'>
+                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/about-us' ? 'activenav' : ''}`}>
+                        About Us
                     </div>
                 </Link>
-                <Link to='/services'>
-                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/services' ? 'activenav' : ''}`}>
-                        Services
+                <Link to='/game'>
+                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/game' ? 'activenav' : ''}`}>
+                        Games
                     </div>
                 </Link>
-                <Link to='/pricing'>
-                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/pricing' ? 'activenav' : ''}`}>
-                        Pricing
-                    </div>
-                </Link>
-                <Link to='/contact'>
-                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/contact' ? 'activenav' : ''}`}>
-                        Contact
+                <Link to='/frequently-asked-questions'>
+                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect ${location.pathname === '/frequently-asked-questions' ? 'activenav' : ''}`}>
+                        FAQ's
                     </div>
                 </Link>
             </Navbar.Collapse>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from "react-chessboard";
 import { useSelector, useDispatch } from 'react-redux'
 import gameSituation from '../../../redux/OfflinePlay/Actions/PassPlayGame';
@@ -15,10 +15,25 @@ import getTimeGap from '../../../utils/getTimeGap';
 import updateRotation from '../../../redux/OfflinePlay/Actions/PassPlayRotation';
 import updateOrientation from '../../../redux/OfflinePlay/Actions/PassPlayOrientation';
 import responsiveBoard from '../../../utils/responsiveBoard';
+import normalMoveAudio from '../../../static/audio/move.mp3'
+import captureMoveAudio from '../../../static/audio/capture.mp3'
+import checkmateAudio from '../../../static/audio/checkmate_sound_effect.mp3'
+import checkAudio from '../../../static/audio/check.mp3'
+import castleAudio from '../../../static/audio/castle.mp3'
 
 const Board = (props) => {
 
     const { isFullscreen, isRotationEnabled, opacity } = props;
+
+    const moveAudioRef = useRef(new Audio(normalMoveAudio));
+
+    const captureAudioRef = useRef(new Audio(captureMoveAudio));
+
+    const checkmateAudioRef = useRef(new Audio(checkmateAudio));
+
+    const castleAudioRef = useRef(new Audio(castleAudio));
+
+    const checkAudioRef = useRef(new Audio(checkAudio));
 
     const game = useSelector(state => state.PassPlay.game);
 
@@ -111,6 +126,23 @@ const Board = (props) => {
             dispatch(updatePlayer(turn));
             isRotationEnabled && dispatch(updateRotation(rotate + 180));
             isRotationEnabled && dispatch(updateOrientation(currOrientation));
+            if (game.in_check()) {
+                checkAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (game.history()[game.history().length - 1] === 'O-O') {
+                castleAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else if (move.flags === 'c') {
+                captureAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            } else {
+                moveAudioRef.current.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            }
         }
     }
 
@@ -170,14 +202,23 @@ const Board = (props) => {
             const winner = player === 'w' ? 'Black' : 'White';
             const endTime = new Date();
             const matchRuntime = getTimeGap(startTime, endTime);
+            checkmateAudioRef.current.play().catch(error => {
+                console.error('Failed to play audio:', error);
+            });
             dispatch(updateOpenResultModal({ end: true, data: { result: `${winner} wins by checkmate!`, history: game.history(), matchRuntime } }))
         } else if (game.in_stalemate()) {
             const endTime = new Date();
             const matchRuntime = getTimeGap(startTime, endTime);
+            checkmateAudioRef.current.play().catch(error => {
+                console.error('Failed to play audio:', error);
+            });
             dispatch(updateOpenResultModal({ end: true, data: { result: "The game is a draw!", history: game.history(), matchRuntime } }))
         } else if (game.in_draw()) {
             const endTime = new Date();
             const matchRuntime = getTimeGap(startTime, endTime);
+            checkmateAudioRef.current.play().catch(error => {
+                console.error('Failed to play audio:', error);
+            });
             dispatch(updateOpenResultModal({ end: true, data: { result: "The game is a draw!", history: game.history(), matchRuntime } }))
         }
     };
@@ -196,6 +237,38 @@ const Board = (props) => {
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const customPieces = useMemo(() => {
+        const pieces = [
+            "wP",
+            "wN",
+            "wB",
+            "wR",
+            "wQ",
+            "wK",
+            "bP",
+            "bN",
+            "bB",
+            "bR",
+            "bQ",
+            "bK",
+        ];
+        const pieceComponents = {};
+        pieces.forEach((piece) => {
+            const imagePath = require(`../../../static/images/pieces/${piece}.png`);
+            pieceComponents[piece] = ({ squareWidth }) => (
+                <div
+                    style={{
+                        width: squareWidth,
+                        height: squareWidth,
+                        backgroundImage: `url(${imagePath})`,
+                        backgroundSize: "100%",
+                    }}
+                />
+            );
+        });
+        return pieceComponents;
     }, []);
 
     return (
@@ -224,6 +297,7 @@ const Board = (props) => {
                 customDarkSquareStyle={customSquareStyles.customDarkSquareStyle}
                 customLightSquareStyle={customSquareStyles.customLightSquareStyle}
                 promotionToSquare={moveTo}
+                customPieces={customPieces}
                 showPromotionDialog={showPromotionDialog}
                 boardWidth={boardWidth}
                 boardOrientation={orientation}
