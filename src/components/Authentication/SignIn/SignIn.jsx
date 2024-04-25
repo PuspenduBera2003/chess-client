@@ -7,11 +7,21 @@ import AuthenticationAlert from '../AuthenticationAlert';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 import updateUserDetails from '../../../redux/Auth/Actions/userDetails';
 
+const toggleClasses = 'text-gray-800 dark:text-gray-200'
+
+function isValidEmail(email) {
+    // Regular expression pattern for email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 const SignIn = () => {
 
     const [credentials, setCredentials] = useState({ username: "", email: "", password: "" });
 
     const [error, setError] = useState({ error: false, description: null });
+
+    const [type, setType] = useState(true)
 
     const [signInInitialized, setSignInInitialized] = useState(false);
 
@@ -51,6 +61,14 @@ const SignIn = () => {
         setSignInInitialized(false)
     }
 
+    const handleTypeChange = () => {
+        if (type) {
+            setType(false);
+        } else {
+            setType(true);
+        }
+    }
+
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
@@ -61,7 +79,12 @@ const SignIn = () => {
 
     useEffect(() => {
         if (credentials.password.length >= 5) {
-            setDisabled(false)
+            const emailValidation = isValidEmail(credentials.email);
+            if(emailValidation){
+                setDisabled(false)
+            } else {
+                setDisabled(true)
+            }
         } else {
             setDisabled(true)
         }
@@ -70,20 +93,28 @@ const SignIn = () => {
     return (
         <div className={`form-container sign-in ${formClasses}`} style={{ backgroundColor: 'black' }}>
             <form onSubmit={handleSubmit} autoComplete='off'>
-                <h1 className='text-3xl font-bold text-gray-950 dark:text-white'>
+                <h1 className='text-3xl font-bold text-gray-950 dark:text-white mb-2'>
                     Sign In
                 </h1>
-                <div className="social-icons flex flex-row flex-wrap gap-2">
-                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-google-plus-g dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-facebook-f dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-github"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-linkedin-in"></i></div>
-                </div>
-                <span className='text-gray-900 dark:text-white'>
-                    or use your email password
-                </span>
                 <input type="text" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Email" autoComplete='off' />
-                <input type="password" value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Password" />
+                <div className='relative w-full'>
+                    <input type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white w-full`} placeholder="Password" />
+                    {
+                        type ?
+                            <button
+                                type='button'
+                                onClick={() => handleTypeChange()}
+                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                <i className={`fa-regular fa-eye ${toggleClasses}`}></i>
+                            </button> :
+                            <button
+                                type='button'
+                                onClick={() => handleTypeChange()}
+                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                <i className={`fa-regular fa-eye-slash ${toggleClasses}`} ></i>
+                            </button>
+                    }
+                </div>
                 {
                     error.error &&
                     <AuthenticationAlert error={error} setError={setError} />

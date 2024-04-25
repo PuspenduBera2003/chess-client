@@ -16,7 +16,9 @@ const style = {
     p: 4,
 };
 
-const PasswordPolicy = () => {
+const PasswordPolicy = (props) => {
+
+    const { light } = props;
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -24,8 +26,8 @@ const PasswordPolicy = () => {
 
     return (
         <div>
-            <p className="flex items-center text-sm text-white">
-                Password Policy
+            <p className={`flex items-center text-sm ${light ? 'text-black dark:text-white' : 'text-white'}`}>
+                Credentials Policy
                 <button
                     onClick={handleOpen}
                     data-popover-target="popover-description"
@@ -64,10 +66,10 @@ const PasswordPolicy = () => {
                 <Fade in={open} className='bg-gray-300 dark:bg-gray-800'>
                     <Box sx={style}>
                         <h3 className="font-semibold text-lg text-center text-gray-900 dark:text-white mb-2">
-                            Password Policy - ChessHub
+                            Credentials Policy - ChessHub
                         </h3>
                         <p className="text-gray-900 text-center dark:text-white">
-                            Password should be containing at least six characters including one uppercase letter, one lowercase letter, one numeric character, and one special character.
+                            Username should have minimum 5 characters and it can have maximum 20 characters. Password should be containing at least six characters including one uppercase letter, one lowercase letter, one numeric character, and one special character.
                         </p>
                     </Box>
                 </Fade>

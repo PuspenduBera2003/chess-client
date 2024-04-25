@@ -13,12 +13,12 @@ const TagLine = () => {
     return (
         <div className="flex items-center justify-center">
             <MovingText
-                type="jelly"
-                duration="2000ms"
+                type="popIn"
+                duration="1000ms"
                 delay="0s"
                 direction="normal"
-                timing="ease"
-                iteration="3"
+                timing="ease-in-out"
+                iteration="2"
                 fillMode="none"
             >
                 <p className={`font-medium ${isDarkMode} dark:text-white text-xl lg:text-4xl tagline rounded-lg border border-gray-700 dark:border-gray-400 text-center`}>

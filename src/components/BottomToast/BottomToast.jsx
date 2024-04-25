@@ -23,7 +23,7 @@ const BottomToast = () => {
     }
 
     return (
-        <div className="flex items-center w-full max-w-xs p-4 text-gray-800 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 fixed bottom-2 right-2 z-40" role="alert">
+        <div className="flex items-center w-full max-w-xs p-2 m-2 text-gray-800 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 fixed bottom-2 right-2 z-40" role="alert">
             {
                 showBottomToast.type === "success" &&
                 <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">

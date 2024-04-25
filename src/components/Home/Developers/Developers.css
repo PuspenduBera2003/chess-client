@@ -14,7 +14,7 @@
 
 .dev-box {
     width: 180px;
-    height: 260px;
+    min-height: 260px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.288);
     border-radius: 20px;
     flex-direction: column;
@@ -116,28 +116,30 @@
 @media (min-width: 250px) {
     .dev-box {
         width: 230px;
-        gap: 4;
     }
 }
 
 @media (min-width: 400px) {
     .dev-box {
         width: 320px;
-        gap: 4;
+    }
+}
+
+@media (max-width: 400px) {
+    .dev-box {
+        height: 350px;
     }
 }
 
 @media (min-width: 720px) {
     .dev-box {
         width: 350px;
-        gap: 4;
     }
 }
 
 @media (min-width: 1080px) {
     .dev-box {
         width: 375px;
-        gap: 4;
     }
 }
 

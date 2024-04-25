@@ -160,6 +160,10 @@
     margin-left: 15px;
 }
 
+.border-gray-700-2 {
+    border-bottom: 2px solid rgba(82, 82, 91, 0.2);
+}
+
 @keyframes openMenu {
     0% {
         transform: scaleY(0)

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 .auth {
-    min-height: 100vh;
+    min-height: calc(100vh - 3.75rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,7 +23,13 @@
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 35rem;
+    min-height: 25rem;
+}
+
+@media only screen and (max-width: 525px) {
+    .auth-container {
+        min-height: 35rem;
+    }
 }
 
 .dark-auth-container {

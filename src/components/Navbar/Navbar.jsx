@@ -38,6 +38,9 @@ const NavigationBar = () => {
           (
             <Navbar fluid rounded className={`text-gray-900 ${gradientClasses} sticky top-0 start-0 w-full z-50 shadow-md shadow-stone-900 rounded-none`}>
               <NavbarLogo />
+              <div className='flex flex-end items-end justify-end md:hidden mr-2' style={{ flexBasis: 1, flexGrow: 1 }}>
+                <Switcher />
+              </div>
               <NavbarMiddle />
               <div className='hidden md:flex items-center justify-center gap-0.5 theme-changer'>
                 <Switcher />

@@ -68,7 +68,7 @@ const Authentication = () => {
 
     return (
         <div className={`auth ${authClasses}`}>
-            <div className={`auth-container ${containerClasses} ${isSignIn ? 'active' : ''} border border-white dark:border-gray-700`}>
+            <div className={`auth-container ${containerClasses} m-2 ${isSignIn ? 'active' : ''} border border-white dark:border-gray-700`}>
                 {
                     !signUpInitialized.response.success ?
                         <div>
@@ -77,13 +77,13 @@ const Authentication = () => {
                             <div className="toggle-container">
                                 <div className="toggle">
                                     <div className="toggle-panel toggle-left">
-                                        <h1 className='text-3xl font-bold'>Welcome Back !</h1>
+                                        <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome Back !</h1>
                                         <p>Enter your personal details to use all site features</p>
                                         <button className="toggle-button auth-button" id='login' onClick={handleLoginClick}>Sign In</button>
                                         <PasswordPolicy />
                                     </div>
                                     <div className="toggle-panel toggle-right">
-                                        <h1 className='text-3xl font-bold'>Welcome, Friend!</h1>
+                                        <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome, Friend!</h1>
                                         <p>Enter your personal details to use all site features</p>
                                         <button className="toggle-button auth-button" id='register' onClick={handleRegisterClick}>Sign Up</button>
                                     </div>

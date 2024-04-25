@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import PasswordPolicy from "../../Authentication/SignUp/PasswordPolicy"
 
 const qnA = [
     {
@@ -52,6 +53,17 @@ const qnA = [
         A: (
             <div>
                 To reach out to the developers, you can either visit the <Link to='/about-us' className="text-blue-700 dark:text-blue-500 font-semibold">About Us</Link> section on the website or send an email to <a className="text-blue-700 dark:text-blue-500 font-semibold" href="mailto:chesshub.authentication@gmail.com">chesshub.authentication@gmail.com</a>.
+            </div>
+        )
+    },
+    {
+        Q: "What are the credentials policies of ChessHub?",
+        A: (
+            <div className="flex flex-wrap flex-col gap-2">
+                <div>
+                    ChessHub <b>username</b> must be between <b>5 and 20 characters long</b> and <b>password</b> must be <b>at least six characters long</b> and include at least <b>one uppercase letter, one lowercase letter, one numeric character, and one special character</b>.
+                </div>
+                <PasswordPolicy light={true} />
             </div>
         )
     }

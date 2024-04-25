@@ -93,7 +93,7 @@ const EasyCrop = (props) => {
                     display: image === null || croppedImage !== null ? "none" : "block",
                 }}
             >
-                <div className="crop-container">
+                <div className="crop-container bg-gray-50 dark:bg-gray-600">
                     <Cropper
                         image={image}
                         crop={crop}

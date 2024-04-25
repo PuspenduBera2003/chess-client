@@ -18,7 +18,6 @@ const NavbarMiddle = () => {
     return (
         <>
             <div className='flex gap-4 items-center justify-center md:hidden'>
-                <Switcher />
                 <MobileMenu theme={currentTheme} />
             </div>
             <Navbar.Collapse>

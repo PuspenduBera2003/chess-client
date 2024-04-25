@@ -8,11 +8,17 @@ import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 
 const toggleClasses = 'text-gray-800 dark:text-gray-200'
 
+function isValidEmail(email) {
+    // Regular expression pattern for email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+}
+
 const SignUp = () => {
 
     const currentTheme = useSelector(state => state.Theme.currentTheme);
 
-    const [type, setType] = useState(false)
+    const [type, setType] = useState(true)
 
     const formClasses = (currentTheme === "dark")
         ? 'dark-auth-container'
@@ -98,24 +104,27 @@ const SignUp = () => {
     };
 
     useEffect(() => {
-        setShowSubmitButton(widthPower[point] === "100%" && credentials.username.length >= 5);
+        const validEmail = isValidEmail(credentials.email);
+        if (widthPower[point] === "100%" && credentials.username.length >= 5 && validEmail) {
+            setShowSubmitButton(true);
+        } else {
+            setShowSubmitButton(false);
+            if (credentials.username.length < 5) {
+                setError({ error: true, description: 'Check Username Length' })
+            } else if (!validEmail) {
+                setError({ error: true, description: 'Email is invalid' })
+            } else {
+                setError({ error: true, description: 'Check Password Policy' })
+            }
+        }
     }, [credentials]);
 
     return (
         <div className={`form-container sign-up ${formClasses}`}>
             <form onSubmit={handleSubmit} className='overflow-auto'>
-                <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
+                <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center'>
                     Create Account
                 </h1>
-                <div className="social-icons flex flex-row flex-wrap gap-2">
-                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-google-plus-g dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer hover:opacity-75"><i className="fa-brands fa-facebook-f dark:text-white transition-opacity duration-200 ease-in-out"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-github"></i></div>
-                    <div className="icon flex items-center justify-center border cursor-pointer dark:text-white hover:opacity-75 transition-opacity duration-200 ease-in-out"><i className="fa-brands fa-linkedin-in"></i></div>
-                </div>
-                <span className='text-gray-900 dark:text-white'>
-                    or use your email for registration
-                </span>
                 <input type="text" placeholder="Username" value={credentials.username} name='username' onChange={onChange} className={`${inputClass} dark:text-white`} />
                 <input type="email" placeholder="Email" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} required />
                 <div className="password-group">

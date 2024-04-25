@@ -347,3 +347,26 @@
 .hover\:opacity-75:hover {
     opacity: 0.75;
 }
+
+.text-xl {
+    font-size: 1.25rem/* 20px */;
+    line-height: 1.75rem/* 28px */;
+}
+
+@media (min-width: 640px) {
+    .sm\:text-2xl {
+        font-size: 1.5rem/* 24px */;
+        line-height: 2rem/* 32px */;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:text-3xl {
+        font-size: 1.875rem/* 30px */;
+        line-height: 2.25rem/* 36px */;
+    }
+}
+
+.bg-inherit {
+    background-color: inherit;
+}
