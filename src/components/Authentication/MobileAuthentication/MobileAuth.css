@@ -65,7 +65,7 @@
 	transition: transform .8s ease-in-out;
 }
 
-.login label {
+.login label{
 	transform: scale(.6);
 }
 

@@ -45,7 +45,7 @@ const DevIndividual = (props) => {
             <animated.div
                 style={cardSpring}
                 ref={ref}
-                className={`main dev-center py-5 ${leftContainerActive ? 'left-container-active' : ''}`}>
+                className={`dev-center py-5 ${leftContainerActive ? 'left-container-active' : ''}`}>
                 <div
                     className={`dev-box dev-center ${devContainer} ${currentTheme === "dark" ? 'dark-mode-shadow' : ''} border`}>
                     <img

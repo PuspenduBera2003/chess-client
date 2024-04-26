@@ -18,15 +18,13 @@ export default function useDarkSide() {
         const root = window.document.documentElement;
         root.classList.remove(colorTheme);
         root.classList.add(theme);
-        if (localStorage.theme !== theme) {
-            localStorage.setItem("theme", theme);
-            dispatch(toggleTheme(theme));
-        }
-    }, [theme, colorTheme, dispatch]);
+        localStorage.setItem("theme", theme);
+        dispatch(toggleTheme(theme));
+    }, [theme, colorTheme]);
 
     useEffect(() => {
         dispatch(toggleTheme(storedTheme));
-    }, [dispatch, storedTheme]);
+    }, []);
 
     return [colorTheme, setTheme];
 }

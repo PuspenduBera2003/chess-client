@@ -180,7 +180,7 @@ const MobileSignUp = () => {
                                 Sign Up
                             </button>
                             <div className='flex items-center justify-center'>
-                                <PasswordPolicy />
+                                <PasswordPolicy light={true} />
                             </div>
                         </div>
                     </form>
