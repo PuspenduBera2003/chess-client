@@ -12,7 +12,7 @@ import updateSignUpInitialized from '../../../redux/Auth/Actions/signUpInitializ
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 import updateUserDetails from '../../../redux/Auth/Actions/userDetails';
 
-const OtpPage = () => {
+const OtpPage = (props) => {
 
     const signUpData = useSelector(state => state.Auth.signUpInitialized);
 
@@ -54,7 +54,6 @@ const OtpPage = () => {
             setOtpResend(false);
         }, 5000);
         setShowCountDown(true);
-        console.log(handleGenerateOTP);
         dispatch(updateSignUpInitialized({
             start: true, response: {
                 success: true,
@@ -115,7 +114,7 @@ const OtpPage = () => {
     });
 
     return (
-        <animated.div className="flex items-center justify-center rounded" style={{ ...animationProps, height: '35rem', maxWidth: '768px' }}>
+        <animated.div className="flex items-center justify-center rounded" style={{ ...animationProps, height: props.height, maxWidth: '768px' }}>
             <form style={{ maxWidth: 400 }} onSubmit={handleSubmit}>
                 <h1 className="dark:text-gray-300 text-center font-semibold mb-4">Please enter the OTP send to {email}</h1>
                 <div className="flex justify-center gap-2 mb-6">

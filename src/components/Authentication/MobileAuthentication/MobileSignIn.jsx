@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom';
 import handleSignInSubmit from '../../../api/handleSignInSubmit';
-import updateIsAuthenticated from '../../../redux/Auth/Actions/IsAuthenticated';
-import AuthenticationAlert from '../AuthenticationAlert';
 import updateShowBotomToast from '../../../redux/Auth/Actions/showBottomToast';
 import updateUserDetails from '../../../redux/Auth/Actions/userDetails';
+import updateIsAuthenticated from '../../../redux/Auth/Actions/IsAuthenticated';
+import AuthenticationAlert from '../AuthenticationAlert';
 
 const toggleClasses = 'text-gray-800 dark:text-gray-200'
 
@@ -15,7 +15,9 @@ function isValidEmail(email) {
     return emailPattern.test(email);
 }
 
-const SignIn = () => {
+const MobileSignIn = () => {
+
+    const theme = useSelector(state => state.Theme.currentTheme);
 
     const [credentials, setCredentials] = useState({ username: "", email: "", password: "" });
 
@@ -29,17 +31,7 @@ const SignIn = () => {
 
     const navigate = useNavigate();
 
-    const currentTheme = useSelector(state => state.Theme.currentTheme);
-
     const [disabled, setDisabled] = useState(true);
-
-    const formClasses = (currentTheme === "dark")
-        ? 'dark-auth-container'
-        : 'light-auth-container';
-
-    const inputClass = (currentTheme === "dark")
-        ? 'dark-input'
-        : 'light-input';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,7 +72,7 @@ const SignIn = () => {
     useEffect(() => {
         if (credentials.password.length >= 5) {
             const emailValidation = isValidEmail(credentials.email);
-            if(emailValidation){
+            if (emailValidation) {
                 setDisabled(false)
             } else {
                 setDisabled(true)
@@ -89,45 +81,48 @@ const SignIn = () => {
             setDisabled(true)
         }
     }, [credentials])
-
     return (
-        <div className={`form-container sign-in ${formClasses}`} style={{ backgroundColor: 'black' }}>
-            <form onSubmit={handleSubmit} autoComplete='off'>
-                <h1 className='text-3xl font-bold text-gray-950 dark:text-white mb-2'>
-                    Sign In
-                </h1>
-                <input type="text" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Email" autoComplete='off' />
-                <div className='relative w-full'>
-                    <input type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white w-full`} placeholder="Password" />
+        <div className={`login z-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-violet-100'} w-full m-3`}>
+            <form onSubmit={handleSubmit}>
+                <label className='mobile-auth-label text-gray-900 dark:text-gray-100 text-center' htmlFor="chk" aria-hidden="true">Login</label>
+                <input className='mobile-auth-input bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-black dark:text-white' type="text" value={credentials.email} name='email' onChange={onChange} placeholder='Email' />
+                <div className='relative'>
+                    <input className='mobile-auth-input bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-black dark:text-white' type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} placeholder='Password' />
                     {
                         type ?
                             <button
                                 type='button'
                                 onClick={() => handleTypeChange()}
-                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
                                 <i className={`fa-regular fa-eye ${toggleClasses}`}></i>
                             </button> :
                             <button
                                 type='button'
                                 onClick={() => handleTypeChange()}
-                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md z-10 absolute right-2 top-register'>
+                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
                                 <i className={`fa-regular fa-eye-slash ${toggleClasses}`} ></i>
                             </button>
                     }
                 </div>
                 {
                     error.error &&
-                    <AuthenticationAlert error={error} setError={setError} />
+                    <div className='px-5 mt-2'>
+                        <AuthenticationAlert error={error} setError={setError} />
+                    </div>
                 }
-                <Link to='/forget-password' className='text-blue-700 dark:text-blue-400'>
-                    Forget Your Password?
-                </Link>
-                <button type='submit' className={`auth-button ${disabled ? 'sign-up-disabled' : 'sign-up-clickable'}`} disabled={signInInitialized || disabled}>
-                    Sign In
-                </button>
+                <div className='w-full flex items-center justify-center mt-3'>
+                    <Link to='/forget-password' className='text-blue-700 dark:text-blue-400'>
+                        Forget Your Password?
+                    </Link>
+                </div>
+                <div className='w-full flex flex-col flex-wrap items-center justify-center gap-3 mt-5'>
+                    <button type='submit' className={`auth-button ${disabled ? 'sign-up-disabled' : 'sign-up-clickable'} p-3 rounded-lg`} disabled={signInInitialized || disabled}>
+                        Sign In
+                    </button>
+                </div>
             </form>
         </div>
     )
 }
 
-export default SignIn
+export default MobileSignIn

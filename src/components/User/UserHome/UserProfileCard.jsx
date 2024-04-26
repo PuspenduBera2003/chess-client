@@ -67,7 +67,7 @@ const UserProfileCard = () => {
                         {name}
                     </h2>
                     <p className='text-md dark:text-white' style={{ textTransform: 'uppercase' }}>
-                        {`You have joined us ${userJoiningTime} as an user, since then we are Family`}
+                    {`You have joined us as an user, since then we are Family`}
                     </p>
                     <div className="action-buttons">
                         <Link to="/user/dashboard/profile" className="btn vp">View Profile</Link>

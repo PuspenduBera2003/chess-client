@@ -3,7 +3,7 @@ import { useSpring, animated, config } from 'react-spring';
 import WelcomeHeading from './WelcomeHeading';
 import BouncingDiv from './BouncingDiv';
 import ChessBoardImage from './ChessBoardImage';
-import { Link } from 'react-scroll'; 
+import { Link } from 'react-scroll';
 import TagLine from './TagLine';
 import BackgroundVideo from './BackgroundVideo';
 
@@ -33,12 +33,12 @@ const LandingPageTop = () => {
                     </div>
                     <div className="flex w-full items-center justify-center md:justify-between mb-4 lg:mb-2 flex-wrap gap-2">
                         <TagLine />
-                        <div>
+                        <div className='pr-0 lg:pr-10'>
                             <ChessBoardImage />
                         </div>
                         <BouncingDiv />
                     </div>
-                    <div className="flex justify-center items-center">
+                    <div className="flex w-full justify-center items-center lg:justify-center">
                         <Link to='features' smooth={true} duration={500} className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer shadow-none lg:shadow-lg shadow-purple-500/50 dark:shadow-purple-800/80">
                             Get Started
                         </Link>

@@ -13,13 +13,12 @@ const TagLine = () => {
     return (
         <div className="flex items-center justify-center">
             <MovingText
-                type="popIn"
-                duration="1000ms"
+                type="jelly"
+                duration="2000ms"
                 delay="0s"
                 direction="normal"
-                timing="ease-in-out"
-                iteration="2"
-                fillMode="none"
+                timing="ease"
+                iteration="1"
             >
                 <p className={`font-medium ${isDarkMode} dark:text-white text-xl lg:text-4xl tagline rounded-lg border border-gray-700 dark:border-gray-400 text-center`}>
                     Elevate Your Chess IQ With <span className='app-name font-bold text-blue-900 dark:text-white'>CHESSHUB</span>,<br /> Where Strategy Meets Success

@@ -8,11 +8,14 @@ import OtpPage from './SignUp/OtpPage';
 import SignUpToaster from './SignUp/SignUpToaster';
 import updateSignUpInitialized from '../../redux/Auth/Actions/signUpInitialized';
 import PasswordPolicy from './SignUp/PasswordPolicy';
+import MobileAuth from './MobileAuthentication/MobileAuth';
 
 const Authentication = () => {
     const [isSignIn, setIsSignIn] = useState(false);
 
     const dispatch = useDispatch();
+
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const { path } = useParams();
     const navigate = useNavigate();
@@ -56,45 +59,61 @@ const Authentication = () => {
     });
 
     useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth); // Update windowWidth state when window is resized
+        };
+
+        window.addEventListener('resize', handleResize); // Listen for resize events
+
         return () => {
+            window.removeEventListener('resize', handleResize); // Clean up event listener
             dispatch(updateSignUpInitialized({
                 start: false, response: {
                     success: false,
                     serverReplied: false
                 }, email: '', password: '', username: '', token: ''
             }));
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <div className={`auth ${authClasses}`}>
-            <div className={`auth-container ${containerClasses} m-2 ${isSignIn ? 'active' : ''} border border-white dark:border-gray-700`}>
-                {
-                    !signUpInitialized.response.success ?
-                        <div>
-                            <SignUp />
-                            <SignIn />
-                            <div className="toggle-container">
-                                <div className="toggle">
-                                    <div className="toggle-panel toggle-left">
-                                        <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome Back !</h1>
-                                        <p>Enter your personal details to use all site features</p>
-                                        <button className="toggle-button auth-button" id='login' onClick={handleLoginClick}>Sign In</button>
-                                        <PasswordPolicy />
+            {windowWidth > 550 ?
+                (
+                    <>
+                        <div className={`auth-container ${containerClasses} m-2 ${isSignIn ? 'active' : ''} border border-white dark:border-gray-700`}>
+                            {
+                                !signUpInitialized.response.success ?
+                                    <div>
+                                        <SignUp />
+                                        <SignIn />
+                                        <div className="toggle-container">
+                                            <div className="toggle">
+                                                <div className="toggle-panel toggle-left">
+                                                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome Back !</h1>
+                                                    <p>Enter your personal details to use all site features</p>
+                                                    <button className="toggle-button auth-button" id='login' onClick={handleLoginClick}>Sign In</button>
+                                                    <PasswordPolicy />
+                                                </div>
+                                                <div className="toggle-panel toggle-right">
+                                                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome, Friend!</h1>
+                                                    <p>Enter your personal details to use all site features</p>
+                                                    <button className="toggle-button auth-button" id='register' onClick={handleRegisterClick}>Sign Up</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="toggle-panel toggle-right">
-                                        <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>Welcome, Friend!</h1>
-                                        <p>Enter your personal details to use all site features</p>
-                                        <button className="toggle-button auth-button" id='register' onClick={handleRegisterClick}>Sign Up</button>
-                                    </div>
-                                </div>
-                            </div>
+                                    : <OtpPage height='25rem' />
+                            }
                         </div>
-                        : <OtpPage />
-                }
-            </div>
-            {
-                signUpInitialized.start && !signUpInitialized.response.serverReplied && <SignUpToaster />
+                        {
+                            signUpInitialized.start && !signUpInitialized.response.serverReplied && <SignUpToaster />
+                        }
+                    </>
+                ) : 
+                <div className='w-full'>
+                    <MobileAuth />
+                </div>
             }
         </div>
     );
