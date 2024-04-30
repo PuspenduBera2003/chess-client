@@ -80,7 +80,7 @@ const SignIn = () => {
     useEffect(() => {
         if (credentials.password.length >= 5) {
             const emailValidation = isValidEmail(credentials.email);
-            if(emailValidation){
+            if (emailValidation) {
                 setDisabled(false)
             } else {
                 setDisabled(true)
@@ -96,9 +96,9 @@ const SignIn = () => {
                 <h1 className='text-3xl font-bold text-gray-950 dark:text-white mb-2'>
                     Sign In
                 </h1>
-                <input type="text" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} placeholder="Email" autoComplete='off' />
+                <input type="text" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white ${currentTheme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} placeholder="Email" autoComplete='off' />
                 <div className='relative w-full'>
-                    <input type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white w-full`} placeholder="Password" />
+                    <input type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} className={`${inputClass} dark:text-white w-full ${currentTheme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} placeholder="Password" />
                     {
                         type ?
                             <button

@@ -6,6 +6,9 @@ import Lose from './Types/Lose';
 import Draw from './Types/Draw';
 import { useNavigate } from 'react-router-dom';
 import ResultUploader from './ResultUploader';
+import NotConcluded from './Types/NotConcluded';
+import socket from '../../../../socket/socket';
+import updateShowBotomToast from '../../../../redux/Auth/Actions/showBottomToast';
 
 
 export default function Result() {
@@ -37,6 +40,20 @@ export default function Result() {
         }
     }, [result, gameId])
 
+    React.useEffect(() => {
+        socket.on('reconnect_attempt', (attemptNumber) => {
+            dispatch(updateShowBotomToast({ show: true, type: 'loading', message: `Attempting to reconnect (attempt ${attemptNumber})` }))
+        });
+
+        socket.on('reconnect_error', (error) => {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: `Reconnection error:${error.message}` }))
+        });
+
+        socket.on('disconnect', () => {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: `Disconnected from server` }))
+        });
+    })
+
     return (
         <div className='absolute flex items-center justify-center top-0 w-full h-full'>
             {
@@ -47,7 +64,9 @@ export default function Result() {
                             <Win />
                             : (result.get(gameId) === 'L' || result.get(gameId) === 'R' || result.get(gameId) === 'T') ?
                                 <Lose />
-                                : <Draw />
+                                : (result.get(gameId) === 'MA' || result.get(gameId) === 'SD' || result.get(gameId) === 'D') ?
+                                    <Draw />
+                                    : <NotConcluded />
                     }
                     <div className='flex flex-row flex-wrap items-center justify-center'>
                         <button

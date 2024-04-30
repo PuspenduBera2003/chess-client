@@ -21,8 +21,8 @@ const NavbarMiddle = () => {
                 <MobileMenu theme={currentTheme} />
             </div>
             <Navbar.Collapse>
-                <Link to='/'>
-                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect font-semibold ${location.pathname === '/' ? 'activenav' : ''}`}>
+                <Link to='/home'>
+                    <div className={`nav-elements ${isDarkMode} dark:text-white underline-hover-effect font-semibold ${location.pathname === '/home' ? 'activenav' : ''}`}>
                         Home
                     </div>
                 </Link>

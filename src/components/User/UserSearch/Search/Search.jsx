@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SearchResult from './SearchResult'
 import socket from '../../../../socket/socket';
+import { useTrail, animated } from 'react-spring';
 
 const Search = () => {
 
@@ -43,6 +44,12 @@ const Search = () => {
             setSearchResultLength({ response: true, length: data.result.length })
         })
     })
+
+    const trail = useTrail(searchResult ? searchResult.length : 0, {
+        from: { opacity: 1, transform: 'translateY(-20px)' },
+        to: { opacity: 1, transform: 'translateY(0)' },
+        config: { mass: 2, tension: 1000, friction: 25 },
+    });
 
     return (
         <div className='w-full flex flex-col items-center justify-center'>
@@ -92,8 +99,10 @@ const Search = () => {
                             </div>
                         ) : (
                             <div className='flex flex-col gap-3'>
-                                {searchResult.map((result, index) => (
-                                    <SearchResult key={index} searchResult={result} />
+                                {trail.map((props, index) => (
+                                    <animated.div key={index} style={props}>
+                                        <SearchResult searchResult={searchResult[index]} />
+                                    </animated.div>
                                 ))}
                             </div>
                         )

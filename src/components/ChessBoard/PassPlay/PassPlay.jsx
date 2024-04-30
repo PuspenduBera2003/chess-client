@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import './PassPlay.css';
 import { requestFullscreen, handleFullscreenChange, exitFullscreen } from "../../../utils/toggleFullScreen";
@@ -35,6 +35,8 @@ export default function PassPlay() {
     : 'light-mode-nav-border'
 
   const fullscreenDivRef = useRef(null);
+
+  const menuRef = useRef(null);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -91,19 +93,34 @@ export default function PassPlay() {
     ? 'dark-menu-border'
     : 'light-menu-border';
 
+  useEffect(() => {
+    const handleClickOutsideMenu = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutsideMenu);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutsideMenu);
+    };
+  }, []);
+
   return (
     <div className={`chessboard-layout text-gray-900 bg-gradient-to-r ${gradientClasses} py-2`} ref={fullscreenDivRef} >
       <div
-      className="flex flex-wrap items-center justify-center"
+        className="flex flex-wrap items-center justify-center"
         style={{
           width: '400px',
         }}>
-          <div>
-        <Board isFullscreen={isFullscreen} isRotationEnabled={isRotationEnabled} opacity={boardOpacity} />
-          </div>
+        <div>
+          <Board isFullscreen={isFullscreen} isRotationEnabled={isRotationEnabled} opacity={boardOpacity} />
+        </div>
         <div
           className="navbar absolute"
-          onClick={openMenu}>
+          onClick={openMenu}
+          ref={menuRef}>
           <div
             className="p-2 fixed bottom-0 right-0">
             <button type="button" className={`inline-flex rounded-lg flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group ${navMenuBorder}`}>
@@ -138,9 +155,7 @@ export default function PassPlay() {
             <li
               disabled={isGameEnd | isGameInInitialState}
               onClick={() => {
-                safeGameMutate((game) => {
-                  game.undo();
-                });
+                game.undo();
                 dispatch(updateMoveSquare({}));
                 dispatch(updateOptionSquares({}));
                 dispatch(updateRightClickedSquares({}));

@@ -8,6 +8,7 @@ import illustration3 from '../../../static/images/playwithfriend.png';
 import illustration4 from '../../../static/images/chessboard7.jpg';
 import illustration5 from '../../../static/images/chessboard6.jpg';
 import CarouselsHeader from './CarouselsHeader';
+import { Link } from 'react-router-dom';
 
 const Carousels = () => {
     const panelsRef = useRef([]);
@@ -44,23 +45,23 @@ const Carousels = () => {
             <CarouselsHeader />
             <div className="carousel-container" ref={ref}>
                 <animated.div className="panel active" ref={(el) => (panelsRef.current[0] = el)} style={{ ...animationProps, backgroundImage: `url(${illustration1})` }}>
-                    <h3>Pass & Play</h3>
+                    <Link to='/game/passplay'><h3>Pass & Play</h3></Link>
                 </animated.div>
 
                 <animated.div className="panel" ref={(el) => (panelsRef.current[1] = el)} style={{ ...animationProps, backgroundImage: `url(${illustration2})` }}>
-                    <h3>Play With Bots</h3>
+                    <Link to='/game/play-vs-computer'><h3>Play With Bots</h3></Link>
                 </animated.div>
 
                 <animated.div className="panel" ref={(el) => (panelsRef.current[2] = el)} style={{ ...animationProps, backgroundImage: `url(${illustration3})` }}>
-                    <h3>Play With Friend</h3>
+                    <Link to='/game/play-with-friends'><h3>Play With Friend</h3></Link>
                 </animated.div>
 
                 <animated.div className="panel" ref={(el) => (panelsRef.current[3] = el)} style={{ ...animationProps, backgroundImage: `url(${illustration4})` }}>
-                    <h3>Play Online</h3>
+                    <Link to='/game/random-game'><h3>Play Online</h3></Link>
                 </animated.div>
 
                 <animated.div className="panel" ref={(el) => (panelsRef.current[4] = el)} style={{ ...animationProps, backgroundImage: `url(${illustration5})` }}>
-                    <h3>Learn Chess</h3>
+                    <Link to='/user/dashboard/friends'><h3>In-App Invitation</h3></Link>
                 </animated.div>
             </div>
         </div>

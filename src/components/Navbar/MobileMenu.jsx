@@ -63,7 +63,7 @@ const MobileMenu = (props) => {
             </div>
             <ul className={`menu border dark:border-gray-600 font-semibold dark:text-white ${isMenuOpen ? 'open' : ''} bg-gradient-to-r ${gradientClasses}`}>
                 <li className={navBorderClasses}>
-                    <Link to="/" onClick={closeMenu}>
+                    <Link to="/home" onClick={closeMenu}>
                         Home
                     </Link>
                 </li>

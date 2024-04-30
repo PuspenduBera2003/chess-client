@@ -10,7 +10,7 @@ const UserProfile = () => {
         'bg-white'
 
     return (
-        <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 px-2 z-0 ${userHomeClasses}`}>
+        <section className={`user-right-panel border-l bg-gradient-to-r dark:border-gray-700 p-2 z-0 ${userHomeClasses}`}>
             <UserDetails />
         </section>
     )

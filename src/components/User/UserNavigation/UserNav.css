@@ -16,6 +16,7 @@
   width: 280px;
   box-sizing: initial;
   transition: width 0.7s;
+  height: calc(100vh - 3.75rem);
 }
 
 .user-navigation ul {

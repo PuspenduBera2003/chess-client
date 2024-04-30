@@ -26,8 +26,8 @@ const UserNav = (props) => {
 
     return (
         <div>
-            <div className={`user-navigation bg-gradient-to-r h-full ${usernavClasses}`}>
-                <ul>
+            <div className={`user-navigation overflow-y-auto bg-gradient-to-r h-full ${usernavClasses}`}>
+                <ul className='pb-2'>
                     <li className={`item-list ${(active === "home" || !active) && ((currentTheme === 'dark') ? "dark-active" : 'light-active')}`} onClick={handleUserNavClick}>
                         <Link to='/user/dashboard/home' className='dark:text-white'>
                             <span className="icons">

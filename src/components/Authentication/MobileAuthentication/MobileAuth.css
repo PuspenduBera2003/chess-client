@@ -65,7 +65,7 @@
 	transition: transform .8s ease-in-out;
 }
 
-.login label{
+.login label {
 	transform: scale(.6);
 }
 
@@ -79,4 +79,46 @@
 
 #chk:checked~.signup label {
 	transform: scale(.6);
+}
+
+.sign-in-dark {
+	background: linear-gradient(to right, #1D2671, #C33764);
+}
+
+.sign-up-dark {
+	background: linear-gradient(to right, #C33764, #1D2671);
+}
+
+.sign-in-light {
+	background: linear-gradient(to right, #1D2671, #C33764);
+}
+
+.sign-up-light {
+	background: linear-gradient(to right, #C33764, #1D2671);
+}
+
+.sign-in-input-dark {
+    background: linear-gradient(to right, #111827, #18181b, #18181b);
+}
+
+.sign-up-input-dark {
+    background: linear-gradient(to right, #1f2937, #27272a, #27272a);
+}
+
+.sign-in-input-light {
+    background: linear-gradient(to right, #f3e8ff, #e0e7ff, #e0e7ff);
+}
+
+.sign-up-input-light {
+    background: linear-gradient(to right, #cffafe, #dbeafe, #dbeafe);
+}
+
+.light-placeholder::placeholder {
+	color: #020202 !important;
+	/* Light mode placeholder color */
+}
+
+.dark-placeholder::placeholder {
+	color: #CCCCCC !important;
+	/* Dark mode placeholder color */
 }

@@ -20,6 +20,7 @@ import normalMoveAudio from '../static/audio/move.mp3'
 import captureMoveAudio from '../static/audio/capture.mp3'
 import checkAudio from '../static/audio/check.mp3'
 import castleAudio from '../static/audio/castle.mp3'
+import updateNewMove from '../redux/MultiPlayer/Actions/updateNewMove';
 
 const SocketProvider = ({ children }) => {
 
@@ -94,7 +95,7 @@ const SocketProvider = ({ children }) => {
 
         socket.on("both-joined", (data) => {
             if (userDetails && userDetails.id && data.opponentDetails && data.opponentDetails.id) {
-                if (userDetails.id === data.opponentDetails.id) {
+                if (userDetails.id === data.opponentDetails.id) {                 
                     dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'You Cannot Play Game With Yourself' }));
                     socket.emit("game-between-same-user", { gameId: data.gameId })
                     navigate('/game/play-with-friends');
@@ -114,6 +115,7 @@ const SocketProvider = ({ children }) => {
                 dispatch(updateGameHistory(updatedHistory));
                 dispatch(updateGameAnalyzer(updatedHistory));
             }
+            dispatch(updateNewMove(data.move.newMove));
             dispatch(updatePosition(data.position));
             dispatch(updateGame(new Chess(data.position)));
             if (data.move.promoted) {
@@ -149,6 +151,11 @@ const SocketProvider = ({ children }) => {
             setTimeout(() => {
                 navigate('/game/play-with-friends')
             }, 3000);
+        })
+
+        socket.on("playerDisconnected", (data) => {
+            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: 'Opponent got disconnected' }));
+            dispatch(updateResult({ key: data.gameId, value: 'NC' }));
         })
 
         socket.on("opponent-resigned", (data) => {

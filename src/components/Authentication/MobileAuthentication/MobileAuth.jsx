@@ -33,7 +33,7 @@ const MobileAuth = () => {
 
   return (
     <div className='w-full p-3'>
-      <div className={`main ${theme === 'dark' ? 'bg-zinc-900' : 'bg-indigo-50'} border w-full m-3 rounded-lg shadow-lg`}>
+      <div className={`main ${theme === 'dark' ? 'sign-up-dark' : 'sign-up-light'} border w-full m-3 rounded-xl shadow-lg`}>
         <input
           type="checkbox"
           id="chk"

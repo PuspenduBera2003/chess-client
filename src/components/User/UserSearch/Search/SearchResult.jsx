@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './SearchResult.css'
 import { useSelector } from 'react-redux';
-import { useSpring, animated } from 'react-spring';
 import Unfriend from './Buttons/Unfriend';
 import UnsendReq from './Buttons/UnsendReq';
 import AddFriend from './Buttons/AddFriend';
@@ -26,15 +25,8 @@ const SearchResult = (props) => {
         ? 'bg-gray-800'
         : 'bg-violet-50'
 
-    const animationProps = useSpring({
-        from: { transform: 'translateY(30px)', opacity: 0 },
-        to: { transform: 'translateY(0)', opacity: 1 },
-        config: { tension: 300, friction: 10 },
-    });
-
     return (
-        <animated.div
-            style={animationProps}
+        <div
             className={`${cardStyle} border border-gray-200 rounded-lg shadow dark:border-gray-600 friend-card px-2 mx-3`}>
             {(userDetails.id === searchResult.id) &&
                 <span className="bg-gray-200 text-gray-800 text-sm font-medium dark:bg-gray-700 dark:text-gray-300 px-2.5 pb-1 pt-0.5 rounded  absolute border border-gray-600 dark:border-gray-600" style={{ top: -10, left: -20 }}>
@@ -87,7 +79,7 @@ const SearchResult = (props) => {
                         </div>
                 }
             </div>
-        </animated.div>
+        </div>
 
     );
 }

@@ -22,7 +22,13 @@ const ResultUploader = () => {
                 return;
             }
             if (result.has(gameId)) {
+                if (result.get(gameId) === 'NC') {
+                    return;
+                }
                 if (userDetails && opponentDetails && boardOrientation === 'white') {
+                    if (gameHistory.length === 0) {
+                        return;
+                    }
                     const resultDesc = result.get(gameId);
                     const message = resultDescriptor(resultDesc);
                     const conclusion = resultConclusion(resultDesc);
@@ -32,9 +38,9 @@ const ResultUploader = () => {
                         dispatch(updateShowBotomToast({ show: true, type: 'success', message: 'Game Details Uploaded Successfully' }));
                     } else {
                         if (response.error && response.error.code === "23505") {
-                           return;
+                            return;
                         } else {
-                            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error }))
+                            dispatch(updateShowBotomToast({ show: true, type: 'failure', message: response.error.message }))
                         }
                     }
                 }

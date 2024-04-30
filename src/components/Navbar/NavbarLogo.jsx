@@ -10,7 +10,7 @@ const NavbarLogo = () => {
 
     return (
         <div>
-            <Link to='/' className='flex items-center justify-center'>
+            <Link to='/home' className='flex items-center justify-center'>
                 <img
                     src={logo}
                     className="mr-1 h-6 sm:h-9"

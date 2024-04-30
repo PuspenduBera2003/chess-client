@@ -20,12 +20,15 @@ const Board = () => {
     const [optionSquares, setOptionSquares] = useState({});
     const [boardWidth, setBoardWidth] = useState(400);
     const [clickedPiece, setClickedPiece] = useState(null);
+    const [currentMove, setCurrentMove] = useState('');
 
     const boardTheme = useSelector(state => state.MultiPlayer.boardTheme);
 
     const gameId = useSelector(state => state.MultiPlayer.gameId);
 
     const game = useSelector(state => state.MultiPlayer.game);
+
+    const newMove = useSelector(state => state.MultiPlayer.newMove)
 
     const boardOrientation = useSelector(state => state.MultiPlayer.boardOrientation);
 
@@ -119,11 +122,11 @@ const Board = () => {
                     setShowPromotionDialog(true);
                 } else {
                     if (promoted.has(move.from)) {
-                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick, promoted: { to: move.to, from: move.from } } });
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), newMove: move.to, player: username, captured: currentClick, promoted: { to: move.to, from: move.from } } });
                     } else if (promoted.has(move.to)) {
-                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: null, promotedCaptured: move.to } });
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), newMove: move.to, player: username, captured: null, promotedCaptured: move.to } });
                     } else {
-                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), player: username, captured: currentClick } });
+                        socket.emit("move", { room: gameId, game: gameCopy, position: gameCopy.fen(), turn: gameCopy.turn(), move: { square: newMove[0], position: gameCopy.fen(), newMove: move.to, player: username, captured: currentClick } });
                     }
                     setMoveFrom("");
                     setMoveTo(null);
@@ -180,9 +183,9 @@ const Board = () => {
                     }
                     const newMove = game.history();
                     if (promoted.has(move.from)) {
-                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), player: username, captured: null, promoted: { to: move.to, from: move.from } } })
+                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), newMove: move.to, player: username, captured: null, promoted: { to: move.to, from: move.from } } })
                     } else {
-                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), player: username, captured: null } });
+                        socket.emit("move", { room: gameId, game, position: game.fen(), turn: game.turn(), move: { square: newMove[0], position: game.fen(), newMove: move.to, player: username, captured: null } });
                     }
                     setMoveFrom("");
                     setMoveTo(null);
@@ -214,6 +217,7 @@ const Board = () => {
                     move: {
                         square: newMove[0],
                         position: gameCopy.fen(),
+                        newMove: move.to,
                         player: username,
                         captured: move.captured ? [clickedPiece, { type: 'p', color: move.color }] : { type: 'p', color: move.color },
                         promoted: { to: move.to, from: move.from }
@@ -262,6 +266,10 @@ const Board = () => {
     })
 
     useEffect(() => {
+        setCurrentMove({ [newMove]: { backgroundColor: customSquareStyles.currentMove } });
+    }, [newMove, customSquareStyles]);
+
+    useEffect(() => {
         const handleResize = () => {
             const screenWidth = window.innerWidth;
             const newBoardWidth = responsiveBoard(screenWidth);
@@ -271,7 +279,7 @@ const Board = () => {
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    },[]);
+    }, []);
 
     const customPieces = useMemo(() => {
         const pieces = [
@@ -323,6 +331,7 @@ const Board = () => {
                     ...moveSquares,
                     ...optionSquares,
                     ...rightClickedSquares,
+                    ...currentMove
                 }}
                 customDarkSquareStyle={customSquareStyles.customDarkSquareStyle}
                 customLightSquareStyle={customSquareStyles.customLightSquareStyle}

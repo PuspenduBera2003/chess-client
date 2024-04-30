@@ -16,7 +16,7 @@ const renderTime = ({ remainingTime }) => {
     return (
         <div className="timer relative">
             <img src={timerImg} alt="timer" className="w-20" />
-            <div className="absolute top-4 animate-spin" style={{ right: 15 }}>
+            <div className="absolute top-4 animate-spin-60" style={{ right: 15 }}>
                 <img src={timerDial} alt="timer dial" className="w-11" />
             </div>
         </div>

@@ -82,43 +82,47 @@ const MobileSignIn = () => {
         }
     }, [credentials])
     return (
-        <div className={`login z-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-violet-100'} w-full m-3`}>
+        <div className={`login z-20 ${theme === 'dark' ? 'sign-in-dark' : 'sign-in-light'} w-full m-3`}>
             <form onSubmit={handleSubmit}>
-                <label className='mobile-auth-label text-gray-900 dark:text-gray-100 text-center' htmlFor="chk" aria-hidden="true">Login</label>
-                <input className='mobile-auth-input bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-black dark:text-white' type="text" value={credentials.email} name='email' onChange={onChange} placeholder='Email' />
-                <div className='relative'>
-                    <input className='mobile-auth-input bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-black dark:text-white' type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} placeholder='Password' />
-                    {
-                        type ?
-                            <button
-                                type='button'
-                                onClick={() => handleTypeChange()}
-                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
-                                <i className={`fa-regular fa-eye ${toggleClasses}`}></i>
-                            </button> :
-                            <button
-                                type='button'
-                                onClick={() => handleTypeChange()}
-                                className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
-                                <i className={`fa-regular fa-eye-slash ${toggleClasses}`} ></i>
-                            </button>
-                    }
-                </div>
-                {
-                    error.error &&
-                    <div className='px-5 mt-2'>
-                        <AuthenticationAlert error={error} setError={setError} />
+                <label className='mobile-auth-label text-gray-100 text-center' htmlFor="chk" aria-hidden="true">
+                    Sign In
+                </label>
+                <div className={`${theme === 'dark' ? 'sign-in-input-dark' : 'sign-in-input-light'} py-2 rounded-xl mx-2 shadow-lg`}>
+                    <input className={`mobile-auth-input shadow-md bg-gray-100 dark:bg-gray-600 p-6 rounded-lg text-black dark:text-white ${theme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} type="text" value={credentials.email} name='email' onChange={onChange} placeholder='Email' />
+                    <div className='relative'>
+                        <input className={`mobile-auth-input shadow-md bg-gray-100 dark:bg-gray-600 p-6 rounded-lg text-black dark:text-white ${theme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} type={type ? 'password' : 'text'} value={credentials.password} name='password' onChange={onChange} placeholder='Password' />
+                        {
+                            type ?
+                                <button
+                                    type='button'
+                                    onClick={() => handleTypeChange()}
+                                    className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
+                                    <i className={`fa-regular fa-eye ${toggleClasses}`}></i>
+                                </button> :
+                                <button
+                                    type='button'
+                                    onClick={() => handleTypeChange()}
+                                    className='bg-gray-50 dark:bg-gray-800 px-2 rounded-md absolute' style={{ right: '1.5rem', top: '0.7rem' }}>
+                                    <i className={`fa-regular fa-eye-slash ${toggleClasses}`} ></i>
+                                </button>
+                        }
                     </div>
-                }
-                <div className='w-full flex items-center justify-center mt-3'>
-                    <Link to='/forget-password' className='text-blue-700 dark:text-blue-400'>
-                        Forget Your Password?
-                    </Link>
-                </div>
-                <div className='w-full flex flex-col flex-wrap items-center justify-center gap-3 mt-5'>
-                    <button type='submit' className={`auth-button ${disabled ? 'sign-up-disabled' : 'sign-up-clickable'} p-3 rounded-lg`} disabled={signInInitialized || disabled}>
-                        Sign In
-                    </button>
+                    {
+                        error.error &&
+                        <div className='px-5 mt-2'>
+                            <AuthenticationAlert error={error} setError={setError} />
+                        </div>
+                    }
+                    <div className='w-full flex items-center justify-center mt-3'>
+                        <Link to='/forget-password' className='text-blue-700 dark:text-blue-400'>
+                            Forget Your Password?
+                        </Link>
+                    </div>
+                    <div className='w-full flex flex-col flex-wrap items-center justify-center gap-3 mt-5'>
+                        <button type='submit' className={`auth-button ${disabled ? 'sign-up-disabled' : 'sign-up-clickable'} p-3 rounded-lg`} disabled={signInInitialized || disabled}>
+                            Sign In
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

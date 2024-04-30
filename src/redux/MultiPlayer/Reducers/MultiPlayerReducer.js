@@ -1,4 +1,4 @@
-import { setBoardOrientation, setGame, setGameAnalyzer, setGameHistory, setGameId, setGameLink, setGameResult, setOpponentDetails, setPieceSelection, setPlayingGame, setPosition, setAddPromoted, setRemainingTime, setRequestSender, setTurn, setDeletePromoted, setAtBeginning, setClearPromoted, setModalOpen, setBoardTheme } from "../Actions/ActionTypes/ActionTypes"
+import { setBoardOrientation, setGame, setGameAnalyzer, setGameHistory, setGameId, setGameLink, setGameResult, setOpponentDetails, setPieceSelection, setPlayingGame, setPosition, setAddPromoted, setRemainingTime, setRequestSender, setTurn, setDeletePromoted, setAtBeginning, setClearPromoted, setModalOpen, setBoardTheme, setNewMove } from "../Actions/ActionTypes/ActionTypes"
 import Chess from "chess.js"
 
 const game = new Chess();
@@ -30,6 +30,7 @@ const initialState = {
     atBeginning: true,
     resultModal: false,
     boardTheme: checkTheme(),
+    newMove: ''
 }
 
 const MultiPlayerReducer = (state = initialState, action) => {
@@ -142,6 +143,11 @@ const MultiPlayerReducer = (state = initialState, action) => {
             return {
                 ...state,
                 boardTheme: action.payload
+            }
+        case setNewMove:
+            return {
+                ...state,
+                newMove: action.payload
             }
         default:
             return state

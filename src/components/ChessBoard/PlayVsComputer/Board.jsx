@@ -12,6 +12,7 @@ import normalMoveAudio from '../../../static/audio/move.mp3'
 import captureMoveAudio from '../../../static/audio/capture.mp3'
 import checkAudio from '../../../static/audio/check.mp3'
 import castleAudio from '../../../static/audio/castle.mp3'
+import startAudio from '../../../static/audio/game-start.mp3'
 
 const Board = () => {
 
@@ -24,6 +25,8 @@ const Board = () => {
     const checkAudioRef = useRef(new Audio(checkAudio));
 
     const castleAudioRef = useRef(new Audio(castleAudio));
+
+    const startAudioRef = useRef(new Audio(startAudio));
 
     const stockfish = new Worker(`${process.env.PUBLIC_URL}/stockfish.js`);
     const botLevel = useSelector(state => state.Bot.botLevel);
@@ -39,6 +42,8 @@ const Board = () => {
     const [moveSquares, setMoveSquares] = useState({});
     const [optionSquares, setOptionSquares] = useState({});
     const [boardWidth, setBoardWidth] = useState(400);
+    const [latestMove, setLatestMove] = useState('');
+    const [currentMove, setCurrentMove] = useState('');
 
     const botHistory = useSelector(state => state.Bot.botHistory);
     const turn = useSelector(state => state.Bot.turn);
@@ -153,6 +158,7 @@ const Board = () => {
                 return;
             }
 
+            setLatestMove(move.to);
             let captured = null;
             if (move.captured) {
                 captured = currentClick;
@@ -200,6 +206,7 @@ const Board = () => {
                 to: moveTo,
                 promotion: piece[1].toLowerCase() ?? "q",
             });
+            setLatestMove(move.to);
             let captured = null;
             if (move.captured) {
                 captured = currentClick;
@@ -271,6 +278,7 @@ const Board = () => {
                             to: bestMove.substring(2, 4),
                             promotion: bestMove.substring(4, 5),
                         });
+                        (move && move.to) && setLatestMove(move.to);
                         let captured = null;
                         let promoted = null;
                         if (move && move.captured) {
@@ -310,7 +318,15 @@ const Board = () => {
             findBestMove();
             dispatch(updateTurn(false));
         }
-    }, [turn])
+    }, [turn]);
+
+    useEffect(() => {
+        if (game.fen() === 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
+            setCurrentMove('');
+        } else {
+            setCurrentMove({ [latestMove]: { backgroundColor: theme === 'dark' ? 'white' : '#ffe74a' } });
+        }
+    }, [theme, latestMove, game]);
 
     const customPieces = useMemo(() => {
         const pieces = [
@@ -351,6 +367,10 @@ const Board = () => {
             setBoardWidth(newBoardWidth);
         };
 
+        startAudioRef.current.play().catch(error => {
+            console.error('Failed to play audio:', error);
+        });
+
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -373,6 +393,7 @@ const Board = () => {
                 ...moveSquares,
                 ...optionSquares,
                 ...rightClickedSquares,
+                ...currentMove
             }}
             customDarkSquareStyle={customSquareStyle.customDarkSquareStyle}
             customLightSquareStyle={customSquareStyle.customLightSquareStyle}

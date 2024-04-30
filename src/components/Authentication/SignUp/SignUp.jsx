@@ -107,6 +107,7 @@ const SignUp = () => {
         const validEmail = isValidEmail(credentials.email);
         if (widthPower[point] === "100%" && credentials.username.length >= 5 && validEmail) {
             setShowSubmitButton(true);
+            setError({ error: false, description: '' })
         } else {
             setShowSubmitButton(false);
             if (credentials.username.length < 5) {
@@ -125,8 +126,8 @@ const SignUp = () => {
                 <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center'>
                     Create Account
                 </h1>
-                <input type="text" placeholder="Username" value={credentials.username} name='username' onChange={onChange} className={`${inputClass} dark:text-white`} />
-                <input type="email" placeholder="Email" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white`} required />
+                <input type="text" placeholder="Username" value={credentials.username} name='username' onChange={onChange} className={`${inputClass} dark:text-white ${currentTheme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} />
+                <input type="email" placeholder="Email" value={credentials.email} name='email' onChange={onChange} className={`${inputClass} dark:text-white ${currentTheme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} required />
                 <div className="password-group">
                     <div className='relative'>
                         <input
@@ -135,7 +136,7 @@ const SignUp = () => {
                             value={credentials.password}
                             name='password'
                             onChange={handlePasswordChange}
-                            className={`${inputClass} dark:text-white`} />
+                            className={`${inputClass} dark:text-white ${currentTheme === 'dark' ? 'dark-placeholder' : 'light-placeholder'}`} />
                         {
                             type ?
                                 <button

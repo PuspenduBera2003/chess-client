@@ -18,7 +18,7 @@ const Features = () => {
     });
 
     return (
-        <Element name='features'>
+            <Element name='features'>
             <div ref={ref} className='w-full flex flex-wrap items-center justify-center gap-2 md:gap-4 p-2'>
                 {trail.map((props, index) => (
                     <animated.div key={index} style={props}>

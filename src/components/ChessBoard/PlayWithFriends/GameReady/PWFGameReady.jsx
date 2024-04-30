@@ -30,10 +30,13 @@ import ResultBoard from '../Result/ResultBoard';
 import MobileControls from '../History/MobileControls';
 import MobileControlsMenu from '../Controls/MobileControlsMenu';
 import checkmateAudio from '../../../../static/audio/checkmate_sound_effect.mp3'
+import gameStartedAudio from '../../../../static/audio/game-start.mp3'
 
 const PWFGameReady = (props) => {
 
   const checkmateAudioRef = useRef(new Audio(checkmateAudio));
+
+  const gameStartedAudioRef = useRef(new Audio(gameStartedAudio));
 
   const currentTheme = useSelector(state => state.Theme.currentTheme);
 
@@ -100,16 +103,14 @@ const PWFGameReady = (props) => {
       return;
     })
     dispatch(updateGameId(gameId));
-    return () => {
-      socket.off("closed");
-    }
   }, [dispatch, linkExpired.error, linkExpired.expired, socketId, navigate, props.gameData, userDetails]);
 
   useEffect(() => {
+
     const onBeforeUnload = (event) => {
       if (playingGame) {
         event.preventDefault();
-        alert('Page is refreshing');
+        socket.disconnect();
         dispatch(updateResult({ key: gameId, value: 'Loss' }));
         event.returnValue = 'Are you sure you want to leave the page?';
       }
@@ -129,7 +130,10 @@ const PWFGameReady = (props) => {
     dispatch(updateGameAnalyzer(updatedHistory));
     dispatch(updateAtBeginning(true));
     dispatch(clearPromoted());
-    dispatch(updateResultModalOpen(false))
+    dispatch(updateResultModalOpen(false));
+    gameStartedAudioRef.current.play().catch(error => {
+      console.error('Failed to play audio:', error);
+    });
   }, [])
 
   const game = useSelector(state => state.MultiPlayer.game);
@@ -145,12 +149,15 @@ const PWFGameReady = (props) => {
         dispatch(updateResult({ key: gameId, value: 'L' }));
       }
       dispatch(updatePlayingGame(false));
+      socket.emit("gameConcluded", { room: gameId })
     } else if (game.in_stalemate()) {
       dispatch(updateResult({ key: gameId, value: 'SD' }));
       dispatch(updatePlayingGame(false));
+      socket.emit("gameConcluded", { room: gameId })
     } else if (game.in_draw()) {
       dispatch(updateResult({ key: gameId, value: 'D' }));
       dispatch(updatePlayingGame(false));
+      socket.emit("gameConcluded", { room: gameId })
     }
   }, [game, gameId, oppositionPlayer, dispatch]);
 

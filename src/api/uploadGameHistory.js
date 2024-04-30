@@ -10,7 +10,7 @@ const uploadGameHistory = async ( gameId, white_id, black_id, moves, message, co
         return response.data;
     } catch (error) {
         console.log('inside catch')
-        return ({ success: false, error: error.message });
+        return ({ success: false, error: error });
     }
 }
 

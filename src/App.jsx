@@ -1,5 +1,5 @@
 import PassPlay from './components/ChessBoard/PassPlay/PassPlay'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Authentication from './components/Authentication/Authentication'
 import NavigationBar from './components/Navbar/Navbar'
 import LandingPage from './components/Home/LandingPage'
@@ -51,8 +51,12 @@ const App = () => {
       <SocketProvider>
         <NavigationBar />
         <Routes>
-          <Route
+        <Route
             path='/'
+            element={<Navigate to="/home" />}
+          />
+          <Route
+            path='/home'
             element={<LandingPage />}
           />
           <Route

@@ -63,6 +63,10 @@ const Board = (props) => {
 
     const [boardWidth, setBoardWidth] = useState(400);
 
+    const [currentMove, setCurrentMove] = useState('');
+
+    const [latestMove, setLatestMove] = useState('');
+
     const customSquareStyles = (currentTheme === "dark")
         ? {
             customDarkSquareStyle: { backgroundColor: "rgb(30 41 59)" },
@@ -115,6 +119,7 @@ const Board = (props) => {
     function makeMove(from, to, promotion = "q") {
         const gameCopy = { ...game };
         const move = gameCopy.move({ from, to, promotion });
+        setLatestMove(to);
         if (move) {
             const turn = (player === "w" ? "b" : "w")
             const currOrientation = (player === "w" ? "black" : "white")
@@ -228,6 +233,14 @@ const Board = (props) => {
     });
 
     useEffect(() => {
+        if (game.fen() === 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
+            setCurrentMove('');
+        } else {
+            setCurrentMove({ [latestMove]: { backgroundColor: currentTheme === 'dark' ? 'white' : '#ffe74a' } });
+        }
+    }, [currentTheme, latestMove, game]);
+
+    useEffect(() => {
         const handleResize = () => {
             const screenWidth = window.innerWidth;
             const boardWidth = responsiveBoard(screenWidth);
@@ -293,6 +306,7 @@ const Board = (props) => {
                     ...moveSquares,
                     ...optionSquares,
                     ...rightClickedSquares,
+                    ...currentMove
                 }}
                 customDarkSquareStyle={customSquareStyles.customDarkSquareStyle}
                 customLightSquareStyle={customSquareStyles.customLightSquareStyle}
